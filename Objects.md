@@ -26,5 +26,7 @@ This is the equivalent to what we call "action" in class.
 ## TaskProxy
 #### Description
 ???
+Alledgedly, TaskProxy and other proxies is an abstractions that are used during
+various heuristics calculations, for example, in CausalGraph heuristics (cg_heuristics).
 #### Functionalities
 ???
