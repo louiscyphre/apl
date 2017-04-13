@@ -30,3 +30,11 @@ Alledgedly, TaskProxy and other proxies is an abstractions that are used during
 various heuristics calculations, for example, in CausalGraph heuristics (cg_heuristics).
 #### Functionalities
 ???
+
+## VariablesProxy
+#### Description
+It looks like a sort of data structure for object of the VariableProxy class(different class!)
+
+## VariableProxy
+#### Description
+Interesting class
