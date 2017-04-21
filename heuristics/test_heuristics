@@ -33,12 +33,6 @@ if [[ !  -d $FAST_DOWNWARD_DIR ]]; then
     default_path=$(pwd)
 else
     default_path=$FAST_DOWNWARD_DIR     
-fi  
-
-if [[ !  -d $FAST_DOWNWARD_DIR ]]; then 
-    default_path=$(pwd)
-else
-    default_path=$FAST_DOWNWARD_DIR     
 fi   
 
 echo -n "Enter fast-downward directory or hit enter for default ($default_path):"
