@@ -57,14 +57,14 @@ case "$answer" in
 esac
 
 declare -a domains=(domain.pddl \
-                                       koenigsberg/bridges-strips-domain.pddl \
-                                       knights_tour/knights_tour.pddl \
-                                       tile/puzzle.pddl)
+                     koenigsberg/bridges-strips-domain.pddl \
+                     knights_tour/knights_tour.pddl \
+                     tile/puzzle.pddl)
                                        
 declare -a problems=(problem.pddl \
-                                        koenigsberg/koenigsberg-problem.pddl \
-                                        knights_tour/knights_tour5.pddl \
-                                        tile/puzzle01.pddl)
+                     koenigsberg/koenigsberg-problem.pddl \
+                     knights_tour/knights_tour5.pddl \
+                     tile/puzzle01.pddl)
 
 echo -e "Running $txt_red \"Lazy greedy best-first search\" $txt_default :\n"
 
@@ -74,7 +74,7 @@ for ((i=0;i<${#domains[@]};++i)); do
         $FAST_DOWNWARD_DIR/fast-downward.py \
         $FAST_DOWNWARD_DIR/${domains[i]} \
         $FAST_DOWNWARD_DIR/${problems[i]} --heuristic "h=$heuristic()" \
-                                                                                        --search "lazy_greedy(h, preferred=h)"\
+                                          --search "lazy_greedy(h, preferred=h)"\
         | grep "\[g=" | tail -n1
     done    
 done
