@@ -1,0 +1,99 @@
+#! /bin/bash
+
+txt_bold='\033[1m'
+txt_red='\E[31;47m'
+txt_yellow='\E[33;44m'
+txt_default='\E[0m'
+
+echo -e $txt_yellow
+echo "--------------------------------------------------------------------------------"
+echo "If you want to save fast-downward directory within one run of terminal, use \
+this script with command:"
+echo ". $0"
+echo "--------------------------------------------------------------------------------"
+echo "Other option is to define environment variable FAST_DOWNWARD_DIR with command:"
+echo "/bin/echo 'export FAST_DOWNWARD_DIR=path to fast-downward install directory' >> ~/.profile && source ~/.profile"
+echo "--------------------------------------------------------------------------------"
+echo -e $txt_default
+
+
+if [[ "$#" -ge 2 ]]; then
+    echo "Error: Wrong number of parameters." 
+    echo "Usage: $0 [heuristics_name_to_test]"
+    exit 1
+elif   [[ "$#" -eq 1 ]];  then
+    new_heuristics_name="$1"
+else 
+    new_heuristics_name="my_heuristic"    
+fi 
+echo "Checking running times comparing to heuristics: $new_heuristics_name"
+
+
+if [[ !  -d $FAST_DOWNWARD_DIR ]]; then 
+    default_path=$(pwd)
+else
+    default_path=$FAST_DOWNWARD_DIR     
+fi  
+
+if [[ !  -d $FAST_DOWNWARD_DIR ]]; then 
+    default_path=$(pwd)
+else
+    default_path=$FAST_DOWNWARD_DIR     
+fi   
+
+echo -n "Enter fast-downward directory or hit enter for default ($default_path):"
+read FAST_DOWNWARD_DIR
+
+if [[  ! -d $FAST_DOWNWARD_DIR ]]; then
+    FAST_DOWNWARD_DIR=$default_path
+fi
+
+export FAST_DOWNWARD_DIR
+echo  -e "Running tests using: $txt_bold $FAST_DOWNWARD_DIR $txt_default" 
+
+echo -ne "Rebuild planner? (if hitting enter, will rebuild by default) $txt_bold (y/n): $txt_default"
+read answer
+
+case "$answer" in 
+    'n' )
+    ;;
+    *)
+     $FAST_DOWNWARD_DIR/build.py
+    ;;
+esac
+
+declare -a domains=(domain.pddl \
+                                       koenigsberg/bridges-strips-domain.pddl \
+                                       knights_tour/knights_tour.pddl \
+                                       tile/puzzle.pddl)
+                                       
+declare -a problems=(problem.pddl \
+                                        koenigsberg/koenigsberg-problem.pddl \
+                                        knights_tour/knights_tour5.pddl \
+                                        tile/puzzle01.pddl)
+
+echo -e "Running $txt_red \"Lazy greedy best-first search\" $txt_default :\n"
+
+for ((i=0;i<${#domains[@]};++i)); do
+    for heuristic in add hmax ff cea cg goalcount lmcut  ipdb  blind  $new_heuristics_name; do
+        echo -e  "$txt_red $heuristic $txt_default  on ${problems[i]}:"
+        $FAST_DOWNWARD_DIR/fast-downward.py \
+        $FAST_DOWNWARD_DIR/${domains[i]} \
+        $FAST_DOWNWARD_DIR/${problems[i]} --heuristic "h=$heuristic()" \
+                                                                                        --search "lazy_greedy(h, preferred=h)"\
+        | grep "\[g=" | tail -n1
+    done    
+done
+
+echo -e "Running $txt_red \"A* search\" $txt_default :\n"
+
+for ((i=0;i<${#domains[@]};++i)); do
+    for heuristic in add hmax ff cea cg goalcount lmcut  ipdb  blind  $new_heuristics_name; do
+        echo -e  "$txt_red $heuristic $txt_default  on ${problems[i]}:"
+        $FAST_DOWNWARD_DIR/fast-downward.py \
+        $FAST_DOWNWARD_DIR/${domains[i]} \
+        $FAST_DOWNWARD_DIR/${problems[i]} --search "astar($heuristic())" \
+        | grep "\[g=" | tail -n1
+    done    
+done
+
