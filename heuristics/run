@@ -1,0 +1,4 @@
+#!/bin/bash
+
+./fast-downward.py --alias apl-2017 $1 $2 
+
