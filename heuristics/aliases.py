@@ -142,7 +142,7 @@ ALIASES["seq-opt-lmcut"] = [
 
 ALIASES["apl-2017"] = [
    "--heuristic",
-   "hmy=my_heuristic(tz_first = 123456789, tz_second = 987654321)",
+   "hmy=my_heuristic(tz_first = 203304688, tz_second = 320934904 )",
     "--heuristic",
     "hmy,hff=lm_ff_syn(lm_rhw(reasonable_orders=true))",
     "--search", """iterated([
