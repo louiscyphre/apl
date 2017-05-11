@@ -4,6 +4,7 @@ txt_bold='\033[1m'
 txt_red='\E[31;47m'
 txt_yellow='\E[33;44m'
 txt_default='\E[0m'
+time_limit=3
 
 echo -e $txt_yellow
 echo "--------------------------------------------------------------------------------"
@@ -71,23 +72,32 @@ echo -e "Running $txt_red \"Lazy greedy best-first search\" $txt_default :\n"
 for ((i=0;i<${#domains[@]};++i)); do
     for heuristic in add hmax ff cea cg goalcount lmcut  ipdb  blind  $new_heuristics_name; do
         echo -e  "$txt_red $heuristic $txt_default  on ${problems[i]}:"
+        echo  -n '[ '
         $FAST_DOWNWARD_DIR/fast-downward.py \
         $FAST_DOWNWARD_DIR/${domains[i]} \
         $FAST_DOWNWARD_DIR/${problems[i]} --heuristic "h=$heuristic()" \
-                                          --search "lazy_greedy(h, preferred=h, max_time=3)"\
-        | grep "\[g=" | tail -n1
+                                          --search "lazy_greedy(h, preferred=h, max_time=$time_limit)" \
+        | grep -e 'Total time:' -e 'Peak memory:' -e 'Time limit reached.' \
+         -e 'Usage error occurred' -e 'Plan cost:'  \
+         -e 'Search stopped without finding a solution' | sort | tr '\n' '|' | sed 's/[|]/\t/g' 
+        echo ']'
     done    
 done
 
-echo -e "Running $txt_red \"A* search\" $txt_default :\n"
+#echo -e "Running $txt_red \"A* search\" $txt_default :\n"
 
-for ((i=0;i<${#domains[@]};++i)); do
-    for heuristic in add hmax ff cea cg goalcount lmcut  ipdb  blind  $new_heuristics_name; do
-        echo -e  "$txt_red $heuristic $txt_default  on ${problems[i]}:"
-        $FAST_DOWNWARD_DIR/fast-downward.py \
-        $FAST_DOWNWARD_DIR/${domains[i]} \
-        $FAST_DOWNWARD_DIR/${problems[i]} --search "astar($heuristic(), max_time=3)" \
-        | grep "\[g=" | tail -n1
-    done    
-done
+#for ((i=0;i<${#domains[@]};++i)); do
+#    for heuristic in add hmax ff cea cg goalcount lmcut  ipdb  blind  $new_heuristics_name; do
+#        echo -e  "$txt_red $heuristic $txt_default  on ${problems[i]}:"
+#       $FAST_DOWNWARD_DIR/fast-downward.py \
+#        $FAST_DOWNWARD_DIR/${domains[i]} \
+#        $FAST_DOWNWARD_DIR/${problems[i]} --search "astar($heuristic(), max_time=$time_limit)"# \
+#        | grep -e 'Total time:' -e 'Peak memory:' -e 'Time limit reached.' \
+#         -e 'Usage error occurred' -e 'Plan cost:'  \
+#         -e 'Search stopped without finding a solution' | sort | tr '\n' '|' | sed 's/[|]/\t/g' 
+#        echo ']'
+#    done    
+#done
+
+exit 0
 
