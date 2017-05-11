@@ -16,6 +16,8 @@ class MyHeuristic : public Heuristic {
 				  << cantor_pairing(first /1000000 % 1000,second /1000000 % 1000) << std::endl;
 	}
 
+    int goalcount_square(const GlobalState &global_state);
+
 protected:
     virtual int compute_heuristic(const GlobalState &global_state);
 public:

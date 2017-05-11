@@ -27,6 +27,19 @@ MyHeuristic::MyHeuristic(const Options &opts)
 MyHeuristic::~MyHeuristic() {
 }
 
+int MyHeuristic::goalcount_square(const GlobalState &global_state){
+    const State state = convert_global_state(global_state);
+    int unsatisfied_goal_count = 0;
+
+    for (FactProxy goal : task_proxy.get_goals()) {
+        const VariableProxy var = goal.get_variable();
+        if (state[var] != goal) {
+            ++unsatisfied_goal_count;
+        }
+    }
+    return unsatisfied_goal_count*unsatisfied_goal_count;
+}
+
 int MyHeuristic::compute_heuristic(const GlobalState &global_state) {
     State state = convert_global_state(global_state);
 // Dump the pddl of the current state
@@ -38,9 +51,9 @@ int MyHeuristic::compute_heuristic(const GlobalState &global_state) {
 // Print the minimum cost of action
 //    cout << to_string( get_min_operator_cost(task_proxy) ) << endl;
 
-    if (is_goal_state(task_proxy, state))
-        return 0;
-    return 1;
+//    if (is_goal_state(task_proxy, state))
+//      return 0;
+    return goalcount_square(global_state);
 }
 
 static Heuristic *_parse(OptionParser &parser) {
