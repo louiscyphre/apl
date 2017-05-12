@@ -58,7 +58,7 @@ int MyHeuristic::goalcount_square(const GlobalState &global_state){
 // COMPUTE HEURISTIC
 int MyHeuristic::compute_heuristic(const GlobalState &global_state) {
     State state = convert_global_state(global_state);
-    return goalcount_square(global_state);
+    return goalcount_sqrt(global_state);
 }
 // COMPUTE HEURISTIC
 
