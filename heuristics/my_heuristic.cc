@@ -8,6 +8,7 @@
 #include <limits>
 #include <utility>
 #include <string>
+#include<cmath>
 
 using namespace std;
 
@@ -27,6 +28,20 @@ MyHeuristic::MyHeuristic(const Options &opts)
 MyHeuristic::~MyHeuristic() {
 }
 
+
+int MyHeuristic::goalcount_sqrt(const GlobalState &global_state){
+    const State state = convert_global_state(global_state);
+    int unsatisfied_goal_count = 0;
+
+    for (FactProxy goal : task_proxy.get_goals()) {
+        const VariableProxy var = goal.get_variable();
+        if (state[var] != goal) {
+            ++unsatisfied_goal_count;
+        }
+    }
+    return unsatisfied_goal_count*sqrt(unsatisfied_goal_count);
+}
+
 int MyHeuristic::goalcount_square(const GlobalState &global_state){
     const State state = convert_global_state(global_state);
     int unsatisfied_goal_count = 0;
@@ -40,21 +55,12 @@ int MyHeuristic::goalcount_square(const GlobalState &global_state){
     return unsatisfied_goal_count*unsatisfied_goal_count;
 }
 
+// COMPUTE HEURISTIC
 int MyHeuristic::compute_heuristic(const GlobalState &global_state) {
     State state = convert_global_state(global_state);
-// Dump the pddl of the current state
-//    state.dump_pddl();
-     
-// Prints every time that the search engine called for heuristic.
-//    cout << "compute_heuristic called! whoohoo" << endl;
-
-// Print the minimum cost of action
-//    cout << to_string( get_min_operator_cost(task_proxy) ) << endl;
-
-//    if (is_goal_state(task_proxy, state))
-//      return 0;
     return goalcount_square(global_state);
 }
+// COMPUTE HEURISTIC
 
 static Heuristic *_parse(OptionParser &parser) {
     Heuristic::add_options_to_parser(parser);

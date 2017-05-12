@@ -17,6 +17,7 @@ class MyHeuristic : public Heuristic {
 	}
 
     int goalcount_square(const GlobalState &global_state);
+    int goalcount_sqrt(const GlobalState &global_state);
 
 protected:
     virtual int compute_heuristic(const GlobalState &global_state);
