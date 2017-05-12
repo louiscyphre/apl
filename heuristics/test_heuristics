@@ -58,12 +58,10 @@ case "$answer" in
 esac
 
 declare -a domains=(domain.pddl \
-                     koenigsberg/bridges-strips-domain.pddl \
                      knights_tour/knights_tour.pddl \
                      tile/puzzle.pddl)
                                        
 declare -a problems=(problem.pddl \
-                     koenigsberg/koenigsberg-problem.pddl \
                      knights_tour/knights_tour5.pddl \
                      tile/puzzle01.pddl)
 
