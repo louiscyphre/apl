@@ -74,7 +74,7 @@ declare -a problems=(knights_tour/knights_tour5.pddl \
 echo -e "Running $txt_red \"Lazy greedy best-first search\" $txt_default :\n"
 
 for ((i=0;i<${#domains[@]};++i)); do
-    for heuristic in add hmax ff cea cg goalcount lmcut  ipdb  blind  $new_heuristics_name; do
+    for heuristic in add ff cea cg goalcount lmcut  ipdb $new_heuristics_name; do
         dom_name=${domains[i]#*/}
         dom_name=${dom_name%.pddl}
         prob_name=${problems[i]#*/}
@@ -95,7 +95,7 @@ done
 #echo -e "Running $txt_red \"A* search\" $txt_default :\n"
 
 #for ((i=0;i<${#domains[@]};++i)); do
-#    for heuristic in add hmax ff cea cg goalcount lmcut  ipdb  blind  $new_heuristics_name; do
+#    for heuristic in add ff cea cg goalcount lmcut  ipdb $new_heuristics_name; do
 #        echo -e  "$txt_red $heuristic $txt_default  on ${problems[i]}:"
 #       $FAST_DOWNWARD_DIR/fast-downward.py \
 #        $FAST_DOWNWARD_DIR/${domains[i]} \
