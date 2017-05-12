@@ -36,6 +36,10 @@ else
     default_path=$FAST_DOWNWARD_DIR     
 fi   
 
+if [ "$USER" == "nathan" ]; then
+    default_path="/home/nathan/planner"
+fi
+
 echo -n "Enter fast-downward directory or hit enter for default ($default_path):"
 read FAST_DOWNWARD_DIR
 
@@ -57,19 +61,23 @@ case "$answer" in
     ;;
 esac
 
-declare -a domains=(domain.pddl \
-                     knights_tour/knights_tour.pddl \
+declare -a domains=(knights_tour/knights_tour.pddl \
+                     tile/puzzle.pddl
                      tile/puzzle.pddl)
                                        
-declare -a problems=(problem.pddl \
-                     knights_tour/knights_tour5.pddl \
-                     tile/puzzle01.pddl)
+declare -a problems=(knights_tour/knights_tour5.pddl \
+                     tile/puzzle01.pddl
+                     tile/puzzle02.pddl)
 
 echo -e "Running $txt_red \"Lazy greedy best-first search\" $txt_default :\n"
 
 for ((i=0;i<${#domains[@]};++i)); do
     for heuristic in add hmax ff cea cg goalcount lmcut  ipdb  blind  $new_heuristics_name; do
-        echo -e  "$txt_red $heuristic $txt_default  on ${problems[i]}:"
+        dom_name=${domains[i]#*/}
+        dom_name=${dom_name%.pddl}
+        prob_name=${problems[i]#*/}
+        prob_name=${prob_name%.pddl}
+        echo -e  "$txt_red $heuristic $txt_default domain: $txt_yellow $dom_name $txt_default problem: $txt_yellow $prob_name $txt_default "
         echo  -n '[ '
         $FAST_DOWNWARD_DIR/fast-downward.py \
         $FAST_DOWNWARD_DIR/${domains[i]} \
