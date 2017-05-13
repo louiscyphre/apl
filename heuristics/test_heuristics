@@ -92,8 +92,8 @@ CPDB2_H="cpdbs(genetic())"
 
 time_limit=20
 
-declare -a searches=( "lazy(tiebreaking([$CPDB_H,$FF_H]),max_time=$time_limit)" \
-"lazy(tiebreaking([$CPDB2_H,$FF_H]),max_time=$time_limit)"
+declare -a searches=( "lazy_greedy([$CPDB_H,$FF_H],max_time=$time_limit)" \
+"lazy_greedy([$CPDB2_H,$FF_H],max_time=$time_limit)"
 "lazy(tiebreaking([$LMCUT_H,$FF_H]),max_time=$time_limit)"
 )
 
