@@ -4,7 +4,6 @@ txt_bold='\033[1m'
 txt_red='\E[31;47m'
 txt_yellow='\E[33;44m'
 txt_default='\E[0m'
-time_limit=3
 
 echo -e $txt_yellow
 echo "--------------------------------------------------------------------------------"
@@ -64,48 +63,81 @@ esac
 declare -a domains=(knights_tour/knights_tour.pddl \
                      knights_tour/knights_tour.pddl
                      tile/puzzle.pddl
-                     tile/puzzle.pddl)
+                     tile/puzzle.pddl
+                     Hiking/hiking.pddl
+                     Hiking/hiking.pddl
+                     Hiking/hiking.pddl
+                     )
                                        
 declare -a problems=(knights_tour/knights_tour5.pddl \
                      knights_tour/knights_tour8.pddl
                      tile/puzzle01.pddl
-                     tile/puzzle02.pddl)
+                     tile/puzzle02.pddl
+                     Hiking/ptesting-3-4-6.pddl
+                     Hiking/ptesting-3-4-7.pddl
+                     Hiking/ptesting-3-4-8.pddl
+                     )
 
-echo -e "Running $txt_red \"Lazy greedy best-first search\" $txt_default :\n"
+MAX_H="hmax()"
+FF_H="ff()"
+GC_H="goalcount()"
+ADD_H="add()"
+MY_H="my_heuristic(tz_first = 203304688, tz_second = 320934904 )"
+HM_H="hm()"
+LMCUT_H="lmcut()"
+IPDB_H="ipdb()"
+PDB_H="pdb(patterns=[[1,2],[3]])"
+CPDB_H="cpdbs(systematic(pattern_max_size=2))"
+CPDB2_H="cpdbs(genetic())"
 
-for ((i=0;i<${#domains[@]};++i)); do
-    for heuristic in add ff cea cg goalcount lmcut  ipdb $new_heuristics_name; do
+time_limit=20
+
+declare -a searches=( "lazy(tiebreaking([$CPDB_H,$FF_H]),max_time=$time_limit)" \
+"lazy(tiebreaking([$CPDB2_H,$FF_H]),max_time=$time_limit)"
+"lazy(tiebreaking([$LMCUT_H,$FF_H]),max_time=$time_limit)"
+)
+
+
+for search in ${searches[@]}; do
+    echo -e "\n\n\nRunning $txt_red $search :\n"
+    for ((i=0;i<${#domains[@]};++i)); do
         dom_name=${domains[i]#*/}
         dom_name=${dom_name%.pddl}
         prob_name=${problems[i]#*/}
         prob_name=${prob_name%.pddl}
-        echo -e  "$txt_red $heuristic $txt_default domain: $txt_yellow $dom_name $txt_default problem: $txt_yellow $prob_name $txt_default "
+        echo -e  " $txt_default domain: $txt_yellow $dom_name $txt_default problem: $txt_yellow $prob_name $txt_default "
         echo  -n '[ '
         $FAST_DOWNWARD_DIR/fast-downward.py \
         $FAST_DOWNWARD_DIR/${domains[i]} \
-        $FAST_DOWNWARD_DIR/${problems[i]} --heuristic "h=$heuristic()" \
-                                          --search "lazy_greedy(h, preferred=h, max_time=$time_limit)" \
+        $FAST_DOWNWARD_DIR/${problems[i]} \
+                                          --search "$search" \
         | grep -e 'Total time:' -e 'Peak memory:' -e 'Time limit reached.' \
          -e 'Usage error occurred' -e 'Plan cost:'  \
          -e 'Search stopped without finding a solution' | sort | tr '\n' '|' | sed 's/[|]/\t/g' 
         echo ']'
-    done    
+    done
 done
 
-#echo -e "Running $txt_red \"A* search\" $txt_default :\n"
-
 #for ((i=0;i<${#domains[@]};++i)); do
-#    for heuristic in add ff cea cg goalcount lmcut  ipdb $new_heuristics_name; do
-#        echo -e  "$txt_red $heuristic $txt_default  on ${problems[i]}:"
+#   for heuristic in add ff goalcount lmcut ipdb $new_heuristics_name; do
+#       dom_name=${domains[i]#*/}
+#       dom_name=${dom_name%.pddl}
+#       prob_name=${problems[i]#*/}
+#       prob_name=${prob_name%.pddl}
+#       echo -e  "$txt_red $heuristic $txt_default domain: $txt_yellow $dom_name $txt_default problem: $txt_yellow $prob_name $txt_default "
+#       echo  -n '[ '
 #       $FAST_DOWNWARD_DIR/fast-downward.py \
-#        $FAST_DOWNWARD_DIR/${domains[i]} \
-#        $FAST_DOWNWARD_DIR/${problems[i]} --search "astar($heuristic(), max_time=$time_limit)"# \
-#        | grep -e 'Total time:' -e 'Peak memory:' -e 'Time limit reached.' \
-#         -e 'Usage error occurred' -e 'Plan cost:'  \
-#         -e 'Search stopped without finding a solution' | sort | tr '\n' '|' | sed 's/[|]/\t/g' 
-#        echo ']'
-#    done    
+#       $FAST_DOWNWARD_DIR/${domains[i]} \
+#       $FAST_DOWNWARD_DIR/${problems[i]} --heuristic "h=$heuristic()" \
+#                                         --search "lazy_greedy(h, preferred=h, max_time=$time_limit)" \
+#       | grep -e 'Total time:' -e 'Peak memory:' -e 'Time limit reached.' \
+#        -e 'Usage error occurred' -e 'Plan cost:'  \
+#        -e 'Search stopped without finding a solution' | sort | tr '\n' '|' | sed 's/[|]/\t/g' 
+#       echo ']'
+#   done    
 #done
+
+#echo -e "Running $txt_red \"A* search\" $txt_default :\n"
 
 exit 0
 

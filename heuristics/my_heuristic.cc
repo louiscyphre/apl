@@ -3,6 +3,7 @@
 #include "../option_parser.h"
 #include "../plugin.h"
 #include "../task_tools.h"
+#include "../causal_graph.h"
 
 #include <cstddef>
 #include <limits>
@@ -29,23 +30,9 @@ MyHeuristic::~MyHeuristic() {
 }
 
 
-int MyHeuristic::goalcount_sqrt(const GlobalState &global_state){
-    const State state = convert_global_state(global_state);
-    int unsatisfied_goal_count = 0;
-
-    for (FactProxy goal : task_proxy.get_goals()) {
-        const VariableProxy var = goal.get_variable();
-        if (state[var] != goal) {
-            ++unsatisfied_goal_count;
-        }
-    }
-    return unsatisfied_goal_count*sqrt(unsatisfied_goal_count);
-}
-
 int MyHeuristic::goalcount_square(const GlobalState &global_state){
     const State state = convert_global_state(global_state);
     int unsatisfied_goal_count = 0;
-
     for (FactProxy goal : task_proxy.get_goals()) {
         const VariableProxy var = goal.get_variable();
         if (state[var] != goal) {
@@ -56,9 +43,18 @@ int MyHeuristic::goalcount_square(const GlobalState &global_state){
 }
 
 // COMPUTE HEURISTIC
+static int nat=0;
 int MyHeuristic::compute_heuristic(const GlobalState &global_state) {
     State state = convert_global_state(global_state);
-    return goalcount_sqrt(global_state);
+    if(nat<5){
+        cout<<"dump start:"<<endl;
+        state.dump_pddl();
+        cout<<"fdr:"<<endl;
+        state.dump_fdr();
+        nat++;
+        cout<<"dump end"<<endl;
+    }
+    return goalcount_square(global_state);
 }
 // COMPUTE HEURISTIC
 
