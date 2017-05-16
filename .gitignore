@@ -35,6 +35,10 @@
 sas_plan
 *.sas
 
+# VIM
+*.swp
+
+
 fast-downward/builds
 /VAL
 
