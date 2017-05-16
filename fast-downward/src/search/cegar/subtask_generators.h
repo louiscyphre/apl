@@ -6,6 +6,7 @@
 
 class AbstractTask;
 struct FactPair;
+class TaskProxy;
 
 namespace landmarks {
 class LandmarkGraph;

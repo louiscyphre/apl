@@ -12,11 +12,11 @@ using namespace std;
 
 namespace weighted_evaluator {
 WeightedEvaluator::WeightedEvaluator(const Options &opts)
-    : evaluator(opts.get<Evaluator *>("eval")),
+    : evaluator(opts.get<ScalarEvaluator *>("eval")),
       w(opts.get<int>("weight")) {
 }
 
-WeightedEvaluator::WeightedEvaluator(Evaluator *eval, int weight)
+WeightedEvaluator::WeightedEvaluator(ScalarEvaluator *eval, int weight)
     : evaluator(eval), w(weight) {
 }
 
@@ -44,11 +44,11 @@ void WeightedEvaluator::get_involved_heuristics(set<Heuristic *> &hset) {
     evaluator->get_involved_heuristics(hset);
 }
 
-static Evaluator *_parse(OptionParser &parser) {
+static ScalarEvaluator *_parse(OptionParser &parser) {
     parser.document_synopsis(
         "Weighted evaluator",
-        "Multiplies the value of the evaluator with the given weight.");
-    parser.add_option<Evaluator *>("eval", "evaluator");
+        "Multiplies the value of the scalar evaluator with the given weight.");
+    parser.add_option<ScalarEvaluator *>("eval", "scalar evaluator");
     parser.add_option<int>("weight", "weight");
     Options opts = parser.parse();
     if (parser.dry_run())
@@ -57,5 +57,5 @@ static Evaluator *_parse(OptionParser &parser) {
         return new WeightedEvaluator(opts);
 }
 
-static Plugin<Evaluator> _plugin("weight", _parse);
+static Plugin<ScalarEvaluator> _plugin("weight", _parse);
 }

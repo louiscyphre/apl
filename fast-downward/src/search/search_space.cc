@@ -144,7 +144,10 @@ void SearchSpace::trace_path(const GlobalState &goal_state,
 }
 
 void SearchSpace::dump() const {
-    for (StateID id : state_registry) {
+    for (PerStateInformation<SearchNodeInfo>::const_iterator it =
+             search_node_infos.begin(&state_registry);
+         it != search_node_infos.end(&state_registry); ++it) {
+        StateID id = *it;
         GlobalState state = state_registry.lookup_state(id);
         const SearchNodeInfo &node_info = search_node_infos[state];
         cout << id << ": ";

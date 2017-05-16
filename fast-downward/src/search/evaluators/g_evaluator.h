@@ -1,12 +1,12 @@
 #ifndef EVALUATORS_G_EVALUATOR_H
 #define EVALUATORS_G_EVALUATOR_H
 
-#include "../evaluator.h"
+#include "../scalar_evaluator.h"
 
 class Heuristic;
 
 namespace g_evaluator {
-class GEvaluator : public Evaluator {
+class GEvaluator : public ScalarEvaluator {
 public:
     GEvaluator() = default;
     virtual ~GEvaluator() override = default;

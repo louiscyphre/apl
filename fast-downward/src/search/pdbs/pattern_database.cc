@@ -2,8 +2,9 @@
 
 #include "match_tree.h"
 
-#include "../algorithms/priority_queues.h"
-#include "../task_utils/task_properties.h"
+#include "../priority_queue.h"
+#include "../task_tools.h"
+
 #include "../utils/collections.h"
 #include "../utils/logging.h"
 #include "../utils/math.h"
@@ -72,8 +73,8 @@ PatternDatabase::PatternDatabase(
     bool dump,
     const vector<int> &operator_costs)
     : pattern(pattern) {
-    task_properties::verify_no_axioms(task_proxy);
-    task_properties::verify_no_conditional_effects(task_proxy);
+    verify_no_axioms(task_proxy);
+    verify_no_conditional_effects(task_proxy);
     assert(operator_costs.empty() ||
            operator_costs.size() == task_proxy.get_operators().size());
     assert(utils::is_sorted_unique(pattern));
@@ -226,7 +227,7 @@ void PatternDatabase::create_pdb(
 
     distances.reserve(num_states);
     // first implicit entry: priority, second entry: index for an abstract state
-    priority_queues::AdaptiveQueue<size_t> pq;
+    AdaptiveQueue<size_t> pq;
 
     // initialize queue
     for (size_t state_index = 0; state_index < num_states; ++state_index) {

@@ -17,6 +17,10 @@
 #include <utility>
 #include <vector>
 
+namespace AdditiveHeuristic {
+class AdditiveHeuristic;
+}
+
 namespace utils {
 class RandomNumberGenerator;
 }

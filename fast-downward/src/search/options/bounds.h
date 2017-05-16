@@ -1,7 +1,7 @@
 #ifndef OPTIONS_BOUNDS_H
 #define OPTIONS_BOUNDS_H
 
-#include <iostream>
+#include <iosfwd>
 #include <string>
 
 namespace options {
@@ -10,9 +10,8 @@ struct Bounds {
     std::string max;
 
 public:
-    Bounds(const std::string &min, const std::string &max)
-        : min(min), max(max) {
-    }
+    Bounds(std::string min, std::string max)
+        : min(min), max(max) {}
     ~Bounds() = default;
 
     bool has_bound() const {

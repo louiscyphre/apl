@@ -31,13 +31,13 @@ EvaluationContext::EvaluationContext(
     : EvaluationContext(HeuristicCache(state), INVALID, false, statistics, calculate_preferred) {
 }
 
-const EvaluationResult &EvaluationContext::get_result(Evaluator *heur) {
+const EvaluationResult &EvaluationContext::get_result(ScalarEvaluator *heur) {
     EvaluationResult &result = cache[heur];
     if (result.is_uninitialized()) {
         result = heur->compute_result(*this);
         if (statistics && dynamic_cast<const Heuristic *>(heur)) {
             /* Only count evaluations of actual Heuristics, not arbitrary
-               evaluators. */
+               scalar evaluators. */
             if (result.get_count_evaluation()) {
                 statistics->inc_evaluations();
             }
@@ -64,22 +64,22 @@ bool EvaluationContext::is_preferred() const {
     return preferred;
 }
 
-bool EvaluationContext::is_heuristic_infinite(Evaluator *heur) {
+bool EvaluationContext::is_heuristic_infinite(ScalarEvaluator *heur) {
     return get_result(heur).is_infinite();
 }
 
-int EvaluationContext::get_heuristic_value(Evaluator *heur) {
+int EvaluationContext::get_heuristic_value(ScalarEvaluator *heur) {
     int h = get_result(heur).get_h_value();
     assert(h != EvaluationResult::INFTY);
     return h;
 }
 
-int EvaluationContext::get_heuristic_value_or_infinity(Evaluator *heur) {
+int EvaluationContext::get_heuristic_value_or_infinity(ScalarEvaluator *heur) {
     return get_result(heur).get_h_value();
 }
 
-const vector<OperatorID> &
-EvaluationContext::get_preferred_operators(Evaluator *heur) {
+const vector<const GlobalOperator *> &
+EvaluationContext::get_preferred_operators(ScalarEvaluator *heur) {
     return get_result(heur).get_preferred_operators();
 }
 

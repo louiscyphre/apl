@@ -1,6 +1,7 @@
 #include "plugin.h"
 
 #include <typeindex>
+#include <typeinfo>
 
 using namespace std;
 

@@ -2,6 +2,7 @@
 
 #include "../option_parser.h"
 #include "../plugin.h"
+#include "../task_tools.h"
 
 #include "../utils/collections.h"
 #include "../utils/markup.h"

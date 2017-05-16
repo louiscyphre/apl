@@ -6,10 +6,6 @@
 
 #include "../heuristic.h"
 
-namespace successor_generator {
-class SuccessorGenerator;
-}
-
 namespace landmarks {
 class LandmarkCostAssignment;
 class LandmarkStatusManager;
@@ -26,7 +22,6 @@ class LandmarkCountHeuristic : public Heuristic {
 
     std::unique_ptr<LandmarkStatusManager> lm_status_manager;
     std::unique_ptr<LandmarkCostAssignment> lm_cost_assignment;
-    std::unique_ptr<successor_generator::SuccessorGenerator> successor_generator;
 
     int get_heuristic_value(const GlobalState &global_state);
 

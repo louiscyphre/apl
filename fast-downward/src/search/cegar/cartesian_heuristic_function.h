@@ -8,6 +8,7 @@
 #include <memory>
 
 class AbstractTask;
+class State;
 
 namespace cegar {
 /*

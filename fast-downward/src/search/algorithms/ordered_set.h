@@ -8,7 +8,7 @@
 #include <unordered_set>
 #include <vector>
 
-namespace ordered_set {
+namespace algorithms {
 /*
   Combine vector and unordered_set to store a set of elements, ordered
   by insertion time.

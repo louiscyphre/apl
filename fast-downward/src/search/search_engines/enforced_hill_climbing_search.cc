@@ -3,13 +3,16 @@
 #include "../global_operator.h"
 #include "../option_parser.h"
 #include "../plugin.h"
+#include "../successor_generator.h"
 
-#include "../algorithms/ordered_set.h"
 #include "../evaluators/g_evaluator.h"
 #include "../evaluators/pref_evaluator.h"
+
 #include "../open_lists/standard_scalar_open_list.h"
 #include "../open_lists/tiebreaking_open_list.h"
-#include "../task_utils/successor_generator.h"
+
+#include "../algorithms/ordered_set.h"
+
 #include "../utils/system.h"
 
 using namespace std;
@@ -26,7 +29,7 @@ static shared_ptr<OpenListFactory> create_ehc_open_list_factory(
       ignore costs since EHC is supposed to implement a breadth-first
       search, not a uniform-cost search. So this seems to be a bug.
     */
-    Evaluator *g_evaluator = new GEval();
+    ScalarEvaluator *g_evaluator = new GEval();
 
     if (!use_preferred ||
         preferred_usage == PreferredUsage::PRUNE_BY_PREFERRED) {
@@ -41,7 +44,7 @@ static shared_ptr<OpenListFactory> create_ehc_open_list_factory(
         Options options;
         options.set("eval", g_evaluator);
         options.set("pref_only", false);
-        return make_shared<standard_scalar_open_list::StandardScalarOpenListFactory>(options);
+        return make_shared<StandardScalarOpenListFactory>(options);
     } else {
         /*
           TODO: Reduce code duplication with search_common.cc,
@@ -51,12 +54,12 @@ static shared_ptr<OpenListFactory> create_ehc_open_list_factory(
           constructor that encapsulates this work to the tie-breaking
           open list code.
         */
-        vector<Evaluator *> evals = {g_evaluator, new PrefEval()};
+        vector<ScalarEvaluator *> evals = {g_evaluator, new PrefEval()};
         Options options;
         options.set("evals", evals);
         options.set("pref_only", false);
         options.set("unsafe_pruning", true);
-        return make_shared<tiebreaking_open_list::TieBreakingOpenListFactory>(options);
+        return make_shared<TieBreakingOpenListFactory>(options);
     }
 }
 
@@ -142,28 +145,27 @@ void EnforcedHillClimbingSearch::expand(EvaluationContext &eval_context) {
     SearchNode node = search_space.get_node(eval_context.get_state());
     int node_g = node.get_g();
 
-    ordered_set::OrderedSet<OperatorID> preferred_operators;
+    algorithms::OrderedSet<const GlobalOperator *> preferred_operators;
     if (use_preferred) {
         preferred_operators = collect_preferred_operators(
             eval_context, preferred_operator_heuristics);
     }
 
     if (use_preferred && preferred_usage == PreferredUsage::PRUNE_BY_PREFERRED) {
-        for (OperatorID op_id : preferred_operators) {
+        for (const GlobalOperator *op : preferred_operators) {
             insert_successor_into_open_list(
-                eval_context, node_g, &g_operators[op_id.get_index()], true);
+                eval_context, node_g, op, preferred_operators.contains(op));
         }
     } else {
         /* The successor ranking implied by RANK_BY_PREFERRED is done
            by the open list. */
-        vector<OperatorID> successor_operators;
+        vector<const GlobalOperator *> successor_operators;
         g_successor_generator->generate_applicable_ops(
             eval_context.get_state(), successor_operators);
-        for (OperatorID op_id : successor_operators) {
-            bool preferred = use_preferred &&
-                             preferred_operators.contains(op_id);
+        for (const GlobalOperator *op : successor_operators) {
+            bool preferred = use_preferred && preferred_operators.contains(op);
             insert_successor_into_open_list(
-                eval_context, node_g, &g_operators[op_id.get_index()], preferred);
+                eval_context, node_g, op, preferred);
         }
     }
 

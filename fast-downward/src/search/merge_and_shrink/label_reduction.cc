@@ -6,11 +6,11 @@
 #include "transition_system.h"
 #include "types.h"
 
+#include "../equivalence_relation.h"
 #include "../option_parser.h"
 #include "../plugin.h"
 #include "../task_proxy.h"
 
-#include "../algorithms/equivalence_relation.h"
 #include "../utils/collections.h"
 #include "../utils/markup.h"
 #include "../utils/rng.h"
@@ -59,7 +59,7 @@ void LabelReduction::initialize(const TaskProxy &task_proxy) {
 }
 
 void LabelReduction::compute_label_mapping(
-    const equivalence_relation::EquivalenceRelation *relation,
+    const EquivalenceRelation *relation,
     const FactoredTransitionSystem &fts,
     vector<pair<int, vector<int>>> &label_mapping,
     Verbosity verbosity) {
@@ -67,11 +67,11 @@ void LabelReduction::compute_label_mapping(
     int next_new_label_no = labels.get_size();
     int num_labels = 0;
     int num_labels_after_reduction = 0;
-    for (auto group_it = relation->begin();
+    for (BlockListConstIter group_it = relation->begin();
          group_it != relation->end(); ++group_it) {
-        const equivalence_relation::Block &block = *group_it;
+        const Block &block = *group_it;
         unordered_map<int, vector<int>> equivalent_label_nos;
-        for (auto label_it = block.begin();
+        for (ElementListConstIter label_it = block.begin();
              label_it != block.end(); ++label_it) {
             assert(*label_it < next_new_label_no);
             int label_no = *label_it;
@@ -103,7 +103,7 @@ void LabelReduction::compute_label_mapping(
     }
 }
 
-equivalence_relation::EquivalenceRelation *LabelReduction::compute_combinable_equivalence_relation(
+EquivalenceRelation *LabelReduction::compute_combinable_equivalence_relation(
     int ts_index,
     const FactoredTransitionSystem &fts) const {
     /*
@@ -123,9 +123,8 @@ equivalence_relation::EquivalenceRelation *LabelReduction::compute_combinable_eq
             annotated_labels.push_back(make_pair(0, label_no));
         }
     }
-    equivalence_relation::EquivalenceRelation *relation =
-        equivalence_relation::EquivalenceRelation::from_annotated_elements<int>(
-            num_labels, annotated_labels);
+    EquivalenceRelation *relation =
+        EquivalenceRelation::from_annotated_elements<int>(num_labels, annotated_labels);
 
     for (int index : fts) {
         if (index != ts_index) {
@@ -159,7 +158,7 @@ bool LabelReduction::reduce(
         assert(fts.is_active(next_merge.second));
 
         bool reduced = false;
-        equivalence_relation::EquivalenceRelation *relation = compute_combinable_equivalence_relation(
+        EquivalenceRelation *relation = compute_combinable_equivalence_relation(
             next_merge.first,
             fts);
         vector<pair<int, vector<int>>> label_mapping;
@@ -212,7 +211,7 @@ bool LabelReduction::reduce(
 
         vector<pair<int, vector<int>>> label_mapping;
         if (fts.is_active(ts_index)) {
-            equivalence_relation::EquivalenceRelation *relation =
+            EquivalenceRelation *relation =
                 compute_combinable_equivalence_relation(ts_index,
                                                         fts);
             compute_label_mapping(relation, fts, label_mapping, verbosity);

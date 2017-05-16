@@ -1,13 +1,13 @@
 #ifndef EVALUATORS_PREF_EVALUATOR_H
 #define EVALUATORS_PREF_EVALUATOR_H
 
-#include "../evaluator.h"
+#include "../scalar_evaluator.h"
 
 #include <string>
 #include <vector>
 
 namespace pref_evaluator {
-class PrefEvaluator : public Evaluator {
+class PrefEvaluator : public ScalarEvaluator {
 public:
     PrefEvaluator();
     virtual ~PrefEvaluator() override;
