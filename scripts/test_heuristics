@@ -5,60 +5,9 @@ txt_red='\E[31;47m'
 txt_yellow='\E[33;44m'
 txt_default='\E[0m'
 
-echo -e $txt_yellow
-echo "--------------------------------------------------------------------------------"
-echo "If you want to save fast-downward directory within one run of terminal, use \
-this script with command:"
-echo ". $0"
-echo "--------------------------------------------------------------------------------"
-echo "Other option is to define environment variable FAST_DOWNWARD_DIR with command:"
-echo "/bin/echo 'export FAST_DOWNWARD_DIR=path to fast-downward install directory' >> ~/.profile && source ~/.profile"
-echo "--------------------------------------------------------------------------------"
-echo -e $txt_default
 
-
-if [[ "$#" -ge 2 ]]; then
-    echo "Error: Wrong number of parameters." 
-    echo "Usage: $0 [heuristics_name_to_test]"
-    exit 1
-elif   [[ "$#" -eq 1 ]];  then
-    new_heuristics_name="$1"
-else 
-    new_heuristics_name="my_heuristic"    
-fi 
-echo "Checking running times comparing to heuristics: $new_heuristics_name"
-
-
-if [[ !  -d $FAST_DOWNWARD_DIR ]]; then 
-    default_path=$(pwd)
-else
-    default_path=$FAST_DOWNWARD_DIR     
-fi   
-
-if [ "$USER" == "nathan" ]; then
-    default_path="/home/nathan/planner"
-fi
-
-echo -n "Enter fast-downward directory or hit enter for default ($default_path):"
-read FAST_DOWNWARD_DIR
-
-if [[  ! -d $FAST_DOWNWARD_DIR ]]; then
-    FAST_DOWNWARD_DIR=$default_path
-fi
-
-export FAST_DOWNWARD_DIR
-echo  -e "Running tests using: $txt_bold $FAST_DOWNWARD_DIR $txt_default" 
-
-echo -ne "Rebuild planner? (if hitting enter, will rebuild by default) $txt_bold (y/n): $txt_default"
-read answer
-
-case "$answer" in 
-    'n' )
-    ;;
-    *)
-     $FAST_DOWNWARD_DIR/build.py
-    ;;
-esac
+FAST_DOWNWARD_DIR="../fast-downward"
+PROBLEMS_DIR="../problems"
 
 declare -a domains=(knights_tour/knights_tour.pddl \
                      knights_tour/knights_tour.pddl
@@ -88,13 +37,13 @@ LMCUT_H="lmcut()"
 IPDB_H="ipdb()"
 PDB_H="pdb(patterns=[[1,2],[3]])"
 CPDB_H="cpdbs(systematic(pattern_max_size=2))"
-CPDB2_H="cpdbs(genetic())"
+CPDB_GEN_H="cpdbs(genetic())"
 
 time_limit=20
 
-declare -a searches=( "lazy(tiebreaking([$MY_H,$ADD_H,$CPDB2_H]),max_time=$time_limit)" \
+declare -a searches=( "lazy(tiebreaking([$MY_H,$ADD_H,$CPDB_GEN_H]),max_time=$time_limit)" \
 "lazy_greedy([$CPDB_H,$FF_H],max_time=$time_limit)" 
-"lazy_greedy([$CPDB2_H,$FF_H],max_time=$time_limit)"
+"lazy_greedy([$CPDB_GEN_H,$FF_H],max_time=$time_limit)"
 "lazy(tiebreaking([$LMCUT_H,$IPDB_H]),max_time=$time_limit)"
 )
 
@@ -109,8 +58,8 @@ for search in ${searches[@]}; do
         echo -e  " $txt_default domain: $txt_yellow $dom_name $txt_default problem: $txt_yellow $prob_name $txt_default "
         echo  -n '[ '
         $FAST_DOWNWARD_DIR/fast-downward.py \
-        $FAST_DOWNWARD_DIR/${domains[i]} \
-        $FAST_DOWNWARD_DIR/${problems[i]} \
+        $PROBLEMS_DIR/${domains[i]} \
+        $PROBLEMS_DIR/${problems[i]} \
                                           --search "$search" \
         | grep -e 'Total time:' -e 'Peak memory:' -e 'Time limit reached.' \
          -e 'Usage error occurred' -e 'Plan cost:'  \

@@ -516,12 +516,13 @@ fast_downward_plugin(
         potentials/util
     DEPENDS LP_SOLVER
 )
-fast_downward_plugin(
-    NAME MY_HEURISTIC
-    SOURCES
-    heuristics/my_heuristic
-    )
-fast_downward_add_plugin_sources(PLANNER_SOURCES)
+
+#fast_downward_plugin(
+#    NAME MY_HEURISTIC
+#    SOURCES
+#    heuristics/my_heuristic
+#    )
+#fast_downward_add_plugin_sources(PLANNER_SOURCES)
 
 # The order in PLANNER_SOURCES influences the order in which object
 # files are given to the linker, which can have a significant influence

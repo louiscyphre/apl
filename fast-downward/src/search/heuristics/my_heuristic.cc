@@ -2,8 +2,7 @@
 #include "../global_state.h"
 #include "../option_parser.h"
 #include "../plugin.h"
-#include "../task_tools.h"
-#include "../causal_graph.h"
+#include "../task_utils/causal_graph.h"
 
 #include <cstddef>
 #include <limits>
