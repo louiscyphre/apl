@@ -28,6 +28,13 @@
 *.out
 *.app
 
+# Python
+*.pyc
+
+# SAS
+sas_plan
+*.sas
+
 fast-downward/builds
 /VAL
 
