@@ -17,9 +17,6 @@
 *.mod
 *.smod
 
-# Compiled python
-*.pyc
-
 # Compiled Static libraries
 *.lai
 *.la
@@ -30,10 +27,6 @@
 *.exe
 *.out
 *.app
-
-# SAS output
-*.sas
-sas_plan
 
 fast-downward/builds
 /VAL
