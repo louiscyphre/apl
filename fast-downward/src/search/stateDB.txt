@@ -1,0 +1,1 @@
+initial state can be found in lazy.cc::initialize()
