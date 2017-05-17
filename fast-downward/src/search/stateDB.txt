@@ -1,1 +1,10 @@
 initial state can be found in lazy.cc::initialize()
+
+
+TODO:
+print pairs of <hash,g>
+change to <hash,plancost-g>
+write to file
+
+add data structure that initializes once from file
+my heuristic should return the plan

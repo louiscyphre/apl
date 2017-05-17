@@ -155,7 +155,7 @@ SearchStatus LazySearch::step() {
     // - current_g is the g value of the current state according to the cost_type
     // - current_real_g is the g value of the current state (using real costs)
 
-    cout<<current_state.get_hash()<<endl;
+    cout<< to_string(current_state.get_hash()) << " " << to_string(current_real_g) <<endl;
 /*    vector<int> vals666 = current_state.get_values();
     for(unsigned int i=0;i<vals666.size();++i)
         cout<<to_string(vals666[i]) << " ";
