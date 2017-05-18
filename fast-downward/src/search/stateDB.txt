@@ -1,5 +1,9 @@
 initial state can be found in lazy.cc::initialize()
 
+Changes:
+lazy_search - step
+global_state - hash
+
 
 TODO:
 print pairs of <hash,g>

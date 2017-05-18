@@ -3,11 +3,11 @@
 
 #include "int_packer.h"
 #include "state_id.h"
+#include "utils/hash.h"
 
 #include <cstddef>
 #include <iostream>
 #include <vector>
-#include <boost/functional/hash.hpp>
 
 class GlobalOperator;
 class StateRegistry;
@@ -50,11 +50,8 @@ public:
 
     /****/
     std::size_t get_hash() const{
-        std::size_t seed=0;
-        std::vector<int> values = get_values();
-        for( int n : values )
-            boost::hash_combine(seed,n);
-        return seed;
+        std::hash<std::vector<int>> hasher;
+        return hasher( get_values() );
     }
     /****/
 

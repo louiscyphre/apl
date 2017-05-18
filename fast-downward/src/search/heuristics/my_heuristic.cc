@@ -23,10 +23,15 @@ MyHeuristic::MyHeuristic(const Options &opts)
 MyHeuristic::~MyHeuristic() {
 }
 
+
+static bool b=false;
 int MyHeuristic::compute_heuristic(const GlobalState &global_state) {
     State state = convert_global_state(global_state);
-// Prints every time that the search engine called for heuristic.
-    cout << "compute_heuristic called!" << endl;
+    if( b==false ){
+        b=true;
+        cout<< "description: ";
+        cout<< get_description() <<endl;
+    }
     if (is_goal_state(task_proxy, state))
         return 0;
     return 1;

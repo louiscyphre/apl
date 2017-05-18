@@ -6,6 +6,7 @@
 #include "../option_parser.h"
 #include "../plugin.h"
 #include "../successor_generator.h"
+#include "../heuristic.h"
 
 #include "../algorithms/ordered_set.h"
 #include "../open_lists/open_list_factory.h"
@@ -153,14 +154,10 @@ SearchStatus LazySearch::step() {
     // - current_predecessor is a permanent pointer to the predecessor of that state.
     // - current_operator is the operator which leads to current_state from predecessor.
     // - current_g is the g value of the current state according to the cost_type
-    // - current_real_g is the g value of the current state (using real costs)
-
-    cout<< to_string(current_state.get_hash()) << " " << to_string(current_real_g) <<endl;
-/*    vector<int> vals666 = current_state.get_values();
-    for(unsigned int i=0;i<vals666.size();++i)
-        cout<<to_string(vals666[i]) << " ";
-    cout<<", g="<<to_string(current_real_g)<<"]"<<endl;
-  */  
+    // - current_real_g is the g value of the current state (using real costs)_g) <<endl;
+    
+    cout << current_state.get_hash() << " " << current_real_g <<endl;
+    
     SearchNode node = search_space.get_node(current_state);
     bool reopen = reopen_closed_nodes && !node.is_new() &&
                   !node.is_dead_end() && (current_g < node.get_g());
