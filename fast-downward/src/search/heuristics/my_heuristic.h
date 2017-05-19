@@ -2,10 +2,25 @@
 #define HEURISTICS_MY_HEURISTIC_H
 
 #include "../heuristic.h"
+#include <unordered_map>
+#include <string>
+#include "../global_state.h"
+
+
+
 
 namespace my_heuristic {
+
+
+class StateDB{
+    std::unordered_map<long,int> database;
+    public:
+        StateDB( const std::string &dbfile );
+        int get_h( const GlobalState &state );
+};
+
 class MyHeuristic : public Heuristic {
-    
+   
     StateDB db;
 
 	int cantor_pairing(int x, int y) const {

@@ -7,14 +7,42 @@
 #include <cstddef>
 #include <limits>
 #include <utility>
+#include <fstream>
 
 using namespace std;
 
+
+
+
 // my_heuristic
 
+#define DBFILE "../scripts/db.ssv"
+
+
 namespace my_heuristic {
+
+StateDB::StateDB( const std::string &dbfile ){
+    std::fstream dbf;
+    std::string key,value;
+    dbf.open(dbfile,ios::in);
+    while( dbf >> key >> value )
+        database[ stoul(key) ] = stoi(value);
+    std::cout<< "StateDB initialized!" << std::endl;
+}
+
+int StateDB::get_h( const GlobalState &state ){
+    if( int h = database.count( state.get_hash() ) ){
+        if( h < 0 )
+            return 666;
+        return h;
+    }
+    else
+        return 0;
+}
+
+
 MyHeuristic::MyHeuristic(const Options &opts)
-    : Heuristic(opts) {
+        :Heuristic(opts),db( DBFILE ) {
     cout << "Initializing my heuristic..." << endl;
     pair_tz(opts.get<int>("tz_first"), opts.get<int>("tz_second"));
 
@@ -24,18 +52,22 @@ MyHeuristic::~MyHeuristic() {
 }
 
 
-static bool b=false;
+/**********************************/
+
 int MyHeuristic::compute_heuristic(const GlobalState &global_state) {
     State state = convert_global_state(global_state);
-    if( b==false ){
-        b=true;
-        cout<< "description: ";
-        cout<< get_description() <<endl;
+    
+    if( int h = db.get_h( global_state ) ){
+        std::cout<< "found known state" <<std::endl;
+        return h;
     }
+
     if (is_goal_state(task_proxy, state))
         return 0;
     return 1;
 }
+/************************************/
+
 
 static Heuristic *_parse(OptionParser &parser) {
     Heuristic::add_options_to_parser(parser);

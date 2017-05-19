@@ -31,7 +31,7 @@ LMCUT_H="lmcut()"
 PDB_H="pdb(patterns=[[1,2],[3]])"
 CPDB_H="cpdbs(genetic(pdb_max_size=50000, num_collections=5, num_episodes=10, mutation_probability=0.01, disjoint=false, random_seed=-1))"
 #systematic(pattern_max_size=3, only_interesting_patterns=true)
-../fast-downward/fast-downward.py $PUZZLE_DOM $PUZZLE_PROB2 --search "lazy(tiebreaking([$MY_H]),max_time=20)"
+../fast-downward/fast-downward.py $PUZZLE_DOM $PUZZLE_PROB1 --search "lazy(tiebreaking([$MY_H,$ADD_H]),max_time=20)"
 
 #../fast-downward/fast-downward.py $PUZZLE_DOM $PUZZLE_PROB1 --search "lazy_wastar([$IPDB_H,$FF_H,$GC_H],w=2,max_time=10)"
 #../fast-downward/fast-downward.py $PUZZLE_DOM $PUZZLE_PROB2 --search "astar($CPDB_H,max_time=60)"
