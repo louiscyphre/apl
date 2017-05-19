@@ -41,6 +41,13 @@ sas_plan
 # Space Seperated Value
 *.ssv
 
+# C++ try files
+try.cc
+try
+
+## benchmarks
+problems/downward-benchmarks
+
 fast-downward/builds
 /VAL
 
