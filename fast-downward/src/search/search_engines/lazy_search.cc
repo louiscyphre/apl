@@ -155,9 +155,6 @@ SearchStatus LazySearch::step() {
     // - current_operator is the operator which leads to current_state from predecessor.
     // - current_g is the g value of the current state according to the cost_type
     // - current_real_g is the g value of the current state (using real costs)_g) <<endl;
-    
-//    cout << current_state.get_hash() << " " << current_real_g <<endl;
-    
     SearchNode node = search_space.get_node(current_state);
     bool reopen = reopen_closed_nodes && !node.is_new() &&
                   !node.is_dead_end() && (current_g < node.get_g());
@@ -171,6 +168,7 @@ SearchStatus LazySearch::step() {
         }
         GlobalState parent_state = state_registry.lookup_state(dummy_id);
         SearchNode parent_node = search_space.get_node(parent_state);
+        cout << parent_state.get_hash() << " " << current_g <<endl;
 
         if (current_operator) {
             for (Heuristic *heuristic : heuristics)

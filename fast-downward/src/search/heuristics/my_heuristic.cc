@@ -25,8 +25,13 @@ StateDB::StateDB( const std::string &dbfile ){
     std::fstream dbf;
     std::string key,value;
     dbf.open(dbfile,ios::in);
-    while( dbf >> key >> value )
-        database[ stoul(key) ] = stoi(value);
+    while( dbf >> key >> value ){
+        long lkey = stoul(key);
+        int ival = stoi(value);
+        if( !database.count( lkey ) || database[lkey] > ival )
+            database[ stoul(key) ] = stoi(value);
+
+    }
     std::cout<< "StateDB initialized!" << std::endl;
 }
 
@@ -36,7 +41,7 @@ int StateDB::get_h( const GlobalState &state ){
     if( database.count( statehash = state.get_hash() ) ){
         h = database[statehash];
         if( h < 0 )
-            return 666;
+            return 1000;
         return h;
     }
     else
