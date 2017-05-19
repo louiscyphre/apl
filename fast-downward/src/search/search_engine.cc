@@ -82,6 +82,7 @@ bool SearchEngine::check_goal_and_set_plan(const GlobalState &state) {
         cout << "Solution found!" << endl;
         Plan plan;
         search_space.trace_path(state, plan);
+// This is the line that prints plan
         set_plan(plan);
         return true;
     }

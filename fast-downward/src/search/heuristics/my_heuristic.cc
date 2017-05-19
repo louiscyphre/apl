@@ -45,7 +45,7 @@ int StateDB::get_h( const GlobalState &state ){
         return h;
     }
     else
-        return 0;
+        return 10000;
 }
 
 
