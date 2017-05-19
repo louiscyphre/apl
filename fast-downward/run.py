@@ -44,7 +44,7 @@ class Output:
         
     def run_and_save_hashes(self, domain_file, problem_file, search_method):
         #self.full_output = self.run_plan_script(domain_file, problem_file, search_method)
-        #self.hashes  re.findall(r"(\d+)\s(\d+)",self.full_output )
+        #self.hashes  = re.findall(r"(\d+)[ \t\r\f\v](\d+)",self.full_output)
         
         with open("output.out","r") as output:
            string = output.read()
