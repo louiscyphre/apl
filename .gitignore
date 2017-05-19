@@ -38,6 +38,8 @@ sas_plan
 # VIM
 *.swp
 
+# Space Seperated Value
+*.ssv
 
 fast-downward/builds
 /VAL
