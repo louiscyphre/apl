@@ -31,7 +31,10 @@ StateDB::StateDB( const std::string &dbfile ){
 }
 
 int StateDB::get_h( const GlobalState &state ){
-    if( int h = database.count( state.get_hash() ) ){
+    long statehash=0;
+    int h=0;
+    if( database.count( statehash = state.get_hash() ) ){
+        h = database[statehash];
         if( h < 0 )
             return 666;
         return h;
@@ -58,7 +61,7 @@ int MyHeuristic::compute_heuristic(const GlobalState &global_state) {
     State state = convert_global_state(global_state);
     
     if( int h = db.get_h( global_state ) ){
-        std::cout<< "found known state" <<std::endl;
+        std::cout<< "found known state. h = " << to_string(h) << std::endl;
         return h;
     }
 
