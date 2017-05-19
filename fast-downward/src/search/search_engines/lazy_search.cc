@@ -168,7 +168,6 @@ SearchStatus LazySearch::step() {
         }
         GlobalState parent_state = state_registry.lookup_state(dummy_id);
         SearchNode parent_node = search_space.get_node(parent_state);
-        cout << parent_state.get_hash() << " " << current_g <<endl;
 
         if (current_operator) {
             for (Heuristic *heuristic : heuristics)
