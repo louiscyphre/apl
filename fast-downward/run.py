@@ -15,6 +15,7 @@ SEARCH_METHOD = sys.argv[3]
 class Output:
     summary = ""
     full_output = ""
+    hashes = []
     
     def run_plan_script(self,domain_file, problem_file, search_method):
         sys.stdout.flush()
@@ -41,14 +42,19 @@ class Output:
         print self.summary
         print self.full_output
         
-    def run_and_get_hashes(self, domain_file, problem_file, search_method):
-        self.full_output = self.run_plan_script(domain_file, problem_file, search_method)
-
+    def run_and_save_hashes(self, domain_file, problem_file, search_method):
+        #self.full_output = self.run_plan_script(domain_file, problem_file, search_method)
+        #self.hashes  re.findall(r"(\d+)\s(\d+)",self.full_output )
+        
+        with open("output.out","r") as output:
+           string = output.read()
+           hashes_str = re.findall(r"(\d+)[ \t\r\f\v](\d+)",string)
+           self.hashes = [map(int, i) for i in hashes_str]
+           #print self.hashes
             
 out = Output()   
      
-out.call(DOMAIN_FILE, PROBLEM_FILE, SEARCH_METHOD)
-out.run_and_save_summary(DOMAIN_FILE, PROBLEM_FILE, SEARCH_METHOD)
-out.print_summary()
+#out.call(DOMAIN_FILE, PROBLEM_FILE, SEARCH_METHOD)
+out.run_and_save_hashes(DOMAIN_FILE, PROBLEM_FILE, SEARCH_METHOD)
 
 
