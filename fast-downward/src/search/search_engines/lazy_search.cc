@@ -63,6 +63,9 @@ void LazySearch::initialize() {
     heuristics.assign(hset.begin(), hset.end());
     assert(!heuristics.empty());
     const GlobalState &initial_state = state_registry.get_initial_state();
+//
+    cout<<"initial state hash = " + to_string(initial_state.get_hash()) <<endl;
+//
     for (Heuristic *heuristic : heuristics) {
         heuristic->notify_initial_state(initial_state);
     }

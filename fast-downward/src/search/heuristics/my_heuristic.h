@@ -23,6 +23,8 @@ class MyHeuristic : public Heuristic {
    
     StateDB db;
 
+    int GCsquare( const GlobalState &global_state );
+
 	int cantor_pairing(int x, int y) const {
 		return (x + y + 1) * (x + y) / 2 + y;
 	}

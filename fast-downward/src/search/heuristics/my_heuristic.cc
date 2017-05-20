@@ -40,12 +40,10 @@ int StateDB::get_h( const GlobalState &state ){
     int h=0;
     if( database.count( statehash = state.get_hash() ) ){
         h = database[statehash];
-        if( h < 0 )
-            return 1000;
         return h;
     }
     else
-        return 10000;
+        return 0;
 }
 
 
@@ -62,18 +60,28 @@ MyHeuristic::~MyHeuristic() {
 
 /**********************************/
 
+int MyHeuristic::GCsquare( const GlobalState &global_state ){
+    const State state = convert_global_state(global_state);
+    int unsatisfied_goal_count = 0;
+
+    for (FactProxy goal : task_proxy.get_goals()) {
+        const VariableProxy var = goal.get_variable();
+        if (state[var] != goal) {
+            ++unsatisfied_goal_count;
+        }
+    }
+    return unsatisfied_goal_count*unsatisfied_goal_count;
+}
+
+
+
+
 int MyHeuristic::compute_heuristic(const GlobalState &global_state) {
     State state = convert_global_state(global_state);
-    
-    if( int h = db.get_h( global_state ) ){
-        std::cout<< "found known state. h = " << to_string(h) << std::endl;
-        return h;
-    }
-
-    if (is_goal_state(task_proxy, state))
-        return 0;
-    return 1;
+    int h2 = db.get_h( global_state );
+    return h2;
 }
+
 /************************************/
 
 
