@@ -12,10 +12,10 @@ KNIGHTS_DOM=../problems/knights_tour/knights_tour.pddl
 KNIGHTS_PROB1=../problems/knights_tour/knights_tour5.pddl
 KNIGHTS_PROB2=../problems/knights_tour/knights_tour8.pddl
 
-HIKING_DOM=../problems/TESTING/Hiking/domain.pddl
-HIKING_PROB1=../problems/TESTING/Hiking/ptesting-3-4-6.pddl
-HIKING_PROB2=../problems/TESTING/Hiking/ptesting-3-4-7.pddl
-HIKING_PROB3=../problems/TESTING/Hiking/ptesting-3-4-8.pddl
+HIKING_DOM=../problems/Hiking/domain.pddl
+HIKING_PROB1=../problems/Hiking/ptesting-3-4-6.pddl
+HIKING_PROB2=../problems/Hiking/ptesting-3-4-7.pddl
+HIKING_PROB3=../problems/Hiking/ptesting-3-4-8.pddl
 
 ## Heuristics
 
@@ -29,11 +29,13 @@ BLIND_H="blind()"
 HM_H="hm()"
 LMCUT_H="lmcut()"
 PDB_H="pdb(patterns=[[1,2],[3]])"
-CPDB_H="cpdbs(genetic(pdb_max_size=50000, num_collections=5, num_episodes=10, mutation_probability=0.01, disjoint=false, random_seed=-1))"
+LMCOUNT_H="lmcount(lm_hm(m=1))"
+CPDB_H="cpdbs(manual([[13,14]]))"
+#manual([[1],[2],[15,14]])
+#[1],[2],[3],[4],[5],[6],[7]
+#[15],[14],[13],[12],[11],[10],[9],[8,7]
 #systematic(pattern_max_size=3, only_interesting_patterns=true)
-../fast-downward/fast-downward.py $PUZZLE_DOM $PUZZLE_PROB2 --search "lazy(tiebreaking([$MY_H]),max_time=10)"
-
-#../fast-downward/fast-downward.py $PUZZLE_DOM $PUZZLE_PROB1 --search "lazy_wastar([$IPDB_H,$FF_H,$GC_H],w=2,max_time=10)"
-#../fast-downward/fast-downward.py $PUZZLE_DOM $PUZZLE_PROB2 --search "astar($CPDB_H,max_time=60)"
-#../fast-downward/fast-downward.py $PUZZLE_DOM $PUZZLE_PROB1 --search "lazy_greedy($ADD_H,max_time=5)"
-#../fast-downward/fast-downward.py $KNIGHTS_DOM $KNIGHTS_PROB2 --search "lazy(tiebreaking([$FF_H,$GC_H,$PDB_H]),max_time=5)"
+../fast-downward/fast-downward.py $PUZZLE_DOM $PUZZLE_PROB1 --search "lazy_wastar([$CPDB_H,$FF_H],w=2,reopen_closed=true,max_time=20)"
+#../fast-downward/fast-downward.py $HIKING_DOM $HIKING_PROB2 --search "lazy(tiebreaking([$FF_H,$MY_H]),max_time=20)"
+#../fast-downward/fast-downward.py $PUZZLE_DOM $PUZZLE_PROB1 --search "lazy(alt([single($ADD_H),single($FF_H)]),reopen_closed=true,max_time=20)"
+#../fast-downward/fast-downward.py $PUZZLE_DOM $PUZZLE_PROB1 --search "lazy_wastar([$MY_H],w=2,max_time=20)"

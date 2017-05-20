@@ -186,7 +186,7 @@ CausalGraph::CausalGraph(const TaskProxy &task_proxy) {
     cg_builder.pred_builder.compute_relation(predecessors);
     cg_builder.succ_builder.compute_relation(successors);
 
-    // dump(task_proxy);
+    dump(task_proxy);
     cout << "done! [t=" << timer << "]" << endl;
 }
 

@@ -2,9 +2,12 @@
 #define HEURISTICS_MY_HEURISTIC_H
 
 #include "../heuristic.h"
+#include "../causal_graph.h"
 
 namespace my_heuristic {
 class MyHeuristic : public Heuristic {
+    
+    CausalGraph cg;
 
 	int cantor_pairing(int x, int y) const {
 		return (x + y + 1) * (x + y) / 2 + y;

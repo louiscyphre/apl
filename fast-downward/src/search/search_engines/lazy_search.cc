@@ -49,7 +49,7 @@ void LazySearch::set_pref_operator_heuristics(
 
 void LazySearch::initialize() {
     cout << "Conducting lazy best first search, (real) bound = " << bound << endl;
-
+    
     assert(open_list);
     set<Heuristic *> hset;
     open_list->get_involved_heuristics(hset);

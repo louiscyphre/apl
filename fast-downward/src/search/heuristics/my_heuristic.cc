@@ -14,8 +14,9 @@ using namespace std;
 
 namespace my_heuristic {
 MyHeuristic::MyHeuristic(const Options &opts)
-    : Heuristic(opts) {
+    : Heuristic(opts), cg(task_proxy) {
     cout << "Initializing my heuristic..." << endl;
+    cout << "causal graph: " <<endl;
     pair_tz(opts.get<int>("tz_first"), opts.get<int>("tz_second"));
 
 }
@@ -25,8 +26,6 @@ MyHeuristic::~MyHeuristic() {
 
 int MyHeuristic::compute_heuristic(const GlobalState &global_state) {
     State state = convert_global_state(global_state);
-// Prints every time that the search engine called for heuristic.
-    cout << "compute_heuristic called!" << endl;
     if (is_goal_state(task_proxy, state))
         return 0;
     return 1;
