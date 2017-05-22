@@ -16,14 +16,14 @@ class StateDB{
     std::unordered_map<long,int> database;
     public:
         StateDB( const std::string &dbfile );
-        int get_h( const GlobalState &state );
+        int get_h_from_db( const GlobalState &state );
 };
 
 class MyHeuristic : public Heuristic {
    
     StateDB db;
 
-    int GCsquare( const GlobalState &global_state );
+    int gcsquare( const GlobalState &global_state );
 
 	int cantor_pairing(int x, int y) const {
 		return (x + y + 1) * (x + y) / 2 + y;

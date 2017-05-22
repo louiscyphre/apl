@@ -8,7 +8,6 @@
 #include <limits>
 #include <utility>
 #include <fstream>
-
 using namespace std;
 
 
@@ -28,14 +27,13 @@ StateDB::StateDB( const std::string &dbfile ){
     while( dbf >> key >> value ){
         long lkey = stoul(key);
         int ival = stoi(value);
-        if( !database.count( lkey ) || database[lkey] <= ival )
+        if( !database.count( lkey ) || database[lkey] > ival )
             database[ stoul(key) ] = stoi(value);
-
     }
     std::cout<< "StateDB initialized!" << std::endl;
 }
 
-int StateDB::get_h( const GlobalState &state ){
+int StateDB::get_h_from_db( const GlobalState &state ){
     long statehash=0;
     int h=0;
     if( database.count( statehash = state.get_hash() ) ){
@@ -60,7 +58,7 @@ MyHeuristic::~MyHeuristic() {
 
 /**********************************/
 
-int MyHeuristic::GCsquare( const GlobalState &global_state ){
+int MyHeuristic::gcsquare( const GlobalState &global_state ){
     const State state = convert_global_state(global_state);
     int unsatisfied_goal_count = 0;
 
@@ -78,8 +76,10 @@ int MyHeuristic::GCsquare( const GlobalState &global_state ){
 
 int MyHeuristic::compute_heuristic(const GlobalState &global_state) {
     State state = convert_global_state(global_state);
-    int h2 = db.get_h( global_state );
-    return h2;
+    int h = db.get_h_from_db( global_state );
+    if ( !h )
+        return gcsquare( global_state );
+    return h;
 }
 
 /************************************/

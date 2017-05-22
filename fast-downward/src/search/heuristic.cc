@@ -85,7 +85,9 @@ EvaluationResult Heuristic::compute_result(EvaluationContext &eval_context) {
         }
         result.set_count_evaluation(true);
     }
-
+//////
+    cout<< to_string( state.get_hash() ) + " " + to_string( heuristic ) <<endl;
+/////
     assert(heuristic == DEAD_END || heuristic >= 0);
 
     if (heuristic == DEAD_END) {
