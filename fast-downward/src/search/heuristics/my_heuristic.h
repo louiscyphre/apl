@@ -12,16 +12,17 @@
 namespace my_heuristic {
 
 
-class StateDB{
+class HeuristicsDB{
     std::unordered_map<long,int> database;
+    std::unordered_map<int,int> counter;
     public:
-        StateDB( const std::string &dbfile );
+        HeuristicsDB( const std::string &dbfile );
         int get_h_from_db( const GlobalState &state );
 };
 
 class MyHeuristic : public Heuristic {
    
-    StateDB db;
+    HeuristicsDB db;
 
     int gcsquare( const GlobalState &global_state );
 

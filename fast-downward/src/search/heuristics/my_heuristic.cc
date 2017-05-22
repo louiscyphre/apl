@@ -20,28 +20,38 @@ using namespace std;
 
 namespace my_heuristic {
 
-StateDB::StateDB( const std::string &dbfile ){
+HeuristicsDB::HeuristicsDB( const std::string &dbfile ){
     std::fstream dbf;
     std::string key,value;
     dbf.open(dbfile,ios::in);
     while( dbf >> key >> value ){
-        long lkey = stoul(key);
-        int ival = stoi(value);
-        if( !database.count( lkey ) || database[lkey] < ival )
-            database[ stoul(key) ] = stoi(value);
+        long state_h = stoul(key);
+        int heu_value = stoi(value);
+        if( !counter.count( state_h ) ){
+            counter[ state_h ] = 1;
+            database[ state_h ] = heu_value;
+        }
+        else{
+            counter[ state_h ] += 1;
+            database[ state_h ] += heu_value;
+        }
     }
-    std::cout<< "StateDB initialized!" << std::endl;
+    for( auto it : database ){
+        database[ it.first ] = database[ it.first ] / counter[ it.first ];
+    }
+    std::cout<< "HeuristicsDB initialized!" << std::endl;
 }
 
-int StateDB::get_h_from_db( const GlobalState &state ){
-    long statehash=0;
+int HeuristicsDB::get_h_from_db( const GlobalState &state ){
+    long state_h=0;
     int h=0;
-    if( database.count( statehash = state.get_hash() ) ){
-        h = database[statehash];
+    if( database.count( state_h = state.get_hash() ) ){
+        h = database[state_h];
         return h;
     }
     else
-        return 0;
+        return 0; 
+            //std::numeric_limits<int>::max(); 
 }
 
 
@@ -77,7 +87,7 @@ int MyHeuristic::gcsquare( const GlobalState &global_state ){
 int MyHeuristic::compute_heuristic(const GlobalState &global_state) {
     State state = convert_global_state(global_state);
     int h = db.get_h_from_db( global_state );
-    if ( !h )
+    if( !h )
         return gcsquare( global_state );
     return h;
 }
