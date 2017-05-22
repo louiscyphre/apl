@@ -131,9 +131,6 @@ void SearchSpace::trace_path(const GlobalState &goal_state,
     assert(path.empty());
     for (;;) {
         const SearchNodeInfo &info = search_node_infos[current_state];
-        ///////////////////////////
-        std::cout << to_string( current_state.get_hash() ) + " " + to_string( info.g ) <<endl;
-        //////////////////////////
         if (info.creating_operator == -1) {
             assert(info.parent_state_id == StateID::no_state);
             break;
