@@ -28,7 +28,7 @@ StateDB::StateDB( const std::string &dbfile ){
     while( dbf >> key >> value ){
         long lkey = stoul(key);
         int ival = stoi(value);
-        if( !database.count( lkey ) || database[lkey] > ival )
+        if( !database.count( lkey ) || database[lkey] <= ival )
             database[ stoul(key) ] = stoi(value);
 
     }
