@@ -37,13 +37,16 @@ PDB_H="pdb(patterns=[[1,2],[3]])"
 LMCOUNT_H="lmcount(lm_hm(m=2))"
 MAX_H="hmax()"
 #systematic(pattern_max_size=3, only_interesting_patterns=true)
-../fast-downward/fast-downward.py $PUZZLE_DOM $PUZZLE_PROB1 --search "lazy(tiebreaking([$LMCOUNT_A_H, $BLIND_H]),reopen_closed=true,max_time=10)" >out.out 2>&1
+../fast-downward/fast-downward.py $PUZZLE_DOM $PUZZLE_PROB1 --search "lazy(tiebreaking([$LMCOUNT_A_H, $BLIND_H]),reopen_closed=true,max_time=20)" >out.out 2>&1
 ./cat_db.sh
 ../fast-downward/fast-downward.py $PUZZLE_DOM $PUZZLE_PROB1 --search "lazy(tiebreaking([$MERGE_H, $IPDB_H]),reopen_closed=true,max_time=10)"  >>out.out 2>&1
 ./cat_db.sh
 ../fast-downward/fast-downward.py $PUZZLE_DOM $PUZZLE_PROB1 --search "lazy(tiebreaking([$CPDB_H, $LMCUT_H]),reopen_closed=true,max_time=10)"  >>out.out 2>&1
+cat out.out | uniq > afb674ae56bc
+cat ./afb674ae56bc > out.out
+rm -f ./afb674ae56bc
 ./cat_db.sh
-../fast-downward/fast-downward.py $PUZZLE_DOM $PUZZLE_PROB1 --search "lazy_wastar([$MY_H],w=2,max_time=20)"
+../fast-downward/fast-downward.py $PUZZLE_DOM $PUZZLE_PROB1 --search "lazy_wastar([$MY_H, $FF_H],w=2,max_time=20)"
 #../fast-downward/fast-downward.py $PUZZLE_DOM $PUZZLE_PROB1 --search "lazy(tiebreaking([$MY_H]),reopen_closed=true,max_time=20)"
 #../fast-downward/fast-downward.py $PUZZLE_DOM $PUZZLE_PROB1 --search "lazy(alt([single($MY_H),single($FF_H)]),reopen_closed=true,max_time=20)"
 #../fast-downward/fast-downward.py $PUZZLE_DOM $PUZZLE_PROB1 --search "lazy_wastar([$MY_H, $FF_H],w=2,max_time=20)"

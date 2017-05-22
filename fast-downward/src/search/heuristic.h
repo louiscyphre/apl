@@ -56,7 +56,10 @@ protected:
     */
     PerStateInformation<HEntry> heuristic_cache;
     bool cache_h_values;
-
+    bool reuse_h_cache;
+    const std::string default_db_file = "../scripts/db.ssv";
+    
+    void init_h_cache(const std::string &dbfile);
     // Hold a reference to the task implementation and pass it to objects that need it.
     const std::shared_ptr<AbstractTask> task;
     // Use task_proxy to access task information.
