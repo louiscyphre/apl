@@ -15,6 +15,7 @@ declare -a domains=(knights_tour/knights_tour.pddl \
                      Hiking/hiking.pddl
                      Hiking/hiking.pddl
                      Hiking/hiking.pddl
+
                      )
                                        
 declare -a problems=(knights_tour/knights_tour5.pddl \
@@ -24,19 +25,22 @@ declare -a problems=(knights_tour/knights_tour5.pddl \
                      Hiking/ptesting-3-4-6.pddl
                      Hiking/ptesting-3-4-7.pddl
                      Hiking/ptesting-3-4-8.pddl
-                     )
 
+                     )
 MAX_H="hmax()"
 FF_H="ff()"
 GC_H="goalcount()"
+IPDB_H="ipdb()"
 ADD_H="add()"
-MY_H="my_heuristic(tz_first=203304688,tz_second=320934904)"
+MY_H="my_heuristic(tz_first = 203304688, tz_second = 320934904 )"
+BLIND_H="blind()"
 HM_H="hm()"
 LMCUT_H="lmcut()"
-IPDB_H="ipdb()"
 PDB_H="pdb(patterns=[[1,2],[3]])"
-CPDB_H="cpdbs(systematic(pattern_max_size=2))"
-CPDB_GEN_H="cpdbs(genetic())"
+LMCOUNT_H="lmcount(lm_hm(m=1))"
+CPDB_H="cpdbs(systematic(pattern_max_size=1, only_interesting_patterns=true))"
+#systematic(pattern_max_size=3, only_interesting_patterns=true)
+#genetic(pdb_max_size=50000, num_collections=5, num_episodes=10, mutation_probability=0.01, disjoint=false, random_seed=-1)
 
 time_limit=20
 
@@ -46,6 +50,7 @@ declare -a searches=( "lazy(tiebreaking([$MY_H,$ADD_H,$CPDB_GEN_H]),max_time=$ti
 "lazy(tiebreaking([$LMCUT_H,$IPDB_H]),max_time=$time_limit)"
 )
 
+"lazy(alt([tiebreaking([$LMCOUNT_H,$FF_H]),tiebreaking([$CPDB_H,sum($GC_H,g())])]),max_time=120)"
 
 for search in ${searches[@]}; do
     echo -e "\n\n\nRunning $txt_red $search :\n"
