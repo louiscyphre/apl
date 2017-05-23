@@ -13,16 +13,13 @@
 #include <cstdlib>
 #include <limits>
 
-#define DBFILE "../scripts/db.ssv"
-
-using namespace std;
 
 Heuristic::Heuristic(const Options &opts)
     : description(opts.get_unparsed_config()),
       heuristic_cache(HEntry(NO_VALUE, true)), //TODO: is true really a good idea here?
       cache_h_values(opts.get<bool>("cache_estimates")),
       reuse_h_cache(opts.get<bool>("reuse_cache")),
-      cache_h_db_file(opts.get<bool>("cache_db_file")),
+      init_h_db_called(false),
       task(opts.get<shared_ptr<AbstractTask>>("transform")),
       task_proxy(*task) {
 }
@@ -30,19 +27,25 @@ Heuristic::Heuristic(const Options &opts)
 Heuristic::~Heuristic() {
 }
 
-bool Heuristic::init_h_cache(const std::string &path) {
+HeuristicsDB::HeuristicsDB(const options::Options &options)
+    :  cache_db_file_path(opts.get<bool>("cache_db_file_path")) {
+}
+
+void HeuristicsDB::init() throw DBException {
     std::fstream database_file;
     std::string key, value;
-    database_file.open(path, ios::in);
-    while( database_file>> key >> value ){
-        long state_h = stoul(key);
-        int heu_value = stoi(value);
-        if( !counter.count( state_h ) ){
+    database_file.open(cache_db_file_path, std::ios::in);
+    
+    if (!database_file.is_open()) {
+        throw DBException();
+    }
+    while( database_file >> key >> value ) {
+        long state_h = std::stoul(key);
+        int heu_value = std::stoi(value);
+        if ( !counter.count( state_h ) ){
             counter[ state_h ] = 1;
-            //heuristic_cache[state] = HEntry(heu_value, false);//TODO what to do with statew context
             database[ state_h ] = heu_value;
-        }
-        else{
+        } else {
             counter[ state_h ] += 1;
             database[ state_h ] += heu_value;
         }
@@ -52,6 +55,20 @@ bool Heuristic::init_h_cache(const std::string &path) {
     }
     std::cout<< "HeuristicsDB initialized!" << std::endl;
 }
+
+
+void Heuristic::init_h_db()  {
+    try {
+        HeuristicsDB::init();
+    } catch (DBException &e) {
+         std::err << "Critical error: HeuristicsDB exception caught! Database file not found."
+                      << std::endl;
+         reuse_h_cache = false;        
+    } 
+    init_h_db_called = true;
+}
+
+
 void Heuristic::set_preferred(const GlobalOperator *op) {
     preferred_operators.insert(op);
 }
@@ -82,8 +99,9 @@ void Heuristic::add_options_to_parser(OptionParser &parser) {
     parser.add_option<bool>("reuse_cache", "reuse heuristic cache. This only relevant"
                                                     " for rerunning planner on the same problem more than"
                                                     " once in a row.", "true");
-    parser.add_option<const std::string>("cache_db_file", "path to file with chache"
-                                                                         "estimates per  state", default_db_file);
+    parser.add_option<const std::string>("cache_db_file_path", "path to file with cache"
+                                                                         "estimates per  state", 
+                                                                         HeuristicDB::default_db_file);
 }
 
 // This solution to get default values seems nonoptimal.
@@ -91,9 +109,9 @@ void Heuristic::add_options_to_parser(OptionParser &parser) {
 Options Heuristic::default_options() {
     Options opts = Options();
     opts.set<shared_ptr<AbstractTask>>("transform", g_root_task());
-    opts.set<bool>("cache_estimates", true);
-    opts.set<bool>("reuse_h_cache", false);
-    opts.set<const std::string>("cache_db_file", default_db_file);
+    opts.set<bool>("cache_estimates", false);
+    opts.set<bool>("reuse_cache", false);
+    opts.set<const std::string>("cache_db_file_path", HeuristicDB::default_db_file);
     return opts;
 }
 
@@ -118,6 +136,9 @@ EvaluationResult Heuristic::compute_result(EvaluationContext &eval_context) {
         }
         result.set_count_evaluation(true);
     }
+    //TODO the code with heuristics db will be probably here, or might be added in
+    //              previous if
+    
 //////
     //cout<< to_string( state.get_hash() ) + " " + to_string( heuristic ) <<endl;
 /////

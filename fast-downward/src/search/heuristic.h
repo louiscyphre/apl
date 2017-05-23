@@ -9,6 +9,7 @@
 
 #include <memory>
 #include <vector>
+#include <exception>
 
 class GlobalOperator;
 class GlobalState;
@@ -18,6 +19,7 @@ namespace options {
 class OptionParser;
 class Options;
 }
+
 
 class Heuristic : public ScalarEvaluator {
     struct HEntry {
@@ -32,6 +34,24 @@ class Heuristic : public ScalarEvaluator {
     };
     static_assert(sizeof(HEntry) == 4, "HEntry has unexpected size.");
 
+
+    class HeuristicsDB {
+    
+        std::unordered_map<long, int> database;
+        std::unordered_map<long, int> counter;
+        
+        public:
+            HeuristicsDB(const options::Options &options);
+            int get_h_from_db(const GlobalState &state);
+            void init() throw DBException;
+            class DBException :public Exception {};
+            
+            const std::string default_db_file = "../scripts/db.ssv";
+            bool initialized_successfully;
+    };
+   
+    HeuristicsDB db;
+    
     std::string description;
 
     /*
@@ -57,9 +77,9 @@ protected:
     PerStateInformation<HEntry> heuristic_cache;
     bool cache_h_values;
     bool reuse_h_cache;
-    const std::string default_db_file = "../scripts/db.ssv";
+    bool init_h_db_called;
+    void init_h_db();
     
-    void init_h_cache(const std::string &dbfile);
     // Hold a reference to the task implementation and pass it to objects that need it.
     const std::shared_ptr<AbstractTask> task;
     // Use task_proxy to access task information.

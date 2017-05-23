@@ -8,67 +8,24 @@
 #include <limits>
 #include <utility>
 #include <fstream>
+
 using namespace std;
-
-
-
 
 // my_heuristic
 
-#define DBFILE "../scripts/db.ssv"
-
-
 namespace my_heuristic {
 
-HeuristicsDB::HeuristicsDB( const std::string &dbfile ){
-    std::fstream dbf;
-    std::string key,value;
-    dbf.open(dbfile,ios::in);
-    while( dbf >> key >> value ){
-        long state_h = stoul(key);
-        int heu_value = stoi(value);
-        if( !counter.count( state_h ) ){
-            counter[ state_h ] = 1;
-            database[ state_h ] = heu_value;
-        }
-        else{
-            counter[ state_h ] += 1;
-            database[ state_h ] += heu_value;
-        }
-    }
-    for( auto it : database ){
-        database[ it.first ] = database[ it.first ] / counter[ it.first ];
-    }
-    std::cout<< "HeuristicsDB initialized!" << std::endl;
-}
-
-int HeuristicsDB::get_h_from_db( const GlobalState &state ){
-    long state_h=0;
-    int h=0;
-    if( database.count( state_h = state.get_hash() ) ){
-        h = database[state_h];
-        return h;
-    }
-    else
-        return 0; 
-            //std::numeric_limits<int>::max(); 
-}
-
-
 MyHeuristic::MyHeuristic(const Options &opts)
-        :Heuristic(opts),db( DBFILE ) {
+        :Heuristic(opts)  {
     cout << "Initializing my heuristic..." << endl;
     pair_tz(opts.get<int>("tz_first"), opts.get<int>("tz_second"));
-
 }
 
 MyHeuristic::~MyHeuristic() {
 }
 
 
-/**********************************/
-
-int MyHeuristic::gcsquare( const GlobalState &global_state ){
+int MyHeuristic::goal_count_square( const GlobalState &global_state ){
     const State state = convert_global_state(global_state);
     int unsatisfied_goal_count = 0;
 
@@ -78,22 +35,17 @@ int MyHeuristic::gcsquare( const GlobalState &global_state ){
             ++unsatisfied_goal_count;
         }
     }
-    return unsatisfied_goal_count*unsatisfied_goal_count;
+    return unsatisfied_goal_count * unsatisfied_goal_count;
 }
-
-
 
 
 int MyHeuristic::compute_heuristic(const GlobalState &global_state) {
     State state = convert_global_state(global_state);
-    int h = db.get_h_from_db( global_state );
+    int h = db.get_h_from_db(global_state);
     if( !h )
-        return gcsquare( global_state );
+        return goal_count_square(global_state);
     return h;
 }
-
-/************************************/
-
 
 static Heuristic *_parse(OptionParser &parser) {
     Heuristic::add_options_to_parser(parser);
