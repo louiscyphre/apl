@@ -10,7 +10,7 @@
 #include <memory>
 #include <vector>
 #include <exception>
-
+    
 class GlobalOperator;
 class GlobalState;
 class TaskProxy;
@@ -42,10 +42,14 @@ class Heuristic : public ScalarEvaluator {
         
         public:
             HeuristicsDB(const options::Options &options);
-            int get_h_from_db(const GlobalState &state);
-            void init() throw DBException;
-            class DBException :public Exception {};
             
+            int  get_heuristic(const GlobalState &state);
+            void add_heuristic(const GlobalState &state, const int heuristic);
+
+            class DBException :public std::exception {};
+            void init() throw (DBException);
+            
+            std::string hdb_file_path;
             const std::string default_db_file = "../scripts/db.ssv";
             bool initialized_successfully;
     };
@@ -76,9 +80,9 @@ protected:
     */
     PerStateInformation<HEntry> heuristic_cache;
     bool cache_h_values;
-    bool reuse_h_cache;
-    bool init_h_db_called;
-    void init_h_db();
+    bool use_hdb;
+    bool init_hdb_called;
+    void init_hdb();
     
     // Hold a reference to the task implementation and pass it to objects that need it.
     const std::shared_ptr<AbstractTask> task;
@@ -88,7 +92,7 @@ protected:
     enum {DEAD_END = -1, NO_VALUE = -2};
 
     // TODO: Call with State directly once all heuristics support it.
-    virtual int compute_heuristic(const GlobalState &state) = 0;
+    virtual int compute_heuristic(const GlobalState &state);//FIXME Possible bug! now class is not pure virtual
 
     /*
       Usage note: Marking the same operator as preferred multiple times

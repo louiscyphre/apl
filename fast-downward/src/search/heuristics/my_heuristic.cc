@@ -18,7 +18,7 @@ namespace my_heuristic {
 MyHeuristic::MyHeuristic(const Options &opts)
         :Heuristic(opts)  {
     cout << "Initializing my heuristic..." << endl;
-    pair_tz(opts.get<int>("tz_first"), opts.get<int>("tz_second"));
+    //pair_tz(opts.get<int>("tz_first"), opts.get<int>("tz_second"));
 }
 
 MyHeuristic::~MyHeuristic() {
@@ -41,10 +41,10 @@ int MyHeuristic::goal_count_square( const GlobalState &global_state ){
 
 int MyHeuristic::compute_heuristic(const GlobalState &global_state) {
     State state = convert_global_state(global_state);
-    int h = db.get_h_from_db(global_state);
-    if( !h )
+    //int h = db.get_h_from_db(global_state);
+    //if( !h )
         return goal_count_square(global_state);
-    return h;
+    //return h;
 }
 
 static Heuristic *_parse(OptionParser &parser) {
