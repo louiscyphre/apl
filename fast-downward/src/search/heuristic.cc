@@ -13,6 +13,8 @@
 #include <cstdlib>
 #include <limits>
 #include <fstream>
+#include <sstream>
+
 
 Heuristic::Heuristic(const Options &opts)
     : db(opts),
@@ -29,20 +31,39 @@ Heuristic::~Heuristic() {
 }
 
 Heuristic::HeuristicsDB::HeuristicsDB(const options::Options &opts)
-    : hdb_file_path(opts.get<const std::string>("hdb_file_path")) {
+    : hdb_file_path(opts.get<std::string>("hdb_file_path")) {
 }
 
-void Heuristic::HeuristicsDB::init() throw (DBException) {
+
+Heuristic::HeuristicsDB::~HeuristicsDB() {
     std::fstream database_file;
-    std::string key, value;
+    if (initialized_successfully) {
+        database_file.open(hdb_file_path, std::ios::out | std::ios::trunc);
+        if (!database_file.is_open()) {
+          return;
+        }
+        std::stringstream hash_heuristic_pair;
+        for (auto it: database) {
+            hash_heuristic_pair << it.first <<" "<< it.second << std::endl;
+            database_file << hash_heuristic_pair.str();
+        }
+        database_file.close();
+    }
+}
+
+
+void Heuristic::HeuristicsDB::init() throw (HeuristicsDB::DBException) {
+    std::fstream database_file;
+    std::string key, value; 
     database_file.open(hdb_file_path, std::ios::in);
+
     
     if (!database_file.is_open()) {
-        throw DBException();
+        throw HeuristicsDB::DBException();
     }
     while( database_file >> key >> value ) {
-        long state_hash = std::stoul(key);
-        int heuristic = std::stoi(value);
+        long state_hash = stoul(key);
+        int heuristic = stoi(value);
         if ( !counter.count( state_hash ) ){
             counter[ state_hash ] = 1;
             database[ state_hash ] = heuristic;
@@ -54,35 +75,31 @@ void Heuristic::HeuristicsDB::init() throw (DBException) {
     for( auto it : database ){
         database[ it.first ] = database[ it.first ] / counter[ it.first ];
     }
-    std::cout<< "HeuristicsDB initialized!" << std::endl;
+    database_file.close();
+    std::cout << "HeuristicsDB initialized!" << std::endl;
 }
 
 
-int Heuristic::HeuristicsDB::get_heuristic(const GlobalState &global_state) {
-    const State state = convert_global_state(global_state);                         
-    long hash = state.get_hash();
-
-    if (database.find(hash) == database.end()) {
+int Heuristic::HeuristicsDB::get_heuristic(const long &state_hash) {
+    if (database.find(state_hash) == database.end()) {
         return 0;
     }
-    return database[hash];
+    return database[state_hash];
 }
 
 
-void Heuristic::HeuristicsDB::add_heuristic(const GlobalState &global_state,
-                                const int heuristic) {
-    const State state = convert_global_state(global_state);                             
-    long hash = state.get_hash();
-    database[hash] = heuristic;
+void Heuristic::HeuristicsDB::add_heuristic(const long &state_hash,
+                                            const int &heuristic) {      
+    database[state_hash] = heuristic;
 }
 
 void Heuristic::init_hdb()  {
     try {
-        HeuristicsDB::init();
-    } catch (DBException &e) {
-         std::err << "Critical error: HeuristicsDB exception caught!"
-         std::err << "Database file not found."
-                  << std::endl;
+        db.init();
+    } catch (HeuristicsDB::DBException &e) {
+         std::cerr << "Critical error: HeuristicsDB exception caught!"
+                   << "Database file not found."
+                   << std::endl;
          use_hdb  = false;        
     } 
     init_hdb_called = true;
@@ -92,6 +109,7 @@ void Heuristic::init_hdb()  {
 void Heuristic::set_preferred(const GlobalOperator *op) {
     preferred_operators.insert(op);
 }
+
 
 void Heuristic::set_preferred(const OperatorProxy &op) {
     set_preferred(op.get_global_operator());
@@ -116,14 +134,13 @@ void Heuristic::add_options_to_parser(OptionParser &parser) {
         " Currently, adapt_costs() and no_transform() are available.",
         "no_transform()");
     parser.add_option<bool>("cache_estimates",
-                            "cache heuristic estimates", "true");
+                            "cache heuristic estimates", "false");
     parser.add_option<bool>("use_hdb", "use heuristic database."
                             " This only relevant for rerunning planner on the"
-                            " same problem more than once in a row.", "true");
-    parser.add_option<const std::string>("hdb_file_path", 
-                                         "path to file with cache"
-                                         " estimates per state", 
-                                         HeuristicDB::default_db_file);
+                            " same problem more than once in a row.", "false");
+    parser.add_option<std::string>("hdb_file_path", 
+                                   "path to file with cache"
+                                   " estimates per state", default_db_file);
 }
 
 // This solution to get default values seems nonoptimal.
@@ -133,7 +150,7 @@ Options Heuristic::default_options() {
     opts.set<std::shared_ptr<AbstractTask>>("transform", g_root_task());
     opts.set<bool>("cache_estimates", false);
     opts.set<bool>("use_hdb", false);
-    opts.set<const std::string>("hdb_file_path", HeuristicDB::default_db_file);
+    opts.set<std::string>("hdb_file_path", default_db_file);
     return opts;
 }
 
@@ -143,12 +160,13 @@ EvaluationResult Heuristic::compute_result(EvaluationContext &eval_context) {
     assert(preferred_operators.empty());
 
     const GlobalState &state = eval_context.get_state();
+    const long state_hash = state.get_hash();
     bool calculate_preferred = eval_context.get_calculate_preferred();
 
     int heuristic = NO_VALUE;
 
     if (use_hdb && !init_hdb_called) {
-        this.init_hdb();
+        this->init_hdb();
     }
     if (!calculate_preferred && cache_h_values &&
         heuristic_cache[state].h != NO_VALUE && !heuristic_cache[state].dirty) {
@@ -156,10 +174,10 @@ EvaluationResult Heuristic::compute_result(EvaluationContext &eval_context) {
         result.set_count_evaluation(false);
     } else {
         if (use_hdb) {
-            heuristic = db.get_heuristic(state);
+            heuristic = db.get_heuristic(state_hash);
             if (!heuristic) {
                 heuristic = compute_heuristic(state);
-                db.add_heuristic(state, heuristic);
+                db.add_heuristic(state_hash, heuristic);
             }
         } else {
             heuristic = compute_heuristic(state);

@@ -42,20 +42,20 @@ class Heuristic : public ScalarEvaluator {
         
         public:
             HeuristicsDB(const options::Options &options);
+            ~HeuristicsDB();
             
-            int  get_heuristic(const GlobalState &state);
-            void add_heuristic(const GlobalState &state, const int heuristic);
+            int  get_heuristic(const long &state_hash);
+            void add_heuristic(const long &state_hash, const int &heuristic);
 
             class DBException :public std::exception {};
             void init() throw (DBException);
             
             std::string hdb_file_path;
-            const std::string default_db_file = "../scripts/db.ssv";
             bool initialized_successfully;
     };
    
     HeuristicsDB db;
-    
+   
     std::string description;
 
     /*
@@ -92,7 +92,7 @@ protected:
     enum {DEAD_END = -1, NO_VALUE = -2};
 
     // TODO: Call with State directly once all heuristics support it.
-    virtual int compute_heuristic(const GlobalState &state);//FIXME Possible bug! now class is not pure virtual
+    virtual int compute_heuristic(const GlobalState &state) = 0;
 
     /*
       Usage note: Marking the same operator as preferred multiple times
@@ -132,6 +132,10 @@ public:
     bool is_h_dirty(GlobalState &state) {
         return heuristic_cache[state].dirty;
     }
+
 };
+
+// TODO normal solution for default path
+const std::string default_db_file = "../scripts/db.ssv";
 
 #endif
