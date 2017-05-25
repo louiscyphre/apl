@@ -33,6 +33,7 @@
 
 # SAS
 sas_plan
+sas_plan.*
 *.sas
 
 # VIM

@@ -41,7 +41,7 @@ class Heuristic : public ScalarEvaluator {
         std::unordered_map<long, int> counter;
         
         public:
-            HeuristicsDB(const options::Options &options);
+            HeuristicsDB(/*const options::Options &options*/);
             ~HeuristicsDB();
             
             int  get_heuristic(const long &state_hash);
@@ -52,6 +52,8 @@ class Heuristic : public ScalarEvaluator {
             
             std::string hdb_file_path;
             bool initialized_successfully;
+
+            
     };
    
     HeuristicsDB db;

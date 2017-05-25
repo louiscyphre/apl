@@ -17,11 +17,12 @@
 
 
 Heuristic::Heuristic(const Options &opts)
-    : db(opts),
+    : db(),
       description(opts.get_unparsed_config()),
       heuristic_cache(HEntry(NO_VALUE, true)), //TODO: is true really a good idea here?
       cache_h_values(opts.get<bool>("cache_estimates")),
-      use_hdb(opts.get<bool>("use_hdb")),
+      use_hdb(true),
+      //use_hdb(opts.get<bool>("use_hdb")),
       init_hdb_called(false),
       task(opts.get<std::shared_ptr<AbstractTask>>("transform")),
       task_proxy(*task) {
@@ -30,14 +31,16 @@ Heuristic::Heuristic(const Options &opts)
 Heuristic::~Heuristic() {
 }
 
-Heuristic::HeuristicsDB::HeuristicsDB(const options::Options &opts)
-    : hdb_file_path(opts.get<std::string>("hdb_file_path")) {
+Heuristic::HeuristicsDB::HeuristicsDB(/*const Options &opts*/)
+    : //hdb_file_path(opts.get<std::string>("hdb_file_path")),
+      hdb_file_path("../scripts/db.ssv"),
+      initialized_successfully(false) {
 }
 
 
 Heuristic::HeuristicsDB::~HeuristicsDB() {
     std::fstream database_file;
-    if (initialized_successfully) {
+    //if (initialized_successfully) {
         database_file.open(hdb_file_path, std::ios::out | std::ios::trunc);
         if (!database_file.is_open()) {
           return;
@@ -48,7 +51,7 @@ Heuristic::HeuristicsDB::~HeuristicsDB() {
             database_file << hash_heuristic_pair.str();
         }
         database_file.close();
-    }
+   // }
 }
 
 
@@ -76,6 +79,7 @@ void Heuristic::HeuristicsDB::init() throw (HeuristicsDB::DBException) {
         database[ it.first ] = database[ it.first ] / counter[ it.first ];
     }
     database_file.close();
+    initialized_successfully = true;
     std::cout << "HeuristicsDB initialized!" << std::endl;
 }
 
@@ -90,7 +94,7 @@ int Heuristic::HeuristicsDB::get_heuristic(const long &state_hash) {
 
 void Heuristic::HeuristicsDB::add_heuristic(const long &state_hash,
                                             const int &heuristic) {      
-    database[state_hash] = heuristic;
+    database[state_hash] =  (database[state_hash] +  heuristic) >> 1;
 }
 
 void Heuristic::init_hdb()  {
@@ -98,9 +102,8 @@ void Heuristic::init_hdb()  {
         db.init();
     } catch (HeuristicsDB::DBException &e) {
          std::cerr << "Critical error: HeuristicsDB exception caught!"
-                   << "Database file not found."
-                   << std::endl;
-         use_hdb  = false;        
+                   << "Database file not found. Continuing without bootstaping."
+                   << std::endl;        
     } 
     init_hdb_called = true;
 }
