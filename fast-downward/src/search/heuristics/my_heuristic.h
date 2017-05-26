@@ -11,18 +11,8 @@
 
 namespace my_heuristic {
 
-
-class StateDB{
-    std::unordered_map<long,int> database;
-    public:
-        StateDB( const std::string &dbfile );
-        int get_h( const GlobalState &state );
-};
-
 class MyHeuristic : public Heuristic {
    
-    StateDB db;
-
 	int cantor_pairing(int x, int y) const {
 		return (x + y + 1) * (x + y) / 2 + y;
 	}
@@ -34,7 +24,7 @@ class MyHeuristic : public Heuristic {
 	}
 
 protected:
-    virtual int compute_heuristic(const GlobalState &global_state);
+    virtual int compute_heuristic_(const GlobalState &global_state);
 public:
     MyHeuristic(const options::Options &options);
     ~MyHeuristic();

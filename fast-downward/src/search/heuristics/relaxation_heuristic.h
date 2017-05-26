@@ -55,7 +55,7 @@ protected:
     std::vector<Proposition *> goal_propositions;
 
     Proposition *get_proposition(const FactProxy &fact);
-    virtual int compute_heuristic(const GlobalState &state) = 0;
+    virtual int compute_heuristic_(const GlobalState &state) = 0;
 public:
     RelaxationHeuristic(const options::Options &options);
     virtual ~RelaxationHeuristic();

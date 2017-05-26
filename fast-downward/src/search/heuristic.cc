@@ -12,15 +12,54 @@
 #include <cassert>
 #include <cstdlib>
 #include <limits>
+#include <fstream>
+/////////////////////////////////////////
+#define DBFILE "../scripts/db.ssv"
+#define THRESHOLD 100
+////////////////////////////////////////
 
 using namespace std;
+
+
+//////////////////////////////////////////////////////
+
+StateDB::StateDB( const std::string &file_name ){
+    std::fstream dbfile;
+    std::string key,value;
+    dbfile.open(file_name,ios::in);
+    while( dbfile >> key >> value ){
+        long lkey = stoul(key);
+        int ival = stoi(value);
+        state_heu_map[ lkey ] = ival;
+    }
+    std::cout<< "StateDB initialized!" << std::endl;
+}
+
+//////////////////////////////////////////////////////
+
+bool StateDB::exists( const GlobalState &state ){
+    if( state_heu_map.count( state.get_hash() ) )
+        return true;
+    return false;
+}
+    
+//////////////////////////////////////////////////////
+    
+int StateDB::get_h_value( const GlobalState &state ){
+    int h = state_heu_map[ state.get_hash()];
+    return h;
+}
+
+///////////////////////////////////////////////////////
+
 
 Heuristic::Heuristic(const Options &opts)
     : description(opts.get_unparsed_config()),
       heuristic_cache(HEntry(NO_VALUE, true)), //TODO: is true really a good idea here?
       cache_h_values(opts.get<bool>("cache_estimates")),
       task(opts.get<shared_ptr<AbstractTask>>("transform")),
-      task_proxy(*task) {
+      task_proxy(*task), statedb( DBFILE ){
+        this->is_on_path=false;
 }
 
 Heuristic::~Heuristic() {
@@ -40,6 +79,27 @@ bool Heuristic::notify_state_transition(
     const GlobalState & /*state*/) {
     return false;
 }
+
+//////////////////////////////////////////
+
+int Heuristic::compute_heuristic( const GlobalState &state ){
+    int cached_h=0;
+    if( statedb.exists( state ) ){
+        if ((cached_h = statedb.get_h_value( state )) > THRESHOLD){
+            is_on_path = true;
+            cout << "using cached h from database" <<endl;
+            return cached_h;
+        }
+        else
+            is_on_path = false;
+    }
+    if( is_on_path )
+        return 20000;
+    return compute_heuristic_( state );
+}
+
+//////////////////////////////////////////
+
 
 State Heuristic::convert_global_state(const GlobalState &global_state) const {
     State state(*g_root_task(), global_state.get_values());

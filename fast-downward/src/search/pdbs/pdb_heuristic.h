@@ -17,12 +17,12 @@ namespace pdbs {
 class PDBHeuristic : public Heuristic {
     PatternDatabase pdb;
 protected:
-    virtual int compute_heuristic(const GlobalState &global_state) override;
-    /* TODO: we want to get rid of compute_heuristic(const GlobalState &state)
+    virtual int compute_heuristic_(const GlobalState &global_state) override;
+    /* TODO: we want to get rid of compute_heuristic_(const GlobalState &state)
        and change the interface to only use State objects. While we are doing
        this, the following method already allows to get the heuristic value
        for a State object. */
-    int compute_heuristic(const State &state) const;
+    int compute_heuristic_(const State &state) const;
 public:
     /*
       Important: It is assumed that the pattern (passed via Options) is

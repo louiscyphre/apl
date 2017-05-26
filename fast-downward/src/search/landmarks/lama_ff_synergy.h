@@ -42,7 +42,7 @@ class LamaFFSynergy {
         const GlobalState &parent_state, const GlobalOperator &op,
         const GlobalState &state);
 
-    void compute_heuristics(EvaluationContext &eval_context);
+    void compute_heuristic_s(EvaluationContext &eval_context);
 
 public:
     explicit LamaFFSynergy(const options::Options &opts);

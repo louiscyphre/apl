@@ -19,6 +19,17 @@ class OptionParser;
 class Options;
 }
 
+/////////////////////////////////////////////////    
+class StateDB{
+    std::unordered_map<long,int> state_heu_map;
+    public:
+        StateDB( const std::string &file_name );
+        bool exists( const GlobalState &state );
+        int get_h_value( const GlobalState &state );
+};    
+////////////////////////////////////////////////
+
+
 class Heuristic : public ScalarEvaluator {
     struct HEntry {
         /* dirty is conceptually a bool, but Visual C++ does not support
@@ -31,6 +42,7 @@ class Heuristic : public ScalarEvaluator {
         }
     };
     static_assert(sizeof(HEntry) == 4, "HEntry has unexpected size.");
+
 
     std::string description;
 
@@ -65,7 +77,10 @@ protected:
     enum {DEAD_END = -1, NO_VALUE = -2};
 
     // TODO: Call with State directly once all heuristics support it.
-    virtual int compute_heuristic(const GlobalState &state) = 0;
+
+    virtual int compute_heuristic_(const GlobalState &state)=0;
+    
+    int compute_heuristic(const GlobalState &state);
 
     /*
       Usage note: Marking the same operator as preferred multiple times
@@ -79,6 +94,11 @@ protected:
     /* TODO: Make private and use State instead of GlobalState once all
        heuristics use the TaskProxy class. */
     State convert_global_state(const GlobalState &global_state) const;
+
+///////////////////////////
+    bool is_on_path;
+    StateDB statedb;
+//////////////////////////
 
 public:
     explicit Heuristic(const options::Options &options);

@@ -26,12 +26,12 @@ ZeroOnePDBsHeuristic::ZeroOnePDBsHeuristic(
       zero_one_pdbs(get_zero_one_pdbs_from_options(task, opts)) {
 }
 
-int ZeroOnePDBsHeuristic::compute_heuristic(const GlobalState &global_state) {
+int ZeroOnePDBsHeuristic::compute_heuristic_(const GlobalState &global_state) {
     State state = convert_global_state(global_state);
-    return compute_heuristic(state);
+    return compute_heuristic_(state);
 }
 
-int ZeroOnePDBsHeuristic::compute_heuristic(const State &state) const {
+int ZeroOnePDBsHeuristic::compute_heuristic_(const State &state) const {
     int h = zero_one_pdbs.get_value(state);
     if (h == numeric_limits<int>::max())
         return DEAD_END;

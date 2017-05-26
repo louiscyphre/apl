@@ -14,7 +14,7 @@ PotentialMaxHeuristic::PotentialMaxHeuristic(
       functions(move(functions)) {
 }
 
-int PotentialMaxHeuristic::compute_heuristic(const GlobalState &global_state) {
+int PotentialMaxHeuristic::compute_heuristic_(const GlobalState &global_state) {
     const State state = convert_global_state(global_state);
     int value = 0;
     for (auto &function : functions) {

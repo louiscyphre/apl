@@ -42,7 +42,7 @@ class LandmarkCountHeuristic : public Heuristic {
     LandmarkSet convert_to_landmark_set(
         const std::vector<bool> &landmark_vector);
 protected:
-    virtual int compute_heuristic(const GlobalState &state) override;
+    virtual int compute_heuristic_(const GlobalState &state) override;
 public:
     explicit LandmarkCountHeuristic(const options::Options &opts);
     ~LandmarkCountHeuristic();

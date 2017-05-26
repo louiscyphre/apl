@@ -47,7 +47,7 @@ bool CGHeuristic::dead_ends_are_reliable() const {
     return false;
 }
 
-int CGHeuristic::compute_heuristic(const GlobalState &g_state) {
+int CGHeuristic::compute_heuristic_(const GlobalState &g_state) {
     const State state = convert_global_state(g_state);
     setup_domain_transition_graphs();
 

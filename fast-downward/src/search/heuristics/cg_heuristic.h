@@ -31,7 +31,7 @@ class CGHeuristic : public Heuristic {
     int get_transition_cost(const State &state, DomainTransitionGraph *dtg, int start_val, int goal_val);
     void mark_helpful_transitions(const State &state, DomainTransitionGraph *dtg, int to);
 protected:
-    virtual int compute_heuristic(const GlobalState &state);
+    virtual int compute_heuristic_(const GlobalState &state);
 public:
     CGHeuristic(const options::Options &opts);
     ~CGHeuristic();

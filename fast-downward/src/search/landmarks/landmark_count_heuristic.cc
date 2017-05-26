@@ -119,7 +119,7 @@ int LandmarkCountHeuristic::get_heuristic_value(const GlobalState &global_state)
     return h;
 }
 
-int LandmarkCountHeuristic::compute_heuristic(const GlobalState &global_state) {
+int LandmarkCountHeuristic::compute_heuristic_(const GlobalState &global_state) {
     State state = convert_global_state(global_state);
 
     if (is_goal_state(task_proxy, state))

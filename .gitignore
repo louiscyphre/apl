@@ -38,15 +38,15 @@ sas_plan
 # VIM
 *.swp
 
-# Space Seperated Value
-*.ssv
-
 # C++ try files
 try.cc
 try
 
-## benchmarks
-problems/downward-benchmarks
+# TEST
+test.sh
+
+# SSV
+*.ssv
 
 fast-downward/builds
 /VAL
