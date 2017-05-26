@@ -3,6 +3,7 @@
 
 #include "int_packer.h"
 #include "state_id.h"
+#include "utils/hash.h"
 
 #include <cstddef>
 #include <iostream>
@@ -46,6 +47,13 @@ public:
     }
 
     int operator[](int var) const;
+
+    /****/
+    std::size_t get_hash() const{
+        std::hash<std::vector<int>> hasher;
+        return hasher( get_values() );
+    }
+    /****/
 
     std::vector<int> get_values() const;
 

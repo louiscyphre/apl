@@ -40,7 +40,7 @@ W=2
 MAX_H="hmax()"
 FF_H="ff()"
 GC_H="goalcount()"
-IPDB_H="ipdb(dominance_pruning=false,max_time=10,cache_estimates=false,num_samples=500,collection_max_size=2000000,pdb_max_size=200000)"
+IPDB_H="ipdb(max_time=10,cache_estimates=false,num_samples=500,collection_max_size=2000000,pdb_max_size=200000)"
 ADD_H="add()"
 MY_H="my_heuristic(tz_first = 203304688, tz_second = 320934904 )"
 BLIND_H="blind()"
@@ -52,11 +52,12 @@ CPDB_H="cpdbs(systematic())"
 #genetic()
 
 
-#../fast-downward/fast-downward.py $BARMAN_DOM $BARMAN_PROB --search "lazy_wastar([$ADD_H],w=5,cost_type=PLUSONE,max_time=5)"
+../fast-downward/fast-downward.py $TRANSP_DOM $TRANSP_PROB --heuristic h1=$LMCUT_H --heuristic h2=$FF_H --search "eager(tiebreaking([h1,h2]),reopen_closed=true,preferred=[h2],bound=20000,max_time=60)"
 
 
 # VERY GOOD FOR HARD PROBLEMS:
-../fast-downward/fast-downward.py $BARMAN_DOM $BARMAN_PROB --heuristic h1=$LMCOUNT_H --heuristic h2=$FF_H --search "lazy(tiebreaking([h1,h2]),cost_type=ONE,preferred=[h1,h2],max_time=3600)"
+#this one tool 1950 seconds with price 2350
+#../fast-downward/fast-downward.py $TRANSP_DOM $TRANSP_PROB --heuristic h1=$LMCOUNT_H --heuristic h2=$FF_H --heuristic h3=$ADD_H --search "lazy(tiebreaking([h1,h2,h3]),preferred=[h1,h2],cost_type=ONE,max_time=3600)"
 
 #../fast-downward/fast-downward.py $PUZZLE_DOM $PUZZLE_PROB1 --search "lazy(alt([single($CPDB_H),single($LMCOUNT_H),single($FF_H),single($IPDB_H),single($LMCUT_H)]),max_time=120)"
 #../fast-downward/fast-downward.py $PUZZLE_DOM $PUZZLE_PROB1 --search "lazy_wastar($MY_H,w=1,max_time=120)"

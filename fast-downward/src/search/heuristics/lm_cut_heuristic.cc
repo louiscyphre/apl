@@ -10,13 +10,50 @@
 #include "../utils/memory.h"
 
 #include <iostream>
+#include <fstream>
+/////////////////////////////////////////
+#define DBFILE "../scripts/db.ssv"
+////////////////////////////////////////
 
 using namespace std;
 
 namespace lm_cut_heuristic {
+
+//////////////////////////////////////////////////////
+
+StateDB::StateDB( const std::string &file_name ){
+    std::fstream dbfile;
+    std::string key,value;
+    dbfile.open(file_name,ios::in);
+    while( dbfile >> key >> value ){
+        long lkey = stoul(key);
+        int ival = stoi(value);
+        if( !database.count( lkey ) || database[lkey] > ival )
+            database[ stoul(key) ] = stoi(value);
+    }
+    std::cout<< "StateDB initialized!" << std::endl;
+}
+
+//////////////////////////////////////////////////////
+
+bool StateDB::is_state_on_path( const GlobalState &state ){
+    if( database.count( state.get_hash() ) )
+        return true;
+    return false;
+}   
+    
+//////////////////////////////////////////////////////
+    
+int StateDB::get_h_value( const GlobalState &state ){
+    int h = database[ state.get_hash()];
+    return h;
+}
+
+///////////////////////////////////////////////////////
+
 LandmarkCutHeuristic::LandmarkCutHeuristic(const Options &opts)
     : Heuristic(opts),
-      landmark_generator(utils::make_unique_ptr<LandmarkCutLandmarks>(task_proxy)) {
+      landmark_generator(utils::make_unique_ptr<LandmarkCutLandmarks>(task_proxy)), statedb( DBFILE ){
     cout << "Initializing landmark cut heuristic..." << endl;
 }
 
@@ -25,6 +62,15 @@ LandmarkCutHeuristic::~LandmarkCutHeuristic() {
 
 int LandmarkCutHeuristic::compute_heuristic(const GlobalState &global_state) {
     State state = convert_global_state(global_state);
+/////////////////////////////////////////////////////
+    int h=0;
+    if( statedb.is_state_on_path( global_state ) ){
+        if( (h = statedb.get_h_value( global_state )) > 500 ){
+            return h;
+        }
+        return 30000;
+    }
+/////////////////////////////////////////////////////
     return compute_heuristic(state);
 }
 
