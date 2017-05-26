@@ -23,7 +23,6 @@ class StateDB{
 
 class MyHeuristic : public Heuristic {
    
-    StateDB statedb;
 	int cantor_pairing(int x, int y) const {
 		return (x + y + 1) * (x + y) / 2 + y;
 	}
@@ -35,7 +34,7 @@ class MyHeuristic : public Heuristic {
 	}
 
 protected:
-    virtual int compute_heuristic(const GlobalState &global_state);
+    virtual int compute_heuristic_(const GlobalState &global_state);
 public:
     MyHeuristic(const options::Options &options);
     ~MyHeuristic();

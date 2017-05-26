@@ -15,7 +15,7 @@ GoalCountHeuristic::GoalCountHeuristic(const Options &opts)
 GoalCountHeuristic::~GoalCountHeuristic() {
 }
 
-int GoalCountHeuristic::compute_heuristic(const GlobalState &global_state) {
+int GoalCountHeuristic::compute_heuristic_(const GlobalState &global_state) {
     const State state = convert_global_state(global_state);
     int unsatisfied_goal_count = 0;
 

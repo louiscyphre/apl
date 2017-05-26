@@ -10,7 +10,7 @@ class ConstEvaluator : public Heuristic {
     int value;
 
 protected:
-    virtual int compute_heuristic(const GlobalState &) override;
+    virtual int compute_heuristic_(const GlobalState &) override;
 
 public:
     explicit ConstEvaluator(const options::Options &opts);

@@ -6,7 +6,6 @@
 PUZZLE_DOM=../problems/tile/domain.pddl
 PUZZLE_PROB1=../problems/tile/puzzle01.pddl
 PUZZLE_PROB2=../problems/tile/puzzle02.pddl
-PUZZLE_RLX=../problems/tile/puzzle_rlx.pddl
 
 KNIGHTS_DOM=../problems/knights_tour/knights_tour.pddl
 KNIGHTS_PROB1=../problems/knights_tour/knights_tour5.pddl
@@ -40,7 +39,7 @@ W=2
 MAX_H="hmax()"
 FF_H="ff()"
 GC_H="goalcount()"
-IPDB_H="ipdb(max_time=10,cache_estimates=false,num_samples=500,collection_max_size=2000000,pdb_max_size=200000)"
+IPDB_H="ipdb(max_time=20)"
 ADD_H="add()"
 MY_H="my_heuristic(tz_first = 203304688, tz_second = 320934904 )"
 BLIND_H="blind()"
@@ -48,16 +47,17 @@ HM_H="hm()"
 LMCUT_H="lmcut()"
 PDB_H="pdb(patterns=[[1,2],[3]])"
 LMCOUNT_H="lmcount(lm_rhw(),pref=true)"
+LMCOUNTAD_H="lmcount(lm_rhw(),pref=true,admissible=true)"
 CPDB_H="cpdbs(systematic())"
 #genetic()
 
+../fast-downward/fast-downward.py $BARMAN_DOM $BARMAN_PROB --heuristic h1=$IPDB_H --heuristic h2=$LMCOUNTAD_H --search "lazy_wastar([h1,h2],preferred=[h1,h2],w=2,max_time=40)"
 
-../fast-downward/fast-downward.py $TRANSP_DOM $TRANSP_PROB --heuristic h1=$LMCUT_H --heuristic h2=$FF_H --search "eager(tiebreaking([h1,h2]),reopen_closed=true,preferred=[h2],bound=20000,max_time=60)"
 
 
 # VERY GOOD FOR HARD PROBLEMS:
 #this one tool 1950 seconds with price 2350
-#../fast-downward/fast-downward.py $TRANSP_DOM $TRANSP_PROB --heuristic h1=$LMCOUNT_H --heuristic h2=$FF_H --heuristic h3=$ADD_H --search "lazy(tiebreaking([h1,h2,h3]),preferred=[h1,h2],cost_type=ONE,max_time=3600)"
+#../fast-downward/fast-downward.py $BARMAN_DOM $BARMAN_PROB --heuristic h1=$LMCOUNT_H --heuristic h2=$FF_H --search "lazy(tiebreaking([h1,h2]),preferred=[h1,h2],cost_type=ONE,max_time=3600)"
 
 #../fast-downward/fast-downward.py $PUZZLE_DOM $PUZZLE_PROB1 --search "lazy(alt([single($CPDB_H),single($LMCOUNT_H),single($FF_H),single($IPDB_H),single($LMCUT_H)]),max_time=120)"
 #../fast-downward/fast-downward.py $PUZZLE_DOM $PUZZLE_PROB1 --search "lazy_wastar($MY_H,w=1,max_time=120)"

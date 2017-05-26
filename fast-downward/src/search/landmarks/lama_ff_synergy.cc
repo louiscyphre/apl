@@ -41,7 +41,7 @@ class LamaMasterHeuristic : public Heuristic {
     LamaFFSynergy *synergy;
 
 protected:
-    virtual int compute_heuristic(const GlobalState & /*state*/) override {
+    virtual int compute_heuristic_(const GlobalState & /*state*/) override {
         ABORT("This method should never be called.");
     }
 
@@ -55,7 +55,7 @@ public:
 
     virtual EvaluationResult compute_result(
         EvaluationContext &eval_context) override {
-        synergy->compute_heuristics(eval_context);
+        synergy->compute_heuristic_s(eval_context);
         return synergy->lama_result;
     }
 
@@ -81,7 +81,7 @@ class FFSlaveHeuristic : public Heuristic {
     LamaMasterHeuristic *master;
 
 protected:
-    virtual int compute_heuristic(const GlobalState & /*state*/) override {
+    virtual int compute_heuristic_(const GlobalState & /*state*/) override {
         ABORT("This method should never be called.");
     }
 
@@ -119,7 +119,7 @@ LamaFFSynergy::LamaFFSynergy(const Options &opts)
     cout << "Initializing LAMA-FF synergy object" << endl;
 }
 
-void LamaFFSynergy::compute_heuristics(EvaluationContext &eval_context) {
+void LamaFFSynergy::compute_heuristic_s(EvaluationContext &eval_context) {
     /*
       When this method is called, we know that eval_context contains
       results for neither of the two synergy heuristics because the
@@ -128,7 +128,7 @@ void LamaFFSynergy::compute_heuristics(EvaluationContext &eval_context) {
       together.
     */
 
-    lama_heuristic->exploration.set_recompute_heuristic();
+    lama_heuristic->exploration.set_recompute_heuristic_();
     lama_result = lama_heuristic->compute_result(eval_context);
     ff_result = lama_heuristic->exploration.compute_result(eval_context);
 }

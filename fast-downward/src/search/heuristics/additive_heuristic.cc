@@ -128,7 +128,7 @@ int AdditiveHeuristic::compute_add_and_ff(const State &state) {
     return total_cost;
 }
 
-int AdditiveHeuristic::compute_heuristic(const State &state) {
+int AdditiveHeuristic::compute_heuristic_(const State &state) {
     int h = compute_add_and_ff(state);
     if (h != DEAD_END) {
         for (size_t i = 0; i < goal_propositions.size(); ++i)
@@ -137,12 +137,12 @@ int AdditiveHeuristic::compute_heuristic(const State &state) {
     return h;
 }
 
-int AdditiveHeuristic::compute_heuristic(const GlobalState &global_state) {
-    return compute_heuristic(convert_global_state(global_state));
+int AdditiveHeuristic::compute_heuristic_(const GlobalState &global_state) {
+    return compute_heuristic_(convert_global_state(global_state));
 }
 
-void AdditiveHeuristic::compute_heuristic_for_cegar(const State &state) {
-    compute_heuristic(state);
+void AdditiveHeuristic::compute_heuristic__for_cegar(const State &state) {
+    compute_heuristic_(state);
 }
 
 static Heuristic *_parse(OptionParser &parser) {

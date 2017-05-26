@@ -33,12 +33,12 @@ OperatorCountingHeuristic::OperatorCountingHeuristic(const Options &opts)
 OperatorCountingHeuristic::~OperatorCountingHeuristic() {
 }
 
-int OperatorCountingHeuristic::compute_heuristic(const GlobalState &global_state) {
+int OperatorCountingHeuristic::compute_heuristic_(const GlobalState &global_state) {
     State state = convert_global_state(global_state);
-    return compute_heuristic(state);
+    return compute_heuristic_(state);
 }
 
-int OperatorCountingHeuristic::compute_heuristic(const State &state) {
+int OperatorCountingHeuristic::compute_heuristic_(const State &state) {
     assert(!lp_solver.has_temporary_constraints());
     for (auto generator : constraint_generators) {
         bool dead_end = generator->update_constraints(state, lp_solver);

@@ -32,8 +32,8 @@ class LandmarkCutHeuristic : public Heuristic {
     StateDB statedb;
     /////////////////
     
-    virtual int compute_heuristic(const GlobalState &global_state) override;
-    int compute_heuristic(const State &state);
+    virtual int compute_heuristic_(const GlobalState &global_state) override;
+    int compute_heuristic_(const State &state);
 public:
     explicit LandmarkCutHeuristic(const options::Options &opts);
     virtual ~LandmarkCutHeuristic() override;

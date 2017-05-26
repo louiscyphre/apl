@@ -82,7 +82,7 @@ void HSPMaxHeuristic::relaxed_exploration() {
     }
 }
 
-int HSPMaxHeuristic::compute_heuristic(const GlobalState &global_state) {
+int HSPMaxHeuristic::compute_heuristic_(const GlobalState &global_state) {
     const State state = convert_global_state(global_state);
 
     setup_exploration_queue();

@@ -289,7 +289,7 @@ void MergeAndShrinkHeuristic::build(const utils::Timer &timer) {
     label_reduction = nullptr;
 }
 
-int MergeAndShrinkHeuristic::compute_heuristic(const GlobalState &global_state) {
+int MergeAndShrinkHeuristic::compute_heuristic_(const GlobalState &global_state) {
     State state = convert_global_state(global_state);
     int cost = mas_representation->get_value(state);
     if (cost == PRUNED_STATE)
