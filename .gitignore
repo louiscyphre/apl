@@ -48,6 +48,9 @@ test.sh
 # SSV
 *.ssv
 
+# TEST
+test.sh
+
 fast-downward/builds
 /VAL
 
