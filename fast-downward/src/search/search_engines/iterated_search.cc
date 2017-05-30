@@ -71,6 +71,12 @@ SearchStatus IteratedSearch::step() {
     if (last_phase_found_solution) {
         iterated_found_solution = true;
         found_plan = current_search->get_plan();
+/*
+        std::cout<<" PLAN START: " <<endl;
+        for (size_t i=0; i<found_plan.size(); ++i)
+            std::cout<< found_plan[i]->get_name() <<endl;
+        std::cout<<" PLAN END! " <<endl;
+*/
         plan_cost = calculate_plan_cost(found_plan);
         if (plan_cost < best_bound) {
             save_plan(found_plan, true);
