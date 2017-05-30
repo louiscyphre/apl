@@ -41,6 +41,13 @@ sas_plan
 # TEST
 test.sh
 
+# SSV
+*.ssv
+
+# TRY
+try.cc
+try
+
 fast-downward/builds
 /VAL
 
