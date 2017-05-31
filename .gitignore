@@ -39,6 +39,16 @@ sas_plan.*
 # VIM
 *.swp
 
+# TEST
+test.sh
+
+# SSV
+*.ssv
+
+# TRY
+try.cc
+try
+
 fast-downward/builds
 /VAL
 
