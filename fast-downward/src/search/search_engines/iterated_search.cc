@@ -63,6 +63,12 @@ SearchStatus IteratedSearch::step() {
     }
     ++phase;
 
+    //////////////////////
+    if( last_phase_found_solution ){
+        current_search->set_for_pre_phase( last_plan );
+    }
+    ///////////////////////
+    
     current_search->search();
 
     SearchEngine::Plan found_plan;
@@ -71,12 +77,9 @@ SearchStatus IteratedSearch::step() {
     if (last_phase_found_solution) {
         iterated_found_solution = true;
         found_plan = current_search->get_plan();
-/*
-        std::cout<<" PLAN START: " <<endl;
-        for (size_t i=0; i<found_plan.size(); ++i)
-            std::cout<< found_plan[i]->get_name() <<endl;
-        std::cout<<" PLAN END! " <<endl;
-*/
+        //////////////////////
+        last_plan = found_plan;
+        //////////////////////
         plan_cost = calculate_plan_cost(found_plan);
         if (plan_cost < best_bound) {
             save_plan(found_plan, true);

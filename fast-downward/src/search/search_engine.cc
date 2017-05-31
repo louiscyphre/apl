@@ -61,6 +61,13 @@ void SearchEngine::set_plan(const Plan &p) {
     plan = p;
 }
 
+///////////////////////
+void SearchEngine::set_for_pre_phase(const Plan &p) {
+    pre_phase = true;
+    plan = p;
+}
+///////////////////////
+
 void SearchEngine::search() {
     initialize();
     utils::CountdownTimer timer(max_time);

@@ -7,12 +7,6 @@
 #include<fstream>
 using namespace std;
 
-
-class c{
-    public:
-        c(string s){ cout<< s<<endl; }
-};
-
 int main()
 {
     string key; string value;

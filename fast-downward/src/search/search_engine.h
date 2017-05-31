@@ -30,7 +30,6 @@ public:
 private:
     SearchStatus status;
     bool solution_found;
-    Plan plan;
 protected:
     StateRegistry state_registry;
     SearchSpace search_space;
@@ -39,11 +38,14 @@ protected:
     int bound;
     OperatorCost cost_type;
     double max_time;
-
+///////////////////////
+    bool pre_phase;
+    Plan plan;
+///////////////////////
     virtual void initialize() {}
     virtual SearchStatus step() = 0;
-
     void set_plan(const Plan &plan);
+
     bool check_goal_and_set_plan(const GlobalState &state);
     int get_adjusted_cost(const GlobalOperator &op) const;
 public:
@@ -59,6 +61,7 @@ public:
     void set_bound(int b) {bound = b; }
     int get_bound() {return bound; }
     static void add_options_to_parser(options::OptionParser &parser);
+    void set_for_pre_phase(const Plan &p);
 };
 
 /*

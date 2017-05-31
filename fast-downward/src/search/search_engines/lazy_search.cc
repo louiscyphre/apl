@@ -154,17 +154,6 @@ SearchStatus LazySearch::step() {
     // - current_operator is the operator which leads to current_state from predecessor.
     // - current_g is the g value of the current state according to the cost_type
     // - current_real_g is the g value of the current state (using real costs)
-
-/*    vector<int> initv = {3,5,1,2,8,7,4,6,0};
-    cout<<"[l2=";
-    int seed=0;
-    vector<int> vals666 = current_state.get_values();
-    for(int i=0;i<9;++i)
-        seed += (vals666[i]-initv[i])*(vals666[i]-initv[i]);
-    cout<< to_string( sqrt(seed) );
-    cout<<", g="<<to_string(current_real_g)<<"]"<<endl;
-    cout<< "current state id: " << current_predecessor_id <<endl;
-*/
     SearchNode node = search_space.get_node(current_state);
     bool reopen = reopen_closed_nodes && !node.is_new() &&
                   !node.is_dead_end() && (current_g < node.get_g());
