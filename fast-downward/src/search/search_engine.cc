@@ -64,7 +64,7 @@ void SearchEngine::set_plan(const Plan &p) {
 ///////////////////////
 void SearchEngine::set_for_pre_phase(const Plan &p) {
     pre_phase = true;
-    plan = p;
+    last_plan = p;
 }
 ///////////////////////
 

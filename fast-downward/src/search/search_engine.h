@@ -30,6 +30,7 @@ public:
 private:
     SearchStatus status;
     bool solution_found;
+    Plan plan;
 protected:
     StateRegistry state_registry;
     SearchSpace search_space;
@@ -38,10 +39,11 @@ protected:
     int bound;
     OperatorCost cost_type;
     double max_time;
-///////////////////////
+    //////////////////////
     bool pre_phase;
-    Plan plan;
-///////////////////////
+    Plan last_plan;
+    int current_pre_phase_cost;
+    //////////////////////
     virtual void initialize() {}
     virtual SearchStatus step() = 0;
     void set_plan(const Plan &plan);

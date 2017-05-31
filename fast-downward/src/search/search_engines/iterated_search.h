@@ -21,10 +21,6 @@ class IteratedSearch : public SearchEngine {
     int best_bound;
     bool iterated_found_solution;
 
-    //////////////////////
-    Plan last_plan;
-    //////////////////////
-
     std::unique_ptr<SearchEngine> get_search_engine(int engine_config_start_index);
     std::unique_ptr<SearchEngine> create_phase(int phase);
     SearchStatus step_return_value();
