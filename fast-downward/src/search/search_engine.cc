@@ -33,6 +33,14 @@ SearchEngine::SearchEngine(const Options &opts)
         utils::exit_with(ExitCode::INPUT_ERROR);
     }
     bound = opts.get<int>("bound");
+    /////////////////////////////////////////
+    if (opts.get<double>("threshold") < 0.0 || 
+        opts.get<double>("threshold") > 1.0) {
+        cerr << "error: search threshold must be between 0.0 and 1.0" << endl;
+        utils::exit_with(ExitCode::INPUT_ERROR);
+    }
+    threshold = opts.get<double>("threshold");
+    /////////////////////////////////////////
 }
 
 SearchEngine::~SearchEngine() {
@@ -70,6 +78,9 @@ void SearchEngine::set_for_pre_phase(const Plan &p) {
 
 void SearchEngine::search() {
     initialize();
+    /////////////////////////////
+    cout << "Current search threshold: " << threshold << endl;
+    ///////////////////////////
     utils::CountdownTimer timer(max_time);
     while (status == IN_PROGRESS) {
         status = step();
@@ -108,8 +119,9 @@ void SearchEngine::add_options_to_parser(OptionParser &parser) {
     ::add_cost_type_option_to_parser(parser);
     parser.add_option<int>(
         "bound",
-        "exclusive depth bound on g-values. Cutoffs are always performed according to "
-        "the real cost, regardless of the cost_type parameter", "infinity");
+        "exclusive depth bound on g-values. Cutoffs are always performed"
+        " according to the real cost, regardless of the cost_type parameter",
+        "infinity");
     parser.add_option<double>(
         "max_time",
         "maximum time in seconds the search is allowed to run for. The "
@@ -119,6 +131,16 @@ void SearchEngine::add_options_to_parser(OptionParser &parser) {
         "experiments. Timed-out searches are treated as failed searches, "
         "just like incomplete search algorithms that exhaust their search space.",
         "infinity");
+    /////////////////////////////
+    parser.add_option<double>(
+        "threshold",
+        "varying from 0.0 to 1.0, threshold parameter is point in the search "
+        "path, from which the optimizing search will start. This option is useful when "
+        "plan already found, and we want to optimize it by skipping certain "
+        "part of the path up to threshold point, and start optimizing (A*) search"
+        "from this point. By default, searching from initial state.",
+        "0.0");
+   /////////////////////////////     
 }
 
 void print_initial_h_values(const EvaluationContext &eval_context) {

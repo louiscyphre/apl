@@ -40,6 +40,7 @@ protected:
     OperatorCost cost_type;
     double max_time;
     //////////////////////
+    double threshold;
     bool pre_phase;
     Plan last_plan;
     int current_pre_phase_cost;
