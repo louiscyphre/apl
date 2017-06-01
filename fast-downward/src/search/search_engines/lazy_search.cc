@@ -67,12 +67,22 @@ void LazySearch::initialize() {
     }
 }
 
-vector<const GlobalOperator *> LazySearch::get_successor_operators(
-    const algorithms::OrderedSet<const GlobalOperator *> &preferred_operators) const {
-    vector<const GlobalOperator *> applicable_operators;
-    g_successor_generator->generate_applicable_ops(
-        current_state, applicable_operators);
 
+
+// (nathan) This function was const before!
+vector<const GlobalOperator *> LazySearch::get_successor_operators(
+    const algorithms::OrderedSet<const GlobalOperator *> &preferred_operators) {
+    vector<const GlobalOperator *> applicable_operators;
+// START
+    if( pre_phase ){
+        return pre_phase_operator( current_real_g );
+    }
+    else{
+        // (nathan) These two lines were before the "if"
+        g_successor_generator->generate_applicable_ops(
+        current_state, applicable_operators);
+    }
+// END
     if (randomize_successors) {
         rng->shuffle(applicable_operators);
     }

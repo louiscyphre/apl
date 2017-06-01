@@ -14,6 +14,7 @@
 #include <cassert>
 #include <iostream>
 #include <limits>
+#include <algorithm>
 
 using namespace std;
 using utils::ExitCode;
@@ -40,6 +41,8 @@ SearchEngine::SearchEngine(const Options &opts)
         utils::exit_with(ExitCode::INPUT_ERROR);
     }
     threshold = opts.get<double>("threshold");
+
+    pre_phase = false;
     /////////////////////////////////////////
 }
 
@@ -70,9 +73,12 @@ void SearchEngine::set_plan(const Plan &p) {
 }
 
 ///////////////////////
-void SearchEngine::set_for_pre_phase(const Plan &p) {
+void SearchEngine::set_for_pre_phase(const Plan &p, int cost) {
     pre_phase = true;
+    // We are reversing the plan so we can easily use "pop" later.
     last_plan = p;
+    current_phase_op = last_plan.begin();
+    last_plan_cost = cost;
 }
 ///////////////////////
 
@@ -143,6 +149,17 @@ void SearchEngine::add_options_to_parser(OptionParser &parser) {
    /////////////////////////////     
 }
 
+// START
+vector<const GlobalOperator *> SearchEngine::pre_phase_operator(int real_g){
+    vector<const GlobalOperator *> applicable_operators;
+    if( real_g + (*current_phase_op)->get_cost() >= threshold*last_plan_cost ){
+        pre_phase = false;
+    }
+    applicable_operators.push_back( *current_phase_op );
+    ++current_phase_op;
+    return applicable_operators;
+}
+// END
 void print_initial_h_values(const EvaluationContext &eval_context) {
     eval_context.get_cache().for_each_heuristic_value(
         [] (const Heuristic *heur, const EvaluationResult &result) {

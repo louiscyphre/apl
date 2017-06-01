@@ -5,16 +5,17 @@
 #include<unordered_map>
 #include<algorithm>
 #include<fstream>
+#include<iterator>
 using namespace std;
 
 int main()
 {
-    string key; string value;
-    fstream f;
-    std::unordered_map<long,int> m;
-    m[666] = 10;
-    for( auto it : m )
-        m[ it.first ] += 50;
-    cout << to_string( m[666] ) <<endl;
-
+    vector<string> vec;
+    vector<string>::iterator it;
+    vec.push_back("666");
+    vec.push_back("1666");
+    vec.push_back("16666");
+    it = vec.begin();
+    std::cout<< *it <<std::endl;
+    std::cout<< *++it <<std::endl;
 }
