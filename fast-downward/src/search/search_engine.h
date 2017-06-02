@@ -27,7 +27,9 @@ enum SearchStatus {IN_PROGRESS, TIMEOUT, FAILED, SOLVED};
 class SearchEngine {
 public:
     typedef std::vector<const GlobalOperator *> Plan;
+    // #apl Nathan & Michael START  
     typedef std::vector<const GlobalOperator *>::iterator Op;
+    // #apl Nathan & Michael END 
 private:
     SearchStatus status;
     bool solution_found;

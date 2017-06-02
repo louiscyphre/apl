@@ -73,17 +73,16 @@ void LazySearch::initialize() {
 vector<const GlobalOperator *> LazySearch::get_successor_operators(
     const algorithms::OrderedSet<const GlobalOperator *> &preferred_operators) {
     vector<const GlobalOperator *> applicable_operators;
-// START
+// #apl Nathan & Michael START
     if( pre_phase ){
-        // (misha) to avoid side effects, just add operator to list and continue
-        pre_phase_operator(current_real_g, applicable_operators);
+        return pre_phase_operator(current_real_g, applicable_operators);
     }
     else{
         // (nathan) These two lines were before the "if"
         g_successor_generator->generate_applicable_ops(
         current_state, applicable_operators);
     }
-// END
+// #apl Nathan & Michael END
     if (randomize_successors) {
         rng->shuffle(applicable_operators);
     }
