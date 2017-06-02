@@ -158,7 +158,9 @@ std::vector<const GlobalOperator *> SearchEngine::pre_phase_operator(
     //vector<const GlobalOperator *> applicable_operators;
     if( real_g + (*current_phase_op)->get_cost() >= threshold*last_plan_cost ){
         pre_phase = false;
-        cout << "Prephase finished, starting real search." << endl;
+        std::cout << "---------------------------------------" <<endl;
+        std::cout << "Prephase finished, starting real search." << endl;
+        std::cout << "---------------------------------------" <<endl;
     }
     applicable_ops.push_back( *current_phase_op );
     ++current_phase_op;
