@@ -75,6 +75,9 @@ void SearchEngine::set_plan(const Plan &p) {
 
 // #apl Nathan & Michael START ------>
 void SearchEngine::set_for_pre_phase(const Plan &p, int cost) {
+    std::cout << "---------------------------------------" <<endl;
+    std::cout << "Pre phase starting." << endl;
+    std::cout << "---------------------------------------" <<endl;
     pre_phase = true;
     // We are reversing the plan so we can easily use "pop" later.
     last_plan = p;

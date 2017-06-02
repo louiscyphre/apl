@@ -17,7 +17,12 @@
 #include <vector>
 #include <cmath>
 
-#define DEBUG_OPERRET true
+
+// #apl Nathan & Michael START ------>
+#include <string>
+// #apl Nathan & Michael END <------
+
+#define DEBUG_OPERRET false
 
 using namespace std;
 
@@ -115,7 +120,7 @@ void LazySearch::generate_successors() {
         get_successor_operators(preferred_operators);
 
     statistics.inc_generated(successor_operators.size());
-
+    
     for (const GlobalOperator *op : successor_operators) {
         int new_g = current_g + get_adjusted_cost(*op);
         int new_real_g = current_real_g + op->get_cost();
@@ -127,6 +132,7 @@ void LazySearch::generate_successors() {
         }
     }
 }
+
 
 SearchStatus LazySearch::fetch_next_state() {
     if (open_list->empty()) {
@@ -141,7 +147,7 @@ SearchStatus LazySearch::fetch_next_state() {
     // #apl Nathan & Michael START ------>
     if( DEBUG_OPERRET ){
         if( pre_phase ){
-            std::cout<< "operator used in pre phase: " + current_operator->get_name() <<endl;
+            std::cout<< current_operator->get_name() + "(" + to_string(current_operator->get_cost()) + ")" <<endl;
         }
     }
     // #apl Nathan & Michael END <------
@@ -165,6 +171,7 @@ SearchStatus LazySearch::fetch_next_state() {
 
     return IN_PROGRESS;
 }
+
 
 SearchStatus LazySearch::step() {
     // Invariants:
