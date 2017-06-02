@@ -150,14 +150,17 @@ void SearchEngine::add_options_to_parser(OptionParser &parser) {
 }
 
 // START
-vector<const GlobalOperator *> SearchEngine::pre_phase_operator(int real_g){
-    vector<const GlobalOperator *> applicable_operators;
+std::vector<const GlobalOperator *> SearchEngine::pre_phase_operator(
+    const int real_g,
+    std::vector<const GlobalOperator *> &applicable_ops){
+    //vector<const GlobalOperator *> applicable_operators;
     if( real_g + (*current_phase_op)->get_cost() >= threshold*last_plan_cost ){
         pre_phase = false;
+        cout << "Prephase finished, starting real search." << endl;
     }
-    applicable_operators.push_back( *current_phase_op );
+    applicable_ops.push_back( *current_phase_op );
     ++current_phase_op;
-    return applicable_operators;
+    return applicable_ops;
 }
 // END
 void print_initial_h_values(const EvaluationContext &eval_context) {

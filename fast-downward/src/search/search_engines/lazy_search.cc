@@ -75,7 +75,8 @@ vector<const GlobalOperator *> LazySearch::get_successor_operators(
     vector<const GlobalOperator *> applicable_operators;
 // START
     if( pre_phase ){
-        return pre_phase_operator( current_real_g );
+        // (misha) to avoid side effects, just add operator to list and continue
+        pre_phase_operator(current_real_g, applicable_operators);
     }
     else{
         // (nathan) These two lines were before the "if"
