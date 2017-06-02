@@ -64,8 +64,7 @@ SearchStatus IteratedSearch::step() {
     ++phase;
 
     // #apl Nathan & Michael START ------>
-    if (opts.get<double>("threshold") < 0.0 || 
-    if( last_phase_found_solution ){
+    if( current_search->get_threshold() != -1 && last_phase_found_solution ){
         current_search->set_for_pre_phase( last_plan, last_plan_cost );
     }
     // #apl Nathan & Michael END <------

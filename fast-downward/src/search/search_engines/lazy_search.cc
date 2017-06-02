@@ -17,6 +17,8 @@
 #include <vector>
 #include <cmath>
 
+#define DEBUG_OPERRET true
+
 using namespace std;
 
 namespace lazy_search {
@@ -75,7 +77,7 @@ vector<const GlobalOperator *> LazySearch::get_successor_operators(
     vector<const GlobalOperator *> applicable_operators;
     // #apl Nathan & Michael START ------>
     if( pre_phase ){
-        return pre_phase_operator(current_real_g, applicable_operators);
+        return pre_phase_operator(current_real_g);
     }
     else{
         // (nathan) These two lines were before the "if"
@@ -136,6 +138,13 @@ SearchStatus LazySearch::fetch_next_state() {
 
     current_predecessor_id = next.first;
     current_operator = &g_operators[next.second];
+    // #apl Nathan & Michael START ------>
+    if( DEBUG_OPERRET ){
+        if( pre_phase ){
+            std::cout<< "operator used in pre phase: " + current_operator->get_name() <<endl;
+        }
+    }
+    // #apl Nathan & Michael END <------
     GlobalState current_predecessor = state_registry.lookup_state(current_predecessor_id);
     assert(current_operator->is_applicable(current_predecessor));
     current_state = state_registry.get_successor_state(current_predecessor, *current_operator);

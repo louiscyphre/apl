@@ -152,19 +152,23 @@ void SearchEngine::add_options_to_parser(OptionParser &parser) {
 }
 
 // #apl Nathan & Michael START ------>
-std::vector<const GlobalOperator *> SearchEngine::pre_phase_operator(
-    const int real_g,
-    std::vector<const GlobalOperator *> &applicable_ops){
-    //vector<const GlobalOperator *> applicable_operators;
+std::vector<const GlobalOperator *> SearchEngine::pre_phase_operator(const int &real_g){
+    vector<const GlobalOperator *> vec_for_op;
     if( real_g + (*current_phase_op)->get_cost() >= threshold*last_plan_cost ){
         pre_phase = false;
         std::cout << "---------------------------------------" <<endl;
-        std::cout << "Prephase finished, starting real search." << endl;
+        std::cout << "Pre phase finished, starting real search." << endl;
         std::cout << "---------------------------------------" <<endl;
     }
-    applicable_ops.push_back( *current_phase_op );
+    vec_for_op.push_back( *current_phase_op );
     ++current_phase_op;
-    return applicable_ops;
+    return vec_for_op;
+}
+// #apl Nathan & Michael END <------
+
+// #apl Nathan & Michael START ------>
+double SearchEngine::get_threshold() const{
+    return threshold;
 }
 // #apl Nathan & Michael END <------
 

@@ -56,8 +56,7 @@ protected:
     bool check_goal_and_set_plan(const GlobalState &state);
     int get_adjusted_cost(const GlobalOperator &op) const;
     // #apl Nathan & Michael START ------>
-    std::vector<const GlobalOperator *> pre_phase_operator(
-        const int real_g, std::vector<const GlobalOperator *> &applicable_ops);
+    std::vector<const GlobalOperator *> pre_phase_operator(const int &real_g);
     // #apl Nathan & Michael END <------
 public:
     SearchEngine(const options::Options &opts);
@@ -74,6 +73,7 @@ public:
     static void add_options_to_parser(options::OptionParser &parser);
     // #apl Nathan & Michael START ------>
     void set_for_pre_phase(const Plan &p, int cost);
+    double get_threshold() const;
     // #apl Nathan & Michael END <------  
 };
 
