@@ -144,7 +144,6 @@ SearchStatus LazySearch::fetch_next_state() {
 
     current_predecessor_id = next.first;
     current_operator = &g_operators[next.second];
-<<<<<<< HEAD
     // #apl Nathan & Michael START ------>
     if( DEBUG_OPERRET ){
         if( pre_phase ){
@@ -152,8 +151,6 @@ SearchStatus LazySearch::fetch_next_state() {
         }
     }
     // #apl Nathan & Michael END <------
-=======
->>>>>>> 3033c14e3a72d4d8d6a476f8782900b1166ee04d
     GlobalState current_predecessor = state_registry.lookup_state(current_predecessor_id);
     assert(current_operator->is_applicable(current_predecessor));
     current_state = state_registry.get_successor_state(current_predecessor, *current_operator);
