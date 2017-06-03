@@ -7,6 +7,8 @@
 #include <cassert>
 #include "search_node_info.h"
 
+#define DEBUG_OPERRET false 
+
 using namespace std;
 
 SearchNode::SearchNode(const StateRegistry &state_registry,
@@ -138,6 +140,12 @@ void SearchSpace::trace_path(const GlobalState &goal_state,
         assert(utils::in_bounds(info.creating_operator, g_operators));
         const GlobalOperator *op = &g_operators[info.creating_operator];
         path.push_back(op);
+        // #apl Nathan & Michael START ------>
+        if( DEBUG_OPERRET ){
+            std::cout<< to_string( current_state.get_hash() ) <<std::endl;
+        }
+        // #apl Nathan & Michael END <------
+
         current_state = state_registry.lookup_state(info.parent_state_id);
     }
     reverse(path.begin(), path.end());
