@@ -51,4 +51,6 @@ try
 
 fast-downward/builds
 /VAL
+/lab
+fast-downward/driver/.cache/
 

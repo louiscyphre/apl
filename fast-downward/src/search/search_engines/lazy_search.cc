@@ -144,13 +144,16 @@ SearchStatus LazySearch::fetch_next_state() {
 
     current_predecessor_id = next.first;
     current_operator = &g_operators[next.second];
+<<<<<<< HEAD
     // #apl Nathan & Michael START ------>
     if( DEBUG_OPERRET ){
         if( pre_phase ){
-            std::cout<< current_operator->get_name() + "(" + to_string(current_operator->get_cost()) + ")" <<endl;
+            cout<< current_operator->get_name() + "(" + to_string(current_operator->get_cost()) + ")" <<endl;
         }
     }
     // #apl Nathan & Michael END <------
+=======
+>>>>>>> 3033c14e3a72d4d8d6a476f8782900b1166ee04d
     GlobalState current_predecessor = state_registry.lookup_state(current_predecessor_id);
     assert(current_operator->is_applicable(current_predecessor));
     current_state = state_registry.get_successor_state(current_predecessor, *current_operator);
@@ -193,13 +196,17 @@ SearchStatus LazySearch::step() {
         }
         GlobalState parent_state = state_registry.lookup_state(dummy_id);
         SearchNode parent_node = search_space.get_node(parent_state);
-
         if (current_operator) {
             for (Heuristic *heuristic : heuristics)
                 heuristic->notify_state_transition(
                     parent_state, *current_operator, current_state);
         }
         statistics.inc_evaluated_states();
+        // #apl Nathan & Michael START ------>
+        if( DEBUG_OPERRET && pre_phase ){
+            std::cout<< to_string( current_state.get_hash() ) <<std::endl;
+        }
+        // #apl Nathan & Michael END <------
         if (!open_list->is_dead_end(current_eval_context)) {
             // TODO: Generalize code for using multiple heuristics.
             if (reopen) {

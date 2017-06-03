@@ -75,9 +75,9 @@ void SearchEngine::set_plan(const Plan &p) {
 
 // #apl Nathan & Michael START ------>
 void SearchEngine::set_for_pre_phase(const Plan &p, int cost) {
-    std::cout << "---------------------------------------" <<endl;
-    std::cout << "Pre phase starting." << endl;
-    std::cout << "---------------------------------------" <<endl;
+    cout << "---------------------------------------" <<endl;
+    cout << "Pre phase starting." << endl;
+    cout << "---------------------------------------" <<endl;
     pre_phase = true;
     // We are reversing the plan so we can easily use "pop" later.
     last_plan = p;
@@ -155,13 +155,13 @@ void SearchEngine::add_options_to_parser(OptionParser &parser) {
 }
 
 // #apl Nathan & Michael START ------>
-std::vector<const GlobalOperator *> SearchEngine::pre_phase_operator(const int &real_g){
+vector<const GlobalOperator *> SearchEngine::pre_phase_operator(const int &real_g){
     vector<const GlobalOperator *> vec_for_op;
     if( real_g + (*current_phase_op)->get_cost() >= threshold*last_plan_cost ){
         pre_phase = false;
-        std::cout << "---------------------------------------" <<endl;
-        std::cout << "Pre phase finished, starting real search." << endl;
-        std::cout << "---------------------------------------" <<endl;
+        cout << "---------------------------------------" <<endl;
+        cout << "Pre phase finished, starting real search." << endl;
+        cout << "---------------------------------------" <<endl;
     }
     vec_for_op.push_back( *current_phase_op );
     ++current_phase_op;
