@@ -1,0 +1,316 @@
+<?xml version="1.0"
+      encoding="UTF-8"
+?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>report</title>
+<meta name="generator" content="http://txt2tags.sf.net" />
+<style type="text/css">
+    body {
+        font-family: Ubuntu, Helvetica, Arial, sans-serif;
+    }
+    blockquote {
+        margin: 1em 2em;
+        border-left: 2px solid #999;
+        font-style: oblique;
+        padding-left: 1em;
+    }
+    blockquote:first-letter {
+        margin: .2em .1em .1em 0;
+        font-size: 160%;
+        font-weight: bold;
+    }
+    blockquote:first-line {
+        font-weight: bold;
+    }
+    table {
+        border-collapse: collapse;
+    }
+    td, th {
+        <!--border: 1px solid #888;--> <!--Allow tables without borders-->
+        padding: 3px 7px 2px 7px;
+    }
+    th {
+        text-align: left;
+        padding-top: 5px;
+        padding-bottom: 4px;
+        background-color: #aaa;
+        color: #ffffff;
+    }
+    hr.heavy {
+        height: 2px;
+        background-color: black;
+    }
+</style>
+<script type="text/javascript">
+function toggle_element(element) {
+    if (element.style.display == "none") {
+        element.style.display = "";
+    } else {
+        element.style.display = "none";
+    }
+}
+
+function find_next(element, classname) {
+    element = element.nextSibling;
+    while(element.nodeName != classname)
+        element = element.nextSibling;
+    return element;
+}
+
+function toggle_table(toggle_button) {
+    toggle_element(find_next(toggle_button, "TABLE"));
+    if (toggle_button.innerHTML == "Show table") {
+        toggle_button.innerHTML = "Hide table";
+    } else {
+        toggle_button.innerHTML = "Show table";
+    }
+}
+
+function show_table(link) {
+    var toggle_button = find_next(link, "BUTTON");
+    var table = find_next(toggle_button, "TABLE");
+    table.style.display = "";
+    toggle_button.innerHTML = "Hide table";
+}
+
+function show_overview_tables() {
+    var names = ["unexplained-errors", "info", "summary"];
+    for (var i = 0; i < names.length; i++) {
+        var link = document.getElementById(names[i]);
+        if (link) {
+            show_table(link);
+        }
+    }
+}
+
+document.addEventListener("DOMContentLoaded", show_overview_tables);
+</script>
+</head>
+<body>
+
+<div class="header" id="header">
+<h1>report</h1>
+<h3>2017-06-04</h3>
+</div>
+
+<div class="body" id="body">
+
+<ul>
+<li><b><a href="#info" onclick="show_table(document.getElementById('info'));">Info</a></b>
+</li>
+<li><b><a href="#summary" onclick="show_table(document.getElementById('summary'));">Summary</a></b>
+</li>
+<li><b><a href="#coverage" onclick="show_table(document.getElementById('coverage'));">coverage</a></b>
+  <ul>
+  <li><a href="#coverage-depot" onclick="show_table(document.getElementById('coverage-depot'));">depot</a> <a href="#coverage-gripper" onclick="show_table(document.getElementById('coverage-gripper'));">gripper</a>
+  </li>
+  </ul>
+</li>
+<li><b><a href="#expansions" onclick="show_table(document.getElementById('expansions'));">expansions</a></b>
+  <ul>
+  <li><a href="#expansions-depot" onclick="show_table(document.getElementById('expansions-depot'));">depot</a> <a href="#expansions-gripper" onclick="show_table(document.getElementById('expansions-gripper'));">gripper</a>
+  </li>
+  </ul>
+</li>
+</ul>
+
+<a id="info" name="info"></a>
+<h1>info</h1>
+
+<button type="button" class="toggle-table" onclick="toggle_table(this)">Show table</button><p></p>
+
+<table border="1" style="display:none">
+<tr>
+<th>algorithm</th>
+<th>local_<wbr>revision</th>
+<th>global_<wbr>revision</th>
+<th>revision_<wbr>summary</th>
+<th>build_<wbr>options</th>
+<th>driver_<wbr>options</th>
+<th>component_<wbr>options</th>
+</tr>
+<tr>
+<td>blind</td>
+<td>default</td>
+<td>b850cf57c2f2</td>
+<td>b850cf57c2f2 tip</td>
+<td>['-j4']</td>
+<td>['--validate', '--search-time-limit', '30m', '--search-memory-limit', '2G']</td>
+<td>['--search', 'astar(blind())']</td>
+</tr>
+<tr>
+<td>lmcut</td>
+<td>default</td>
+<td>b850cf57c2f2</td>
+<td>b850cf57c2f2 tip</td>
+<td>['-j4']</td>
+<td>['--validate', '--search-time-limit', '30m', '--search-memory-limit', '2G']</td>
+<td>['--search', 'astar(lmcut())']</td>
+</tr>
+</table>
+
+<a id="summary" name="summary"></a>
+<h1>summary</h1>
+
+<button type="button" class="toggle-table" onclick="toggle_table(this)">Show table</button><p></p>
+
+<table border="1" style="display:none">
+<tr>
+<th>Summary</th>
+<th>blind</th>
+<th>lmcut</th>
+</tr>
+<tr>
+<td><a href="#coverage" onclick="show_table(document.getElementById('coverage'));">coverage - Sum</a></td>
+<td align="right"><span style="color:rgb(127,127,127)">2</span></td>
+<td align="right"><span style="color:rgb(127,127,127)">2</span></td>
+</tr>
+<tr>
+<td><a href="#expansions" onclick="show_table(document.getElementById('expansions'));">expansions - Geometric mean</a></td>
+<td align="right"><span style="color:rgb(0,0,178)">309.19</span></td>
+<td align="right"><span style="color:rgb(0,178,0)">35.83</span></td>
+</tr>
+</table>
+
+<a id="coverage" name="coverage"></a>
+<h1>coverage</h1>
+
+<button type="button" class="toggle-table" onclick="toggle_table(this)">Show table</button><p></p>
+
+<table border="1" style="display:none">
+<tr>
+<th>coverage</th>
+<th>blind</th>
+<th>lmcut</th>
+</tr>
+<tr>
+<td><a href="#coverage-depot" onclick="show_table(document.getElementById('coverage-depot'));">depot</a> (1)</td>
+<td align="right"><span style="color:rgb(127,127,127)">1</span></td>
+<td align="right"><span style="color:rgb(127,127,127)">1</span></td>
+</tr>
+<tr>
+<td><a href="#coverage-gripper" onclick="show_table(document.getElementById('coverage-gripper'));">gripper</a> (1)</td>
+<td align="right"><span style="color:rgb(127,127,127)">1</span></td>
+<td align="right"><span style="color:rgb(127,127,127)">1</span></td>
+</tr>
+<tr>
+<td><b>Sum (2)</b></td>
+<td align="right"><span style="color:rgb(127,127,127)">2</span></td>
+<td align="right"><span style="color:rgb(127,127,127)">2</span></td>
+</tr>
+</table>
+
+<p>
+The last row reports the sum across all domains.
+</p>
+
+<a id="coverage-depot" name="coverage-depot"></a>
+<h2>depot</h2>
+
+<button type="button" class="toggle-table" onclick="toggle_table(this)">Show table</button><p></p>
+
+<table border="1" style="display:none">
+<tr>
+<th>coverage</th>
+<th>blind</th>
+<th>lmcut</th>
+</tr>
+<tr>
+<td>p01.pddl</td>
+<td align="right"><span style="color:rgb(127,127,127)">1</span></td>
+<td align="right"><span style="color:rgb(127,127,127)">1</span></td>
+</tr>
+</table>
+
+<a id="coverage-gripper" name="coverage-gripper"></a>
+<h2>gripper</h2>
+
+<button type="button" class="toggle-table" onclick="toggle_table(this)">Show table</button><p></p>
+
+<table border="1" style="display:none">
+<tr>
+<th>coverage</th>
+<th>blind</th>
+<th>lmcut</th>
+</tr>
+<tr>
+<td>prob01.pddl</td>
+<td align="right"><span style="color:rgb(127,127,127)">1</span></td>
+<td align="right"><span style="color:rgb(127,127,127)">1</span></td>
+</tr>
+</table>
+
+<a id="expansions" name="expansions"></a>
+<h1>expansions</h1>
+
+<button type="button" class="toggle-table" onclick="toggle_table(this)">Show table</button><p></p>
+
+<table border="1" style="display:none">
+<tr>
+<th>expansions</th>
+<th>blind</th>
+<th>lmcut</th>
+</tr>
+<tr>
+<td><a href="#expansions-depot" onclick="show_table(document.getElementById('expansions-depot'));">depot</a> (1)</td>
+<td align="right"><span style="color:rgb(0,0,178)">400.00</span></td>
+<td align="right"><span style="color:rgb(0,178,0)">12.00</span></td>
+</tr>
+<tr>
+<td><a href="#expansions-gripper" onclick="show_table(document.getElementById('expansions-gripper'));">gripper</a> (1)</td>
+<td align="right"><span style="color:rgb(0,0,178)">239.00</span></td>
+<td align="right"><span style="color:rgb(0,178,0)">107.00</span></td>
+</tr>
+<tr>
+<td><b>Geometric mean (2)</b></td>
+<td align="right"><span style="color:rgb(0,0,178)">309.19</span></td>
+<td align="right"><span style="color:rgb(0,178,0)">35.83</span></td>
+</tr>
+</table>
+
+<p>
+Only instances where all algorithms have a value for "expansions" are considered. Each table entry gives the geometric mean of "expansions" for that domain. The last row reports the geometric mean across all domains.
+</p>
+
+<a id="expansions-depot" name="expansions-depot"></a>
+<h2>depot</h2>
+
+<button type="button" class="toggle-table" onclick="toggle_table(this)">Show table</button><p></p>
+
+<table border="1" style="display:none">
+<tr>
+<th>expansions</th>
+<th>blind</th>
+<th>lmcut</th>
+</tr>
+<tr>
+<td>p01.pddl</td>
+<td align="right"><span style="color:rgb(0,0,178)">400</span></td>
+<td align="right"><span style="color:rgb(0,178,0)">12</span></td>
+</tr>
+</table>
+
+<a id="expansions-gripper" name="expansions-gripper"></a>
+<h2>gripper</h2>
+
+<button type="button" class="toggle-table" onclick="toggle_table(this)">Show table</button><p></p>
+
+<table border="1" style="display:none">
+<tr>
+<th>expansions</th>
+<th>blind</th>
+<th>lmcut</th>
+</tr>
+<tr>
+<td>prob01.pddl</td>
+<td align="right"><span style="color:rgb(0,0,178)">239</span></td>
+<td align="right"><span style="color:rgb(0,178,0)">107</span></td>
+</tr>
+</table>
+
+</div>
+<!-- xhtml code generated by txt2tags 2.6b (http://txt2tags.sf.net) -->
+<!-- cmdline: txt2tags  -->
+</body></html>

@@ -1,0 +1,149 @@
+INFO     Running translator.
+INFO     translator input: ['domain.pddl', 'problem.pddl']
+INFO     translator arguments: []
+INFO     translator time limit: None
+INFO     translator memory limit: None
+INFO     callstring: /usr/bin/python /home/student/Projects/apl/lab/examples/data/lmcut/code-b850cf57c2f2/builds/release32/bin/translate/translate.py domain.pddl problem.pddl
+Parsing...
+Parsing: [0.000s CPU, 0.002s wall-clock]
+Normalizing task... [0.000s CPU, 0.000s wall-clock]
+Instantiating...
+Generating Datalog program... [0.000s CPU, 0.000s wall-clock]
+Normalizing Datalog program...
+Normalizing Datalog program: [0.000s CPU, 0.001s wall-clock]
+Preparing model... [0.010s CPU, 0.001s wall-clock]
+Generated 24 rules.
+Computing model... [0.000s CPU, 0.001s wall-clock]
+81 relevant atoms
+60 auxiliary atoms
+141 final queue length
+180 total queue pushes
+Completing instantiation... [0.000s CPU, 0.001s wall-clock]
+Instantiating: [0.010s CPU, 0.005s wall-clock]
+Computing fact groups...
+Finding invariants...
+10 initial candidates
+Finding invariants: [0.000s CPU, 0.001s wall-clock]
+Checking invariant weight... [0.000s CPU, 0.000s wall-clock]
+Instantiating groups... [0.000s CPU, 0.000s wall-clock]
+Collecting mutex groups... [0.000s CPU, 0.000s wall-clock]
+Choosing groups...
+0 uncovered facts
+Choosing groups: [0.000s CPU, 0.000s wall-clock]
+Building translation key... [0.000s CPU, 0.000s wall-clock]
+Computing fact groups: [0.000s CPU, 0.002s wall-clock]
+Building STRIPS to SAS dictionary... [0.000s CPU, 0.000s wall-clock]
+Building dictionary for full mutex groups... [0.000s CPU, 0.000s wall-clock]
+Building mutex information...
+Building mutex information: [0.000s CPU, 0.000s wall-clock]
+Translating task...
+Processing axioms...
+Simplifying axioms... [0.000s CPU, 0.000s wall-clock]
+Processing axioms: [0.000s CPU, 0.000s wall-clock]
+Translating task: [0.000s CPU, 0.002s wall-clock]
+0 effect conditions simplified
+0 implied preconditions added
+Detecting unreachable propositions...
+0 operators removed
+0 axioms removed
+3 propositions removed
+Detecting unreachable propositions: [0.000s CPU, 0.001s wall-clock]
+Reordering and filtering variables...
+7 of 7 variables necessary.
+4 of 7 mutex groups necessary.
+34 of 34 operators necessary.
+0 of 0 axiom rules necessary.
+Reordering and filtering variables: [0.000s CPU, 0.000s wall-clock]
+Translator variables: 7
+Translator derived variables: 0
+Translator facts: 24
+Translator goal facts: 4
+Translator mutex groups: 4
+Translator total mutex groups size: 16
+Translator operators: 34
+Translator axioms: 0
+Translator task size: 233
+Translator peak memory: 27620 KB
+Writing output... [0.000s CPU, 0.000s wall-clock]
+Done! [0.010s CPU, 0.013s wall-clock]
+INFO     Running search (release32).
+INFO     search input: output.sas
+INFO     search arguments: ['--search', 'astar(blind())']
+INFO     search time limit: 1800s
+INFO     search memory limit: 2048 MB
+INFO     search executable: /home/student/Projects/apl/lab/examples/data/lmcut/code-b850cf57c2f2/builds/release32/bin/downward
+INFO     callstring: /home/student/Projects/apl/lab/examples/data/lmcut/code-b850cf57c2f2/builds/release32/bin/downward --search 'astar(blind())' --internal-plan-file sas_plan < output.sas
+time limit 1800.00 -> (1800, 1801)
+reading input... [t=2.8429e-05s]
+done reading input! [t=0.00032329s]
+packing state variables...done! [t=0.000341966s]
+Variables: 7
+FactPairs: 24
+Bytes per state: 4
+Building successor generator...done! [t=0.000405178s]
+done initializing global data [t=0.000413962s]
+Initializing blind search heuristic...
+Conducting best first search with reopening closed nodes, (real) bound = 2147483647
+New best heuristic value for blind: 1
+[g=0, 1 evaluated, 0 expanded, t=0.000574196s, 4276 KB]
+f = 1 [1 evaluated, 0 expanded, t=0.000617572s, 4276 KB]
+Initial heuristic value for blind: 1
+pruning method: none
+f = 2 [10 evaluated, 1 expanded, t=0.000683848s, 4276 KB]
+f = 3 [30 evaluated, 10 expanded, t=0.000758953s, 4276 KB]
+f = 4 [46 evaluated, 30 expanded, t=0.000834159s, 4276 KB]
+f = 5 [74 evaluated, 46 expanded, t=0.000920126s, 4276 KB]
+f = 6 [104 evaluated, 74 expanded, t=0.00103249s, 4276 KB]
+f = 7 [134 evaluated, 104 expanded, t=0.00116526s, 4276 KB]
+f = 8 [182 evaluated, 134 expanded, t=0.00129996s, 4276 KB]
+f = 9 [218 evaluated, 182 expanded, t=0.00144497s, 4276 KB]
+f = 10 [234 evaluated, 218 expanded, t=0.00154907s, 4276 KB]
+f = 11 [246 evaluated, 234 expanded, t=0.00161809s, 4276 KB]
+New best heuristic value for blind: 0
+[g=11, 253 evaluated, 238 expanded, t=0.0016698s, 4276 KB]
+Solution found!
+Actual search time: 0.00104251s [t=0.0017065s]
+pick ball1 rooma left (1)
+pick ball2 rooma right (1)
+move rooma roomb (1)
+drop ball1 roomb left (1)
+drop ball2 roomb right (1)
+move roomb rooma (1)
+pick ball3 rooma left (1)
+pick ball4 rooma right (1)
+move rooma roomb (1)
+drop ball3 roomb left (1)
+drop ball4 roomb right (1)
+Plan length: 11 step(s).
+Plan cost: 11
+Expanded 239 state(s).
+Reopened 0 state(s).
+Evaluated 253 state(s).
+Evaluations: 253
+Generated 832 state(s).
+Dead ends: 0 state(s).
+Expanded until last jump: 234 state(s).
+Reopened until last jump: 0 state(s).
+Evaluated until last jump: 246 state(s).
+Generated until last jump: 818 state(s).
+Number of registered states: 253
+Search time: 0.00116754s
+Total time: 0.00171487s
+Solution found.
+Peak memory: 4276 KB
+INFO     Running validate.
+INFO     validate input: ['domain.pddl', 'problem.pddl', 'sas_plan']
+INFO     validate arguments: []
+INFO     validate time limit: None
+INFO     validate memory limit: 0 MB
+INFO     callstring: validate domain.pddl problem.pddl sas_plan
+Checking plan: sas_plan
+Plan executed successfully - checking goal
+Plan valid
+Final value: 11 
+
+Successful plans:
+Value: 11
+ sas_plan 11 
+
+Running single search parser

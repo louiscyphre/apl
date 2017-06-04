@@ -1,0 +1,155 @@
+INFO     Running translator.
+INFO     translator input: ['domain.pddl', 'problem.pddl']
+INFO     translator arguments: []
+INFO     translator time limit: None
+INFO     translator memory limit: None
+INFO     callstring: /usr/bin/python /home/student/Projects/apl/lab/examples/data/lmcut/code-b850cf57c2f2/builds/release32/bin/translate/translate.py domain.pddl problem.pddl
+Parsing...
+Parsing: [0.010s CPU, 0.007s wall-clock]
+Normalizing task... [0.000s CPU, 0.000s wall-clock]
+Instantiating...
+Generating Datalog program... [0.000s CPU, 0.000s wall-clock]
+Normalizing Datalog program...
+Normalizing Datalog program: [0.010s CPU, 0.007s wall-clock]
+Preparing model... [0.000s CPU, 0.002s wall-clock]
+Generated 61 rules.
+Computing model... [0.000s CPU, 0.006s wall-clock]
+181 relevant atoms
+255 auxiliary atoms
+436 final queue length
+594 total queue pushes
+Completing instantiation... [0.010s CPU, 0.005s wall-clock]
+Instantiating: [0.020s CPU, 0.021s wall-clock]
+Computing fact groups...
+Finding invariants...
+16 initial candidates
+Finding invariants: [0.010s CPU, 0.009s wall-clock]
+Checking invariant weight... [0.000s CPU, 0.000s wall-clock]
+Instantiating groups... [0.000s CPU, 0.001s wall-clock]
+Collecting mutex groups... [0.000s CPU, 0.000s wall-clock]
+Choosing groups...
+14 uncovered facts
+Choosing groups: [0.000s CPU, 0.000s wall-clock]
+Building translation key... [0.000s CPU, 0.000s wall-clock]
+Computing fact groups: [0.010s CPU, 0.011s wall-clock]
+Building STRIPS to SAS dictionary... [0.000s CPU, 0.000s wall-clock]
+Building dictionary for full mutex groups... [0.000s CPU, 0.000s wall-clock]
+Building mutex information...
+Building mutex information: [0.000s CPU, 0.000s wall-clock]
+Translating task...
+Processing axioms...
+Simplifying axioms... [0.000s CPU, 0.000s wall-clock]
+Processing axioms: [0.000s CPU, 0.000s wall-clock]
+Translating task: [0.000s CPU, 0.005s wall-clock]
+72 effect conditions simplified
+0 implied preconditions added
+Detecting unreachable propositions...
+0 operators removed
+0 axioms removed
+18 propositions removed
+Detecting unreachable propositions: [0.010s CPU, 0.002s wall-clock]
+Reordering and filtering variables...
+14 of 14 variables necessary.
+10 of 14 mutex groups necessary.
+72 of 72 operators necessary.
+0 of 0 axiom rules necessary.
+Reordering and filtering variables: [0.000s CPU, 0.001s wall-clock]
+Translator variables: 14
+Translator derived variables: 0
+Translator facts: 48
+Translator goal facts: 2
+Translator mutex groups: 10
+Translator total mutex groups size: 48
+Translator operators: 72
+Translator axioms: 0
+Translator task size: 622
+Translator peak memory: 28556 KB
+Writing output... [0.000s CPU, 0.001s wall-clock]
+Done! [0.050s CPU, 0.048s wall-clock]
+INFO     Running search (release32).
+INFO     search input: output.sas
+INFO     search arguments: ['--search', 'astar(lmcut())']
+INFO     search time limit: 1800s
+INFO     search memory limit: 2048 MB
+INFO     search executable: /home/student/Projects/apl/lab/examples/data/lmcut/code-b850cf57c2f2/builds/release32/bin/downward
+INFO     callstring: /home/student/Projects/apl/lab/examples/data/lmcut/code-b850cf57c2f2/builds/release32/bin/downward --search 'astar(lmcut())' --internal-plan-file sas_plan < output.sas
+time limit 1800.00 -> (1800, 1801)
+reading input... [t=2.6853e-05s]
+done reading input! [t=0.000733451s]
+packing state variables...done! [t=0.000753047s]
+Variables: 14
+FactPairs: 48
+Bytes per state: 4
+Building successor generator...done! [t=0.000907784s]
+done initializing global data [t=0.000916501s]
+Initializing landmark cut heuristic...
+Conducting best first search with reopening closed nodes, (real) bound = 2147483647
+New best heuristic value for lmcut: 9
+[g=0, 1 evaluated, 0 expanded, t=0.0011885s, 4408 KB]
+f = 9 [1 evaluated, 0 expanded, t=0.00123038s, 4408 KB]
+Initial heuristic value for lmcut: 9
+pruning method: none
+New best heuristic value for lmcut: 8
+[g=1, 6 evaluated, 1 expanded, t=0.00143197s, 4408 KB]
+New best heuristic value for lmcut: 7
+[g=2, 10 evaluated, 2 expanded, t=0.00158624s, 4408 KB]
+New best heuristic value for lmcut: 6
+[g=3, 18 evaluated, 3 expanded, t=0.0018239s, 4408 KB]
+f = 10 [26 evaluated, 5 expanded, t=0.00206763s, 4408 KB]
+New best heuristic value for lmcut: 5
+[g=5, 27 evaluated, 6 expanded, t=0.00213252s, 4408 KB]
+New best heuristic value for lmcut: 4
+[g=6, 32 evaluated, 7 expanded, t=0.00228137s, 4408 KB]
+New best heuristic value for lmcut: 3
+[g=7, 36 evaluated, 8 expanded, t=0.00238683s, 4408 KB]
+New best heuristic value for lmcut: 2
+[g=8, 40 evaluated, 9 expanded, t=0.00248798s, 4408 KB]
+New best heuristic value for lmcut: 1
+[g=9, 49 evaluated, 10 expanded, t=0.00262303s, 4408 KB]
+New best heuristic value for lmcut: 0
+[g=10, 56 evaluated, 11 expanded, t=0.00271163s, 4408 KB]
+Solution found!
+Actual search time: 0.0014756s [t=0.00275212s]
+lift hoist0 crate1 pallet0 depot0 (1)
+load hoist0 crate1 truck1 depot0 (1)
+lift hoist1 crate0 pallet1 distributor0 (1)
+drive truck1 depot0 distributor0 (1)
+load hoist1 crate0 truck1 distributor0 (1)
+unload hoist1 crate1 truck1 distributor0 (1)
+drive truck1 distributor0 distributor1 (1)
+unload hoist2 crate0 truck1 distributor1 (1)
+drop hoist1 crate1 pallet1 distributor0 (1)
+drop hoist2 crate0 pallet2 distributor1 (1)
+Plan length: 10 step(s).
+Plan cost: 10
+Expanded 12 state(s).
+Reopened 0 state(s).
+Evaluated 56 state(s).
+Evaluations: 56
+Generated 72 state(s).
+Dead ends: 0 state(s).
+Expanded until last jump: 5 state(s).
+Reopened until last jump: 0 state(s).
+Evaluated until last jump: 26 state(s).
+Generated until last jump: 32 state(s).
+Number of registered states: 56
+Search time: 0.00165132s
+Total time: 0.00276053s
+Solution found.
+Peak memory: 4408 KB
+INFO     Running validate.
+INFO     validate input: ['domain.pddl', 'problem.pddl', 'sas_plan']
+INFO     validate arguments: []
+INFO     validate time limit: None
+INFO     validate memory limit: 0 MB
+INFO     callstring: validate domain.pddl problem.pddl sas_plan
+Checking plan: sas_plan
+Plan executed successfully - checking goal
+Plan valid
+Final value: 10 
+
+Successful plans:
+Value: 10
+ sas_plan 10 
+
+Running single search parser
