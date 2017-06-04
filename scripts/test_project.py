@@ -16,11 +16,11 @@ BENCHMARKS_DIR = os.path.join(REPO, "misc", "tests", "benchmarks")
 FAST_DOWNWARD = os.path.join(REPO, "fast-downward.py")
 
 TASKS = [os.path.join(BENCHMARKS_DIR, path) for path in [
-    "gripper/prob01.pddl",
+    "gripper/prob10.pddl",
 ]]
 
 CONFIGS = {}
-CONFIGS.update(configs.configs_satisficing_extended())
+#CONFIGS.update(configs.configs_satisficing_extended())
 CONFIGS.update(configs.apl_satisficing_with_threshold())
 
 def run_and_print_summary(task, nick, config):
@@ -28,8 +28,9 @@ def run_and_print_summary(task, nick, config):
     cmd.extend(["--overall-time-limit",   "30m"])
     cmd.extend(["--overall-memory-limit", "2G" ])
     cmd += [task] + config
-    print("\nRun {}:".format(cmd))
+    print("\nRun {}:".format(nick))
     sys.stdout.flush()
+    #subprocess.check_call(cmd)
     try:
         full_output =  subprocess.check_output(cmd, stderr=subprocess.STDOUT)
     except Exception, e:
