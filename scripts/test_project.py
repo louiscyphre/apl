@@ -1,47 +1,60 @@
 #! /usr/bin/env python
 
-"""Testing script to choose between best configuration."""
+from __future__ import print_function
 
+import multiprocessing
 import os
-import os.path
-import platform
+import subprocess
+import sys
+import re
 
-from lab.environments import LocalEnvironment, MaiaEnvironment
+import configs
 
-from downward.experiment import FastDownwardExperiment
-from downward.reports.absolute import AbsoluteReport
-from downward.reports.scatter import ScatterPlotReport
+DIR = os.path.dirname(os.path.abspath(__file__))
+REPO = os.path.join(os.path.dirname(DIR),"fast-downward")
+BENCHMARKS_DIR = os.path.join(REPO, "misc", "tests", "benchmarks")
+FAST_DOWNWARD = os.path.join(REPO, "fast-downward.py")
+
+TASKS = [os.path.join(BENCHMARKS_DIR, path) for path in [
+    "gripper/prob01.pddl",
+]]
+
+CONFIGS = {}
+CONFIGS.update(configs.configs_satisficing_extended())
+CONFIGS.update(configs.apl_satisficing_with_threshold())
+
+def run_and_print_summary(task, nick, config):
+    cmd = [sys.executable, FAST_DOWNWARD]
+    cmd.extend(["--overall-time-limit",   "30m"])
+    cmd.extend(["--overall-memory-limit", "2G" ])
+    cmd += [task] + config
+    print("\nRun {}:".format(cmd))
+    sys.stdout.flush()
+    try:
+        full_output =  subprocess.check_output(cmd, stderr=subprocess.STDOUT)
+    except Exception, e:
+        full_output = str(e.output)
+    summary = re.findall(r"(Total time: [0-9]+.[0-9]+s|Plan cost: [\d]+|Search stopped without finding a solution.|Usage error occurred.|Time limit reached.)",full_output)
+    return summary
 
 
-ATTRIBUTES = ['coverage', 'expansions']
+def cleanup():
+    subprocess.check_call([sys.executable, FAST_DOWNWARD, "--cleanup"])
 
-if 'cluster' in platform.node():
-    # Create bigger suites with suites.py from the downward-benchmarks repo.
-    SUITE = ['depot', 'freecell', 'gripper', 'zenotravel']
-    ENV = MaiaEnvironment(priority=0)
-else:
-    SUITE = ['depot:p01.pddl', 'gripper:prob08.pddl']
-    ENV = LocalEnvironment(processes=2)
-# Change to path to your Fast Downward repository.
-REPO = os.environ["DOWNWARD_REPO"]
-REV  = 'default'
-BENCHMARKS_DIR = os.environ["DOWNWARD_BENCHMARKS"]
-REVISION_CACHE = os.path.expanduser('~/lab/revision-cache')
 
-exp = FastDownwardExperiment(environment=ENV, revision_cache=REVISION_CACHE)
-exp.add_suite(BENCHMARKS_DIR, SUITE)
+def main():
+    # On Windows, ./build.py has to be called from the correct environment.
+    # Since we want this script to work even when we are in a regular
+    # shell, we do not build on Windows. If the planner is not yet built,
+    # the driver script will complain about this.
+    if os.name == "posix":
+        jobs = multiprocessing.cpu_count()
+        cmd = ["./build.py", "release32", "-j{}".format(jobs)]
+        #subprocess.check_call(cmd, cwd=REPO)
+    for task in TASKS:
+        for nick, config in CONFIGS.items():
+                output = run_and_print_summary(task, nick, config)
+                print(output)
+                cleanup()
 
-exp.add_algorithm('iter-threshold-1', REPO, REV, ['--heuristic', 'lmcount=lmcount()', '--heuristic', 'lmcount_a=lmcount(lm_hm(m=2),admissible=true)','--heuristic', 'hmax=hmax()','--heuristic', 'ff=ff()','--search','iterated([lazy(tiebreaking[lmcount, ff],preferred=[lmcount, ff]), lazy_wastar([lmcount_a, hmax])],w=1,threshold=0.8,reopen_closed=false)'], driver_options=['--overall-time-limit', '30m' , '--overall-memory-limit', '2G'])
-
-# Make a report (AbsoluteReport is the standard report).
-exp.add_report(
-    AbsoluteReport(attributes=ATTRIBUTES), outfile='report.html')
-
-# Compare the number of expansions in a scatter plot.
-exp.add_report(
-    ScatterPlotReport(
-        attributes=["expansions"], filter_algorithm=["iter-threshold-1"]),
-    outfile='scatterplot.png')
-
-# Parse the commandline and show or run experiment steps.
-exp.run_steps()
+main()
