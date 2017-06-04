@@ -189,7 +189,7 @@ def configs_satisficing_extended():
 
 def configs_satisficing_with_threshold():
     return {
-        "iterated_wa_1": [
+        "iterated_wa_0": [
             "--heuristic",
             "h1=lmcount(lm_hm(m=2))",
             "--heuristic",
@@ -199,7 +199,19 @@ def configs_satisficing_with_threshold():
             "--heuristic",
             "h4=hmax()",
             "--search",
-            "iterated([lazy(tiebreaking([h1,h2]),preferred=[h1,h2]), lazy_wastar([h3,h4],w=2,threshold=0.9,reopen_closed=false), lazy_wastar([h3,h4],w=2,threshold=0.8,reopen_closed=false), lazy_wastar([h3,h4],w=2,threshold=0.7,reopen_closed=false), lazy_wastar([h3,h4],w=2,threshold=0.6,reopen_closed=false)])"],
+            "iterated([lazy(tiebreaking([h1,h2]),preferred=[h1,h2]), lazy_wastar([h3,h4],w=1,threshold=0.98,reopen_closed=false), lazy_wastar([h3,h4],w=2,threshold=0.95,reopen_closed=false), lazy_wastar([h3,h4],w=4,threshold=0.90,reopen_closed=false), lazy_wastar([h3,h4],w=8,threshold=0.85,reopen_closed=false),lazy_wastar([h3,h4],w=16,threshold=0.80,reopen_closed=false), lazy_wastar([h3,h4],w=32,threshold=0.75,reopen_closed=false), lazy_wastar([h3,h4],w=64,threshold=0.70,reopen_closed=false),lazy_wastar([h3,h4],w=128,threshold=0.67,reopen_closed=false), lazy_wastar([h3,h4],w=256,threshold=0.65,reopen_closed=false), lazy_wastar([h3,h4],w=512,threshold=0.60,reopen_closed=false),lazy_wastar([h3,h4],w=1024,threshold=0.58,reopen_closed=false), lazy_wastar([h3,h4],w=2048,threshold=0.56,reopen_closed=false), lazy_wastar([h3,h4],w=4096,threshold=0.54,reopen_closed=false),lazy_wastar([h3,h4],w=8192,threshold=0.52,reopen_closed=false), lazy_wastar([h3,h4],w=16384,threshold=0.50,reopen_closed=false), lazy_wastar([h3,h4],w=32768,threshold=0.49,reopen_closed=false)], continue_on_fail=true)"],
+
+        "iterated_wa_0_inverted_weights": [
+            "--heuristic",
+            "h1=lmcount(lm_hm(m=2))",
+            "--heuristic",
+            "h2=ff()",
+            "--heuristic",
+            "h3=lmcount(lm_hm(m=2),admissible=true)",
+            "--heuristic",
+            "h4=hmax()",
+            "--search",
+            "iterated([lazy(tiebreaking([h1,h2]),preferred=[h1,h2]), lazy_wastar([h3,h4],w=32768,threshold=0.98,reopen_closed=false), lazy_wastar([h3,h4],w=16384,threshold=0.95,reopen_closed=false), lazy_wastar([h3,h4],w=8192,threshold=0.90,reopen_closed=false), lazy_wastar([h3,h4],w=4096,threshold=0.85,reopen_closed=false),lazy_wastar([h3,h4],w=2048,threshold=0.80,reopen_closed=false), lazy_wastar([h3,h4],w=1024,threshold=0.75,reopen_closed=false), lazy_wastar([h3,h4],w=512,threshold=0.70,reopen_closed=false),lazy_wastar([h3,h4],w=256,threshold=0.67,reopen_closed=false), lazy_wastar([h3,h4],w=128,threshold=0.65,reopen_closed=false), lazy_wastar([h3,h4],w=64,threshold=0.60,reopen_closed=false),lazy_wastar([h3,h4],w=32,threshold=0.58,reopen_closed=false), lazy_wastar([h3,h4],w=16,threshold=0.56,reopen_closed=false), lazy_wastar([h3,h4],w=8,threshold=0.54,reopen_closed=false),lazy_wastar([h3,h4],w=4,threshold=0.52,reopen_closed=false), lazy_wastar([h3,h4],w=2,threshold=0.50,reopen_closed=false), lazy_wastar([h3,h4],w=1,threshold=0.49,reopen_closed=false)], continue_on_fail=true)"],
 
         "iterated_wa_2": [
             "--heuristic",
@@ -211,7 +223,7 @@ def configs_satisficing_with_threshold():
             "--heuristic",
             "h4=hmax()",
             "--search",
-            "iterated([lazy(tiebreaking([h1,h2]),preferred=[h1,h2]), lazy_wastar([h3,h4],w=2,threshold=0.9,reopen_closed=false), lazy_wastar([h3,h4],w=2,threshold=0.6,reopen_closed=false)])"],
+            "iterated([lazy(tiebreaking([h1,h2]),preferred=[h1,h2]), lazy_wastar([h3,h4],w=2,threshold=0.9,reopen_closed=false), lazy_wastar([h3,h4],w=2,threshold=0.6,reopen_closed=false)], continue_on_fail=true)"],
 
         "iterated_wa_3": [
             "--heuristic",
@@ -223,19 +235,19 @@ def configs_satisficing_with_threshold():
             "--heuristic",
             "h4=hmax()",
             "--search",
-            "iterated([lazy(tiebreaking([h1,h2]),preferred=[h1,h2]), lazy_wastar([h3,h4],w=2,threshold=0.8,reopen_closed=false), lazy_wastar([h3,h4],w=2,threshold=0.5,reopen_closed=false)])"],
+            "iterated([lazy(tiebreaking([h1,h2]),preferred=[h1,h2]), lazy_wastar([h3,h4],w=2,threshold=0.8,reopen_closed=false), lazy_wastar([h3,h4],w=2,threshold=0.6,reopen_closed=true)], continue_on_fail=true)"],
 
         "iterated_wa_4": [
             "--heuristic",
-            "h1=lmcount(lm_hm(m=2))",
+            "h1=lmcount(lm_hm(m=1))",
             "--heuristic",
             "h2=ff()",
             "--heuristic",
-            "h3=lmcount(lm_hm(m=2),admissible=true)",
+            "h3=lmcount(lm_hm(m=1),admissible=true)",
             "--heuristic",
             "h4=hmax()",
             "--search",
-            "iterated([lazy(tiebreaking([h1,h2]),preferred=[h1,h2]), lazy_wastar([h3,h4],w=2,threshold=0.9,reopen_closed=false), lazy_wastar([h3,h4],w=2,threshold=0.8,reopen_closed=false), lazy_wastar([h3,h4],w=2,threshold=0.7,reopen_closed=false), lazy_wastar([h3,h4],w=2,threshold=0.6,reopen_closed=false)])"],
+            "iterated([lazy(tiebreaking([h1,h2]),preferred=[h1,h2]), lazy_wastar([h3,h4],w=2,threshold=0.9,reopen_closed=false), lazy_wastar([h3,h4],w=2,threshold=0.8,reopen_closed=false), lazy_wastar([h3,h4],w=2,threshold=0.7,reopen_closed=false), lazy_wastar([h3,h4],w=2,threshold=0.6,reopen_closed=true)], continue_on_fail=true)"],
 
         "iterated_wa_5": [
             "--heuristic",
@@ -247,11 +259,11 @@ def configs_satisficing_with_threshold():
             "--heuristic",
             "h4=hmax()",
             "--search",
-            "iterated([lazy(tiebreaking([h1,h2]),preferred=[h1,h2]), lazy_wastar([h3,h4],w=2,threshold=0.9,reopen_closed=false), lazy_wastar([h3,h4],w=2,threshold=0.6,reopen_closed=false)])"],
+            "iterated([lazy(tiebreaking([h1,h2]),preferred=[h1,h2]), lazy_wastar([h3,h4],w=2,threshold=0.9,reopen_closed=false), lazy_wastar([h3,h4],w=2,threshold=0.6,reopen_closed=false)], continue_on_fail=true)"],
 
         "iterated_wa_6": [
             "--heuristic",
-            "h1=lmcount(lm_hm(m=2))",
+            "h1=lmcount(lm_hm(m=1))",
             "--heuristic",
             "h2=ff()",
             "--heuristic",
@@ -259,7 +271,7 @@ def configs_satisficing_with_threshold():
             "--heuristic",
             "h4=hmax()",
             "--search",
-            "iterated([lazy(tiebreaking([h1,h2]),preferred=[h1,h2]), lazy_wastar([h3,h4],w=2,threshold=0.8,reopen_closed=false), lazy_wastar([h3,h4],w=2,threshold=0.5,reopen_closed=false)])"],
+            "iterated([lazy(tiebreaking([h1,h2]),preferred=[h1,h2]), lazy_wastar([h3,h4],w=1,threshold=0.9,reopen_closed=false), lazy_wastar([h3,h4],w=1,threshold=0.6,reopen_closed=false)], continue_on_fail=true)"],
     }
 
 def apl_configs_satisficing_extended():

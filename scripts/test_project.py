@@ -16,6 +16,8 @@ BENCHMARKS_DIR = os.path.join(REPO, "misc", "tests", "benchmarks")
 FAST_DOWNWARD = os.path.join(REPO, "fast-downward.py")
 
 TASKS = [os.path.join(BENCHMARKS_DIR, path) for path in [
+    "tile/puzzle02.pddl",
+    "tile/puzzle01.pddl",
     "gripper/prob10.pddl",
 ]]
 
@@ -25,6 +27,7 @@ CONFIGS.update(configs.apl_satisficing_with_threshold())
 
 def run_and_print_summary(task, nick, config):
     cmd = [sys.executable, FAST_DOWNWARD]
+    #cmd.extend(["--build",   "release64"])
     cmd.extend(["--overall-time-limit",   "30m"])
     cmd.extend(["--overall-memory-limit", "2G" ])
     cmd += [task] + config
@@ -35,7 +38,7 @@ def run_and_print_summary(task, nick, config):
         full_output =  subprocess.check_output(cmd, stderr=subprocess.STDOUT)
     except Exception, e:
         full_output = str(e.output)
-    summary = re.findall(r"(Total time: [0-9]+.[0-9]+s|Plan cost: [\d]+|Search stopped without finding a solution.|Usage error occurred.|Time limit reached.)",full_output)
+    summary = re.findall(r"(Total time: [0-9]+.[0-9]+s|Plan cost: [\d]+|Search stopped without finding a solution.|Usage error occurred.|Time limit reached.|caught signal [0-9]+ -- exiting)",full_output)
     return summary
 
 
@@ -51,8 +54,9 @@ def main():
     if os.name == "posix":
         jobs = multiprocessing.cpu_count()
         cmd = ["./build.py", "release32", "-j{}".format(jobs)]
-        #subprocess.check_call(cmd, cwd=REPO)
+        subprocess.check_call(cmd, cwd=REPO)
     for task in TASKS:
+        print("\nRunning on ploblem {}:".format(task))
         for nick, config in CONFIGS.items():
                 output = run_and_print_summary(task, nick, config)
                 print(output)
