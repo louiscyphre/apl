@@ -31,17 +31,25 @@ REVISION_CACHE = os.path.expanduser('~/lab/revision-cache')
 exp = FastDownwardExperiment(environment=ENV, revision_cache=REVISION_CACHE)
 exp.add_suite(BENCHMARKS_DIR, SUITE)
 
-exp.add_algorithm('iter-threshold-1', REPO, REV, ['--heuristic', 'lmcount=lmcount()', '--heuristic', 'lmcount_a=lmcount(lm_hm(m=2),admissible=true)','--heuristic', 'hmax=hmax()','--heuristic', 'ff=ff()','--search','iterated([lazy(tiebreaking[lmcount, ff],preferred=[lmcount, ff]), lazy_wastar([lmcount_a, hmax])],w=1,threshold=0.8,reopen_closed=false)'], driver_options=['--overall-time-limit', '30m' , '--overall-memory-limit', '2G'])
+exp.add_algorithm('iter-threshold-1', REPO, REV, 
+    ['--heuristic', 'lmcount=lmcount()',
+     '--heuristic', 'lmcount_a=lmcount(lm_hm(m=2),admissible=true)',
+     '--heuristic', 'hmax=hmax()',
+     '--heuristic', 'ff=ff()',
+     '--search',
+     'iterated([lazy(tiebreaking[lmcount, ff],preferred=[lmcount, ff]),\
+               lazy_wastar([lmcount_a, hmax])],w=1,threshold=0.8,reopen_closed=false)'],
+     driver_options=['--overall-time-limit', '30m' , '--overall-memory-limit', '2G'])
 
 # Make a report (AbsoluteReport is the standard report).
 exp.add_report(
     AbsoluteReport(attributes=ATTRIBUTES), outfile='report.html')
 
 # Compare the number of expansions in a scatter plot.
-exp.add_report(
-    ScatterPlotReport(
-        attributes=["expansions"], filter_algorithm=["iter-threshold-1"]),
-    outfile='scatterplot.png')
+#exp.add_report(
+#    ScatterPlotReport(
+#        attributes=["expansions"], filter_algorithm=["blind", "lmcut"]),
+#S    outfile='scatterplot.png')
 
 # Parse the commandline and show or run experiment steps.
 exp.run_steps()

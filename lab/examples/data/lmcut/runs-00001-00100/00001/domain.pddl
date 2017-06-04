@@ -1,1 +1,0 @@
-../../../../../../downward-benchmarks/depot/domain.pddl

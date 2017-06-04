@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 
-"""Testing script to choose between best configuration."""
+"""Solve some tasks with A* and the LM-Cut heuristic."""
 
 import os
 import os.path
@@ -20,18 +20,19 @@ if 'cluster' in platform.node():
     SUITE = ['depot', 'freecell', 'gripper', 'zenotravel']
     ENV = MaiaEnvironment(priority=0)
 else:
-    SUITE = ['depot:p01.pddl', 'gripper:prob08.pddl']
+    SUITE = ['depot:p01.pddl', 'gripper:prob01.pddl']
     ENV = LocalEnvironment(processes=2)
 # Change to path to your Fast Downward repository.
 REPO = os.environ["DOWNWARD_REPO"]
-REV  = 'default'
 BENCHMARKS_DIR = os.environ["DOWNWARD_BENCHMARKS"]
 REVISION_CACHE = os.path.expanduser('~/lab/revision-cache')
 
 exp = FastDownwardExperiment(environment=ENV, revision_cache=REVISION_CACHE)
 exp.add_suite(BENCHMARKS_DIR, SUITE)
-
-exp.add_algorithm('iter-threshold-1', REPO, REV, ['--heuristic', 'lmcount=lmcount()', '--heuristic', 'lmcount_a=lmcount(lm_hm(m=2),admissible=true)','--heuristic', 'hmax=hmax()','--heuristic', 'ff=ff()','--search','iterated([lazy(tiebreaking[lmcount, ff],preferred=[lmcount, ff]), lazy_wastar([lmcount_a, hmax])],w=1,threshold=0.8,reopen_closed=false)'], driver_options=['--overall-time-limit', '30m' , '--overall-memory-limit', '2G'])
+exp.add_algorithm(
+    'blind', REPO, 'default', ['--search', 'astar(blind())'])
+exp.add_algorithm(
+    'lmcut', REPO, 'default', ['--search', 'astar(lmcut())'])
 
 # Make a report (AbsoluteReport is the standard report).
 exp.add_report(
@@ -40,7 +41,7 @@ exp.add_report(
 # Compare the number of expansions in a scatter plot.
 exp.add_report(
     ScatterPlotReport(
-        attributes=["expansions"], filter_algorithm=["iter-threshold-1"]),
+        attributes=["expansions"], filter_algorithm=["blind", "lmcut"]),
     outfile='scatterplot.png')
 
 # Parse the commandline and show or run experiment steps.
