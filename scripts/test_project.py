@@ -16,13 +16,22 @@ REPO = os.path.join(os.path.dirname(DIR),"fast-downward")
 BENCHMARKS_DIR = os.path.join(REPO, "misc", "tests", "benchmarks")
 FAST_DOWNWARD = os.path.join(REPO, "fast-downward.py")
 
-TASKS = [os.path.join(BENCHMARKS_DIR, path) for path in [
-    "tile/puzzle02.pddl",
-    "tile/puzzle01.pddl",
-    "gripper/prob10.pddl",
-]]
+TASKS = []
 
-         
+for root, dirs, files in os.walk(BENCHMARKS_DIR):
+    TASKS.extend([os.path.join(root, i) for i in files])  
+    
+    for file in TASKS:
+       if fnmatch.fnmatch(file, '*domain*'):
+           TASKS.remove(file)
+
+# to try run all problems from easy to hard (currently wil not work because
+# filenames are not consistent yet) 
+tmp = sorted(TASKS, key=lambda item: (int(item.partition(' ')[0])
+                                     if item[0].isdigit() else float('inf'), item))
+
+TASKS[:] = []
+TASKS = tmp
 
 CONFIGS = {}
 #CONFIGS.update(configs.configs_satisficing_extended())
@@ -38,10 +47,10 @@ def run_and_print_summary(task, nick, config):
     cmd.extend(["--overall-memory-limit", "2G" ])
     cmd += [task] + config
 
-    print("\nRun {}:".format(cmd))
+    #print("\nRun {}:".format(cmd))
 
-    # for only problem name printing
-    #print("\nRun {}:".format(nick))
+    # only problem name printing
+    print("\nconfigs.py: Running cofiguration {}:".format(nick))
 
     sys.stdout.flush()
 

@@ -19,25 +19,18 @@ FAST_DOWNWARD = os.path.join(REPO, "fast-downward.py")
 TASKS = []
 
 for root, dirs, files in os.walk(BENCHMARKS_DIR):
-    TASKS += files
-
+    TASKS.extend([os.path.join(root, i) for i in files])  
+    
     for file in TASKS:
-        if fnmatch.fnmatch(file, '*domain*'):
-            TASKS.remove(file)
+       if fnmatch.fnmatch(file, '*domain*'):
+           TASKS.remove(file)
 
-    for file in TASKS:
-        if fnmatch.fnmatch(file, '*domain*'):
-            TASKS.remove(file)
-
-# to try run all problems from easy to hard 
+# to try run all problems from easy to hard (currently wil not work because
+# filenames are not consistent yet) 
 tmp = sorted(TASKS, key=lambda item: (int(item.partition(' ')[0])
                                      if item[0].isdigit() else float('inf'), item))
 
-#This neet to put in some for loop or something similar, we want full path to all .ppdl-s
-#full_path_tmp = [os.path.join(root, path) for path in tmp]
-
 TASKS[:] = []
 TASKS = tmp
-#TASKS = full_path_tmp
 
 print(TASKS)
