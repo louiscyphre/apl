@@ -60,7 +60,11 @@ def run_and_print_summary(task, nick, config):
         full_output =  subprocess.check_output(cmd, stderr=subprocess.STDOUT)
     except Exception, e:
         full_output = str(e.output)
-    summary = re.findall(r"(Total time: [0-9]+.[0-9]+s|Plan cost: [\d]+|Search stopped without finding a solution.|Usage error occurred.|Time limit reached.|Memory limit has been reached.|caught signal [0-9]+ -- exiting|Completely explored state space -- no solution!)",full_output)
+    summary = re.findall(r"(Total time: [0-9]+.[0-9]+s|Plan cost: [\d]+|Search
+    stopped without finding a solution.|Usage error occurred.|Time limit
+    reached.|Memory limit has been reached.|caught signal [0-9]+ --
+    exiting|Completely explored state space -- no solution!|Tried to use
+    unsupported feature.)",full_output)
     return summary
 
 
