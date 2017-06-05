@@ -7,6 +7,7 @@ import os
 import subprocess
 import sys
 import re
+import fnmatch
 
 import configs
 
@@ -21,9 +22,14 @@ TASKS = [os.path.join(BENCHMARKS_DIR, path) for path in [
     "gripper/prob10.pddl",
 ]]
 
+         
+
 CONFIGS = {}
 #CONFIGS.update(configs.configs_satisficing_extended())
 CONFIGS.update(configs.apl_satisficing_with_threshold())
+
+# if have issues with summary printing
+#CONFIGS.update(configs.apl_satisficing_with_threshold_bad())
 
 def run_and_print_summary(task, nick, config):
     cmd = [sys.executable, FAST_DOWNWARD]
@@ -31,14 +37,21 @@ def run_and_print_summary(task, nick, config):
     cmd.extend(["--overall-time-limit",   "30m"])
     cmd.extend(["--overall-memory-limit", "2G" ])
     cmd += [task] + config
-    print("\nRun {}:".format(nick))
+
+    print("\nRun {}:".format(cmd))
+
+    # for only problem name printing
+    #print("\nRun {}:".format(nick))
+
     sys.stdout.flush()
+
+    # if have issues with summary printing
     #subprocess.check_call(cmd)
     try:
         full_output =  subprocess.check_output(cmd, stderr=subprocess.STDOUT)
     except Exception, e:
         full_output = str(e.output)
-    summary = re.findall(r"(Total time: [0-9]+.[0-9]+s|Plan cost: [\d]+|Search stopped without finding a solution.|Usage error occurred.|Time limit reached.|caught signal [0-9]+ -- exiting|Completely explored state space -- no solution!)",full_output)
+    summary = re.findall(r"(Total time: [0-9]+.[0-9]+s|Plan cost: [\d]+|Search stopped without finding a solution.|Usage error occurred.|Time limit reached.|Memory limit has been reached.|caught signal [0-9]+ -- exiting|Completely explored state space -- no solution!)",full_output)
     return summary
 
 

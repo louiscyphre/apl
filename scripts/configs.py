@@ -298,6 +298,24 @@ def configs_satisficing_with_threshold():
             "iterated([lazy(tiebreaking([h1,h2]),preferred=[h1,h2]), lazy_wastar([h3,h4],w=1,threshold=0.9,reopen_closed=false), lazy_wastar([h3,h4],w=1,threshold=0.6,reopen_closed=false)], continue_on_fail=true)"],
     }
 
+
+
+def configs_satisficing_with_threshold_bad():
+    return {
+        "iterated_wa_0_lm1": [
+            "--heuristic",
+            "h1=lmcount(lm_hm(m=1))",
+            "--heuristic",
+            "h2=ff()",
+            "--heuristic",
+            "h3=lmcount(lm_hm(m=1),admissible=true)",
+            "--heuristic",
+            "h4=hmax()",
+            "--search",
+            "iterated([lazy(tiebreaking([h1,h2]),preferred=[h1,h2]), lazy_wastar([h3,h4],w=1,threshold=0.98,reopen_closed=false), lazy_wastar([h3,h4],w=2,threshold=0.95,reopen_closed=false), lazy_wastar([h3,h4],w=4,threshold=0.90,reopen_closed=false), lazy_wastar([h3,h4],w=8,threshold=0.85,reopen_closed=false),lazy_wastar([h3,h4],w=16,threshold=0.80,reopen_closed=false), lazy_wastar([h3,h4],w=32,threshold=0.75,reopen_closed=false), lazy_wastar([h3,h4],w=64,threshold=0.70,reopen_closed=false),lazy_wastar([h3,h4],w=128,threshold=0.67,reopen_closed=false), lazy_wastar([h3,h4],w=256,threshold=0.65,reopen_closed=false), lazy_wastar([h3,h4],w=512,threshold=0.60,reopen_closed=false),lazy_wastar([h3,h4],w=1024,threshold=0.58,reopen_closed=false), lazy_wastar([h3,h4],w=2048,threshold=0.56,reopen_closed=false), lazy_wastar([h3,h4],w=4096,threshold=0.54,reopen_closed=false),lazy_wastar([h3,h4],w=8192,threshold=0.52,reopen_closed=false), lazy_wastar([h3,h4],w=16384,threshold=0.50,reopen_closed=false), lazy_wastar([h3,h4],w=32768,threshold=0.49,reopen_closed=false)], continue_on_fail=true)"],
+    }
+
+
 def apl_configs_satisficing_extended():
     configs = {}
     configs.update(configs_satisficing_extended())
@@ -306,6 +324,11 @@ def apl_configs_satisficing_extended():
 def apl_satisficing_with_threshold():
     configs = {}
     configs.update(configs_satisficing_with_threshold())
+    return configs
+
+def apl_satisficing_with_threshold_bad():
+    configs = {}
+    configs.update(configs_satisficing_with_threshold_bad())
     return configs
 
 
