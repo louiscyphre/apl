@@ -40,9 +40,14 @@ TASKS[:] = []
 TASKS = tmp
 
 CONFIGS = {}
+<<<<<<< HEAD
 #CONFIGS.update(configs.configs_satisficing_extended())
 #CONFIGS.update(configs.apl_configs_satisficing_ipc_no_threshold())
 CONFIGS.update(configs.apl_satisficing())
+=======
+CONFIGS.update(configs.apl_satisficing_no_threshold())
+CONFIGS.update(configs.apl_satisficing_with_threshold())
+>>>>>>> 5732f2ff3204a39b14ed492231fc1c663892dc9b
 
 # if have issues with summary printing
 #CONFIGS.update(configs.apl_satisficing_with_threshold_bad())
