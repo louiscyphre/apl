@@ -34,7 +34,7 @@ TASKS[:] = []
 TASKS = tmp
 
 CONFIGS = {}
-#CONFIGS.update(configs.configs_satisficing_extended())
+CONFIGS.update(configs.apl_satisficing_no_threshold())
 CONFIGS.update(configs.apl_satisficing_with_threshold())
 
 # if have issues with summary printing
