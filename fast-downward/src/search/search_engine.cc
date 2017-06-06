@@ -14,6 +14,7 @@
 #include <cassert>
 #include <iostream>
 #include <limits>
+#include <algorithm>
 
 using namespace std;
 using utils::ExitCode;
@@ -33,6 +34,17 @@ SearchEngine::SearchEngine(const Options &opts)
         utils::exit_with(ExitCode::INPUT_ERROR);
     }
     bound = opts.get<int>("bound");
+    
+    // #apl Nathan & Michael START ------>
+    if (opts.get<double>("threshold") < 0.0 || 
+        opts.get<double>("threshold") > 1.0) {
+        cerr << "error: search threshold must be between 0.0 and 1.0" << endl;
+        utils::exit_with(ExitCode::INPUT_ERROR);
+    }
+    threshold = opts.get<double>("threshold");
+
+    pre_phase = false;
+    // #apl Nathan & Michael END <------
 }
 
 SearchEngine::~SearchEngine() {
@@ -61,8 +73,24 @@ void SearchEngine::set_plan(const Plan &p) {
     plan = p;
 }
 
+// #apl Nathan & Michael START ------>
+void SearchEngine::set_for_pre_phase(const Plan &p, int cost) {
+    cout << "---------------------------------------" <<endl;
+    cout << "Pre phase starting." << endl;
+    cout << "---------------------------------------" <<endl;
+    pre_phase = true;
+    // We are reversing the plan so we can easily use "pop" later.
+    last_plan = p;
+    current_phase_op = last_plan.begin();
+    last_plan_cost = cost;
+}
+// #apl Nathan & Michael END <------
+
 void SearchEngine::search() {
     initialize();
+    // #apl Nathan & Michael START ------>
+    cout << "Current search threshold: " << threshold << endl;
+    // #apl Nathan & Michael END <------
     utils::CountdownTimer timer(max_time);
     while (status == IN_PROGRESS) {
         status = step();
@@ -101,8 +129,9 @@ void SearchEngine::add_options_to_parser(OptionParser &parser) {
     ::add_cost_type_option_to_parser(parser);
     parser.add_option<int>(
         "bound",
-        "exclusive depth bound on g-values. Cutoffs are always performed according to "
-        "the real cost, regardless of the cost_type parameter", "infinity");
+        "exclusive depth bound on g-values. Cutoffs are always performed"
+        " according to the real cost, regardless of the cost_type parameter",
+        "infinity");
     parser.add_option<double>(
         "max_time",
         "maximum time in seconds the search is allowed to run for. The "
@@ -112,7 +141,39 @@ void SearchEngine::add_options_to_parser(OptionParser &parser) {
         "experiments. Timed-out searches are treated as failed searches, "
         "just like incomplete search algorithms that exhaust their search space.",
         "infinity");
+   // #apl Nathan & Michael START ------>
+    parser.add_option<double>(
+        "threshold",
+        "varying from 0.0 to 1.0, threshold parameter is point in the search "
+        "path, from which the optimizing search will start. This option is useful when "
+        "plan already found, and we want to optimize it by skipping certain "
+        "part of the path up to threshold point, and start optimizing (A*) search"
+        "from this point. By default, searching from initial state.",
+        "0.0");
+   // #apl Nathan & Michael END <------
+     
 }
+
+// #apl Nathan & Michael START ------>
+vector<const GlobalOperator *> SearchEngine::pre_phase_operator(const int &real_g){
+    vector<const GlobalOperator *> vec_for_op;
+    if( real_g + (*current_phase_op)->get_cost() >= threshold*last_plan_cost ){
+        pre_phase = false;
+        cout << "---------------------------------------" <<endl;
+        cout << "Pre phase finished, starting real search." << endl;
+        cout << "---------------------------------------" <<endl;
+    }
+    vec_for_op.push_back( *current_phase_op );
+    ++current_phase_op;
+    return vec_for_op;
+}
+// #apl Nathan & Michael END <------
+
+// #apl Nathan & Michael START ------>
+double SearchEngine::get_threshold() const{
+    return threshold;
+}
+// #apl Nathan & Michael END <------
 
 void print_initial_h_values(const EvaluationContext &eval_context) {
     eval_context.get_cache().for_each_heuristic_value(

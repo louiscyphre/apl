@@ -27,6 +27,9 @@ enum SearchStatus {IN_PROGRESS, TIMEOUT, FAILED, SOLVED};
 class SearchEngine {
 public:
     typedef std::vector<const GlobalOperator *> Plan;
+    // #apl Nathan & Michael START ------>  
+    typedef std::vector<const GlobalOperator *>::iterator Op;
+    // #apl Nathan & Michael END <------ 
 private:
     SearchStatus status;
     bool solution_found;
@@ -39,13 +42,22 @@ protected:
     int bound;
     OperatorCost cost_type;
     double max_time;
-
+    // #apl Nathan & Michael START ------>
+    double threshold;
+    bool pre_phase;
+    Plan last_plan;
+    Op current_phase_op;
+    int last_plan_cost;
+    // #apl Nathan & Michael END <------
     virtual void initialize() {}
     virtual SearchStatus step() = 0;
-
     void set_plan(const Plan &plan);
+
     bool check_goal_and_set_plan(const GlobalState &state);
     int get_adjusted_cost(const GlobalOperator &op) const;
+    // #apl Nathan & Michael START ------>
+    std::vector<const GlobalOperator *> pre_phase_operator(const int &real_g);
+    // #apl Nathan & Michael END <------
 public:
     SearchEngine(const options::Options &opts);
     virtual ~SearchEngine();
@@ -59,6 +71,10 @@ public:
     void set_bound(int b) {bound = b; }
     int get_bound() {return bound; }
     static void add_options_to_parser(options::OptionParser &parser);
+    // #apl Nathan & Michael START ------>
+    void set_for_pre_phase(const Plan &p, int cost);
+    double get_threshold() const;
+    // #apl Nathan & Michael END <------  
 };
 
 /*
