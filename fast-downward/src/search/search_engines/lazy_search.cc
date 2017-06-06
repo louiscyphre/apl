@@ -201,7 +201,7 @@ SearchStatus LazySearch::step() {
         statistics.inc_evaluated_states();
         // #apl Nathan & Michael START ------>
         if( DEBUG_OPERRET && pre_phase ){
-            std::cout<< to_string( current_state.get_hash() ) <<std::endl;
+            cout<< to_string( current_state.get_hash() ) <<endl;
         }
         // #apl Nathan & Michael END <------
         if (!open_list->is_dead_end(current_eval_context)) {

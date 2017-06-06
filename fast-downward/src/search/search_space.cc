@@ -142,7 +142,7 @@ void SearchSpace::trace_path(const GlobalState &goal_state,
         path.push_back(op);
         // #apl Nathan & Michael START ------>
         if( DEBUG_OPERRET ){
-            std::cout<< to_string( current_state.get_hash() ) <<std::endl;
+            cout << to_string( current_state.get_hash() ) << endl;
         }
         // #apl Nathan & Michael END <------
 
