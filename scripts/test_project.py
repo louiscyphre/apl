@@ -13,8 +13,14 @@ import configs
 
 DIR = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.join(os.path.dirname(DIR),"fast-downward")
-BENCHMARKS_DIR = os.path.join(REPO, "misc", "tests", "benchmarks2")
+BENCHMARKS_DIR = os.path.join(REPO, "misc", "tests", "benchmarks")
 FAST_DOWNWARD = os.path.join(REPO, "fast-downward.py")
+
+# validate TODO!!
+ROOT_DIR = os.path.dirname(DIR)
+VAL_DIR = os.path.join(os.path.dirname(ROOT_DIR),"VAL")
+VAL = os.path.join(REPO, "validate")
+
 
 TASKS = []
 
@@ -35,7 +41,8 @@ TASKS = tmp
 
 CONFIGS = {}
 #CONFIGS.update(configs.configs_satisficing_extended())
-CONFIGS.update(configs.apl_satisficing_with_threshold())
+#CONFIGS.update(configs.apl_configs_satisficing_ipc_no_threshold())
+CONFIGS.update(configs.apl_satisficing())
 
 # if have issues with summary printing
 #CONFIGS.update(configs.apl_satisficing_with_threshold_bad())
@@ -44,7 +51,7 @@ def run_and_print_summary(task, nick, config):
     cmd = [sys.executable, FAST_DOWNWARD]
     #cmd.extend(["--build",   "release64"])
     cmd.extend(["--overall-time-limit",   "30m"])
-    cmd.extend(["--overall-memory-limit", "2G" ])
+    cmd.extend(["--overall-memory-limit", "12G" ])
     cmd += [task] + config
 
     #print("\nRun {}:".format(cmd))
