@@ -82,6 +82,8 @@ def main():
         for nick, config in CONFIGS.items():
                 output = run_and_print_summary(task, nick, config)
                 print(output)
+                #output = validate_plans(task)
+                #print(output)
                 cleanup()
 
 main()
