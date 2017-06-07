@@ -15,7 +15,7 @@ def configs_satisficing_with_threshold():
 
 def configs_satisficing_no_threshold():
     return {
-        "iterated_best_threshold": [
+        "iterated_best_no_threshold": [
         "--heuristic",
         "h1=lmcount(lm_factory=lm_rhw(lm_cost_type=ONE),pref=true)",
         "--heuristic",
