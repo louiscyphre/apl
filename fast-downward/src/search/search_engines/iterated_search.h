@@ -21,9 +21,9 @@ class IteratedSearch : public SearchEngine {
     int best_bound;
     bool iterated_found_solution;
 
-    // #apl Nathan & Michael START ------>
+    // #apl NEW CODE START ------>
     bool got_base_plan;
-    // #apl Nathan & Michael END <------
+    // #apl NEW CODE END <------
 
 
     std::unique_ptr<SearchEngine> get_search_engine(int engine_config_start_index);

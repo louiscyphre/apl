@@ -39,14 +39,14 @@ protected:
     int bound;
     OperatorCost cost_type;
     double max_time;
-    // #apl Nathan & Michael START ------>
+    // #apl NEW CODE START ------>
     double threshold;
     bool pre_phase;
     Plan base_plan;
     std::vector<const GlobalOperator *>::iterator current_phase_op;
     std::vector<const GlobalOperator *> pre_phase_operator(const int &real_g);
     int base_plan_cost;
-    // #apl Nathan & Michael END <------
+    // #apl NEW CODE END <------
     virtual void initialize() {}
     virtual SearchStatus step() = 0;
     void set_plan(const Plan &plan);
@@ -66,10 +66,10 @@ public:
     void set_bound(int b) {bound = b; }
     int get_bound() {return bound; }
     static void add_options_to_parser(options::OptionParser &parser);
-    // #apl Nathan & Michael START ------>
+    // #apl NEW CODE START ------>
     void set_for_pre_phase(const Plan &p, int cost);
     double get_threshold() const;
-    // #apl Nathan & Michael END <------  
+    // #apl NEW CODE END <------  
 };
 
 /*

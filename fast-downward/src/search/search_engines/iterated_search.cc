@@ -19,9 +19,9 @@ IteratedSearch::IteratedSearch(const Options &opts)
       last_phase_found_solution(false),
       best_bound(bound),
       iterated_found_solution(false),
-    // #apl Nathan & Michael START ------>
+    // #apl NEW CODE START ------>
       got_base_plan(false) {
-    // #apl Nathan & Michael END <------
+    // #apl NEW CODE END <------
 }
 
 unique_ptr<SearchEngine> IteratedSearch::get_search_engine(
@@ -66,11 +66,11 @@ SearchStatus IteratedSearch::step() {
     }
     ++phase;
 
-    // #apl Nathan & Michael START ------>
+    // #apl NEW CODE START ------>
     if( current_search->get_threshold() != 0 && got_base_plan ){
         current_search->set_for_pre_phase( base_plan, base_plan_cost );
     }
-    // #apl Nathan & Michael END <------
+    // #apl NEW CODE END <------
     
     current_search->search();
 
@@ -81,13 +81,13 @@ SearchStatus IteratedSearch::step() {
         iterated_found_solution = true;
         found_plan = current_search->get_plan();
         plan_cost = calculate_plan_cost(found_plan);
-        // #apl Nathan & Michael START ------>
+        // #apl NEW CODE START ------>
         if( !got_base_plan ){
             got_base_plan = true;
             base_plan = found_plan;
             base_plan_cost = plan_cost;
         }
-        // #apl Nathan & Michael END <------
+        // #apl NEW CODE END <------
         if (plan_cost < best_bound) {
             save_plan(found_plan, true);
             best_bound = plan_cost;

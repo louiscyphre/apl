@@ -140,11 +140,11 @@ void SearchSpace::trace_path(const GlobalState &goal_state,
         assert(utils::in_bounds(info.creating_operator, g_operators));
         const GlobalOperator *op = &g_operators[info.creating_operator];
         path.push_back(op);
-        // #apl Nathan & Michael START ------>
+        // #apl NEW CODE START ------>
         if( DEBUG_OPERRET ){
             cout << to_string( current_state.get_hash() ) << endl;
         }
-        // #apl Nathan & Michael END <------
+        // #apl NEW CODE END <------
 
         current_state = state_registry.lookup_state(info.parent_state_id);
     }
