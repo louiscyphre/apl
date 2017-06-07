@@ -20,7 +20,7 @@ IteratedSearch::IteratedSearch(const Options &opts)
       best_bound(bound),
       iterated_found_solution(false),
     // #apl Nathan & Michael START ------>
-      got_plan(false) {
+      got_base_plan(false) {
     // #apl Nathan & Michael END <------
 }
 
@@ -67,8 +67,8 @@ SearchStatus IteratedSearch::step() {
     ++phase;
 
     // #apl Nathan & Michael START ------>
-    if( current_search->get_threshold() != 0 && got_plan ){
-        current_search->set_for_pre_phase( last_plan, last_plan_cost );
+    if( current_search->get_threshold() != 0 && got_base_plan ){
+        current_search->set_for_pre_phase( base_plan, base_plan_cost );
     }
     // #apl Nathan & Michael END <------
     
@@ -82,10 +82,10 @@ SearchStatus IteratedSearch::step() {
         found_plan = current_search->get_plan();
         plan_cost = calculate_plan_cost(found_plan);
         // #apl Nathan & Michael START ------>
-        if( !got_plan ){
-            got_plan = true;
-            last_plan = found_plan;
-            last_plan_cost = plan_cost;
+        if( !got_base_plan ){
+            got_base_plan = true;
+            base_plan = found_plan;
+            base_plan_cost = plan_cost;
         }
         // #apl Nathan & Michael END <------
         if (plan_cost < best_bound) {

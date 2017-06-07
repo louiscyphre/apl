@@ -22,7 +22,7 @@ class IteratedSearch : public SearchEngine {
     bool iterated_found_solution;
 
     // #apl Nathan & Michael START ------>
-    bool got_plan;
+    bool got_base_plan;
     // #apl Nathan & Michael END <------
 
 
