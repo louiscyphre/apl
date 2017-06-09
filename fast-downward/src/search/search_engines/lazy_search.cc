@@ -18,9 +18,9 @@
 #include <cmath>
 
 
-// #apl Nathan & Michael START ------>
+// #apl NEW CODE START ------>
 #include <string>
-// #apl Nathan & Michael END <------
+// #apl NEW CODE END <------
 
 #define DEBUG_OPERRET false
 
@@ -80,7 +80,7 @@ void LazySearch::initialize() {
 vector<const GlobalOperator *> LazySearch::get_successor_operators(
     const algorithms::OrderedSet<const GlobalOperator *> &preferred_operators) {
     vector<const GlobalOperator *> applicable_operators;
-    // #apl Nathan & Michael START ------>
+    // #apl NEW CODE START ------>
     if( pre_phase ){
         return pre_phase_operator(current_real_g);
     }
@@ -89,7 +89,7 @@ vector<const GlobalOperator *> LazySearch::get_successor_operators(
         g_successor_generator->generate_applicable_ops(
         current_state, applicable_operators);
     }
-    // #apl Nathan & Michael END <------
+    // #apl NEW CODE END <------
     if (randomize_successors) {
         rng->shuffle(applicable_operators);
     }
@@ -144,13 +144,13 @@ SearchStatus LazySearch::fetch_next_state() {
 
     current_predecessor_id = next.first;
     current_operator = &g_operators[next.second];
-    // #apl Nathan & Michael START ------>
+    // #apl NEW CODE START ------>
     if( DEBUG_OPERRET ){
         if( pre_phase ){
             cout<< current_operator->get_name() + "(" + to_string(current_operator->get_cost()) + ")" <<endl;
         }
     }
-    // #apl Nathan & Michael END <------
+    // #apl NEW CODE END <------
     GlobalState current_predecessor = state_registry.lookup_state(current_predecessor_id);
     assert(current_operator->is_applicable(current_predecessor));
     current_state = state_registry.get_successor_state(current_predecessor, *current_operator);
@@ -199,11 +199,11 @@ SearchStatus LazySearch::step() {
                     parent_state, *current_operator, current_state);
         }
         statistics.inc_evaluated_states();
-        // #apl Nathan & Michael START ------>
+        // #apl NEW CODE START ------>
         if( DEBUG_OPERRET && pre_phase ){
             cout<< to_string( current_state.get_hash() ) <<endl;
         }
-        // #apl Nathan & Michael END <------
+        // #apl NEW CODE END <------
         if (!open_list->is_dead_end(current_eval_context)) {
             // TODO: Generalize code for using multiple heuristics.
             if (reopen) {
