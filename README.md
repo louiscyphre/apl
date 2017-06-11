@@ -1,6 +1,8 @@
 # Lazy Optimization Planner
 
-This is our project in automated planning (apl)
+This is our project in automated planning (apl), we modified existing code of
+fast-downward planner, for more info take a look on LazyOptimizationPlanner.pdf 
+in project tree. 
 
 ## Overview
 
@@ -23,6 +25,8 @@ If your compiler doesn't find flex or bison, your include directories might be i
 For more info: 
 
 [Obtaining And Running FastDownward](http://www.fast-downward.org/ObtainingAndRunningFastDownward)
+
+## Important note
 
 Remember that code in this repository is modified fast-downward, so if you 
 planning to use it or compare, remember to obtain source from here. Any changes
