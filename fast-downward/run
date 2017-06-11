@@ -1,3 +1,23 @@
 #!/bin/bash
 
-./run.py $1 $2 "lazy_greedy(my_heuristic(tz_first = 203304688, tz_second = 320934904))"
+# tz_first = 203304688, tz_second = 320934904
+
+
+./fast-downward.py --overall-time-limit=30m --overall-memory-limit=2G $1 $2 \
+--heuristic h1="lmcount(lm_factory=lm_rhw(lm_cost_type=ONE),pref=true)" \
+--heuristic h2="ff()" \
+--heuristic h4="ipdb(max_time=40)" \
+--heuristic h3="goalcount()" \
+--search "iterated([\
+lazy(alt([tiebreaking([h1,h2]),tiebreaking([h1,h3]),tiebreaking([h4,h2])]),preferred=[h1,h2],cost_type=ONE), \
+lazy_wastar([h1,h2,h4],preferred=[h1,h2],cost_type=ONE,w=5,threshold=0.9), \
+lazy_wastar([h1,h2,h4],preferred=[h1,h2],cost_type=ONE,w=5,threshold=0.8), \
+lazy_wastar([h1,h2,h4],preferred=[h1,h2],cost_type=ONE,w=5,threshold=0.7), \
+lazy_wastar([h1,h2,h4],preferred=[h1,h2],cost_type=ONE,w=5,threshold=0.6), \
+lazy_wastar([h1,h2,h4],preferred=[h1,h2],cost_type=ONE,w=5,threshold=0.5), \
+lazy_wastar([h1,h2,h4],preferred=[h1,h2],cost_type=ONE,w=4,threshold=0.4), \
+lazy_wastar([h1,h2,h4],preferred=[h1,h2],cost_type=ONE,w=4,threshold=0.3), \
+lazy_wastar([h1,h2,h4],preferred=[h1,h2],cost_type=ONE,w=4,threshold=0.2), \
+lazy_wastar([h1,h2,h4],preferred=[h1,h2],cost_type=ONE,w=4,threshold=0.1), \
+lazy_wastar([h1,h2,h4],preferred=[h1,h2],cost_type=PLUSONE,w=2,threshold=0), \
+],cost_type=ONE,continue_on_fail=true,repeat_last=true)"
