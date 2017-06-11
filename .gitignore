@@ -38,6 +38,7 @@ sas_plan.*
 scripts/sas_plan
 scripts/sas_plan.*
 scripts/*.sas
+scripts
 
 # VIM
 *.swp
