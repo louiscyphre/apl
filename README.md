@@ -5,7 +5,7 @@ This is our project in automated planning (apl)
 ## Overview
 
 This planner is based on fast-downward planner (http://www.fast-downward.org),
-revision b850cf57c2f2.
+revision b850cf57c2f2
 
 ### Building on Linux:
 
