@@ -38,7 +38,7 @@ For more info:
 Remember that code in this repository is modified fast-downward, so if you 
 planning to use it or compare, remember to obtain source from here. Any changes
 in fast-downward project that where made after obtaining the code by us, possibly
-will not appear here, so instructions might be for a different planner after original fast-downward will change.
+will not appear here, so official instructions from fast-downward site might be for a different planner after original fast-downward will change.
 
 
 ## Validating plans
