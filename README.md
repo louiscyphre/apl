@@ -9,7 +9,7 @@ The following directories are not part of Lazy Optimization Planner as covered b
 
     ./fast-downward/src/search/ext
 
-For the rest, the following license applies: [GPL-3.0]()https://www.gnu.org/licenses/gpl-3.0.en.html
+For the rest, the following license applies: [GPL-3.0](https://www.gnu.org/licenses/gpl-3.0.en.html)
 
 ## Overview
 
