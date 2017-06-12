@@ -1,7 +1,7 @@
 # Lazy Optimization Planner
 
 This is our project in automated planning (apl), we modified existing code of
-fast-downward planner, for more info take a look on [LazyOptimizationPlanner.pdf](https://github.com/louiscyphre/apl/files/1066896/LazyOptimizationPlanner.pdf) 
+fast-downward planner, for more info take a look on [LazyOptimizationPlanner.pdf](https://github.com/louiscyphre/apl/blob/master/LazyOptimizationPlanner.pdf) 
 in project tree. 
 ## License 
 
@@ -79,6 +79,6 @@ On Windows, you should install Visual Studio (we tested with the free [VS 2013 E
 ~~~
 
 This will run planner with 30m limit on overall time, and overall memory limit 2G.
-For more info look [LazyOptimizationPlanner.pdf](https://github.com/louiscyphre/apl/files/1066896/LazyOptimizationPlanner.pdf) inside the project.
+For more info look [LazyOptimizationPlanner.pdf](https://github.com/louiscyphre/apl/blob/master/LazyOptimizationPlanner.pdf) inside the project.
 
 
