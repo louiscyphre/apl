@@ -81,3 +81,4 @@ On Windows, you should install Visual Studio (we tested with the free [VS 2013 E
 This will run planner with 30m limit on overall time, and overall memory limit 2G.
 For more info look LazyOptimizationPlanner.pdf inside the project.
 
+[LazyOptimizationPlanner.pdf](https://github.com/louiscyphre/apl/files/1066896/LazyOptimizationPlanner.pdf)
