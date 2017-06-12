@@ -3,6 +3,13 @@
 This is our project in automated planning (apl), we modified existing code of
 fast-downward planner, for more info take a look on LazyOptimizationPlanner.pdf 
 in project tree. 
+## License 
+
+The following directories are not part of Lazy Optimization Planner as covered by this license:
+
+    ./fast-downward/src/search/ext
+
+For the rest, the following license applies: [GPL-3.0]()https://www.gnu.org/licenses/gpl-3.0.en.html
 
 ## Overview
 
